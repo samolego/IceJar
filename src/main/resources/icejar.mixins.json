@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.samo_lego.icejar.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "ServerGamePacketListenerImplMixin_RealData",
+    "ServerPlayerMixin",
+    "accessor.AServerboundMovePlayerPacket",
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

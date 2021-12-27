@@ -1,29 +1,31 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "icejar",
   "version": "${version}",
 
-  "name": "Example Mod",
+  "name": "IceJar",
   "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
-    "Me!"
+    "xaw3ep",
+    "Lysandr0",
+    "samo_lego"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/samolego/IceJar"
   },
 
-  "license": "CC0-1.0",
+  "license": "GNU-GPL-v3.0",
   "icon": "assets/modid/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "org.samo_lego.icejar.IceJar"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "icejar.mixins.json"
   ],
 
   "depends": {

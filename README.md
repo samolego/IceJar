@@ -1,4 +1,5 @@
-# Fabric Example Mod
+# IceJar
+A NCP port to Fabric.
 
 ## Setup
 
@@ -6,4 +7,4 @@ For setup instructions please see the [fabric wiki page](https://fabricmc.net/wi
 
 ## License
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+This mod inherits the license of NoCheatPlus.
