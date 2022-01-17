@@ -12,14 +12,12 @@ import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.util.AdditionalData;
 import org.samo_lego.icejar.util.IceJarPlayer;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin implements IceJarPlayer {
-    @Shadow public abstract ServerLevel getLevel();
 
     private AdditionalData additionalData;
 
@@ -55,6 +53,6 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
 
     @Override
     public boolean isAboveFluid() {
-        return this.player.getFeetBlockState().getFluidState().isEmpty();
+        return !this.player.getFeetBlockState().getFluidState().isEmpty();
     }
 }

@@ -4,6 +4,7 @@ public class AdditionalData {
     private boolean wasOnGround;
     private boolean wasLastOnGround;
     private boolean onGround;
+    private double fallDistance;
 
 
     public boolean onGround() {
@@ -23,9 +24,15 @@ public class AdditionalData {
     }
 
     public void updateGroundStatus() {
-        this.wasLastOnGround = this.wasOnGround;
+        this.wasLastOnGround = this.wasOnGround();
         this.wasOnGround = this.onGround();
     }
 
+    public void setFallDistance(double fallDistance) {
+        this.fallDistance = fallDistance;
+    }
 
+    public double getFallDistance() {
+        return this.fallDistance;
+    }
 }
