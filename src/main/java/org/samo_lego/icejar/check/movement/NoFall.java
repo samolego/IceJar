@@ -7,8 +7,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.mixin.accessor.AServerboundMovePlayerPacket;
-import org.samo_lego.icejar.util.AdditionalData;
-import org.samo_lego.icejar.util.IceJarPlayer;
 
 import java.util.List;
 
@@ -17,6 +15,9 @@ public class NoFall extends MovementCheck {
     private int hasNoFallChance;
     private boolean skipDamageEvent;
     private boolean hasFallen;
+    private boolean wasOnGround;
+    private boolean wasLastOnGround;
+    private boolean onGround;
 
     public NoFall(ServerPlayer player) {
         super(CheckType.MOVEMENT_NOFALL, player);
@@ -28,10 +29,7 @@ public class NoFall extends MovementCheck {
     @Override
     public boolean checkMovement(ServerboundMovePlayerPacket packet) {
         if (packet.isOnGround()) {
-            final IceJarPlayer ijPlayer = (IceJarPlayer) this.player;
-            final AdditionalData data = ijPlayer.getAdditionalData();
-
-            data.updateGroundStatus();
+            this.updateGroundStatus();
 
             // Get bottom vehicle bounding box.
             Entity bottomEntity = this.player.getRootVehicle();
@@ -46,42 +44,39 @@ public class NoFall extends MovementCheck {
 
             if (collidingBlocks.iterator().hasNext()) {
                 // Preferring block collisions over entity ones
-                data.setOnGround(true);
+                this.onGround = true;
             } else {
                 // No block collisions found, check for entity collisions
                 Entity finalBottomEntity = bottomEntity;
                 List<Entity> collidingEntities = player.getLevel().getEntities(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
 
-                boolean noCollisions = collidingEntities.isEmpty();
-                data.setOnGround(!noCollisions);
-
-                if (noCollisions) {
-                    final double fallDistance = packet.getY(player.getY()) - player.getY();
-                    data.setFallDistance(fallDistance);
-                }
+                final boolean noCollisions = collidingEntities.isEmpty();
+                this.onGround = !noCollisions;
             }
 
             // Player isn't on ground but client packet says it is
-            if (!ijPlayer.isNearGround()) {
-                data.setOnGround(false);
+            if (!this.isNearGround()) {
                 ((AServerboundMovePlayerPacket) packet).setOnGround(false);
-                // Flag the player
-                this.flag();
-
                 // we can use this later to lie to player's client
                 if (++this.hasNoFallChance > 10) {
                     this.hasNoFallChance = 10;
                 }
+                return false;
             } else if (--this.hasNoFallChance < 0) {
-                this.hasNoFallChance = 0;
-            }
-        } else {
-            if (--this.hasNoFallChance < 0) {
                 this.hasNoFallChance = 0;
             }
         }
 
         return true;
+    }
+
+    private boolean isNearGround() {
+        return this.wasLastOnGround || this.wasOnGround || this.onGround;
+    }
+
+    private void updateGroundStatus() {
+        this.wasLastOnGround = this.wasOnGround;
+        this.wasOnGround = this.onGround;
     }
 
     public void setHasFallen(boolean hasFallen) {
@@ -91,7 +86,6 @@ public class NoFall extends MovementCheck {
     public boolean hasFallen() {
         return this.hasFallen;
     }
-
 
     public boolean hasNoFall() {
         return this.hasNoFallChance > 5;

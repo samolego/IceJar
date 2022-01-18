@@ -22,12 +22,10 @@ import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.mixin.accessor.ALivingEntity;
 import org.samo_lego.icejar.util.IceJarPlayer;
 
-import java.util.Iterator;
-import java.util.Set;
+import static org.samo_lego.icejar.check.CheckCategory.COMBAT;
+import static org.samo_lego.icejar.check.CheckCategory.category2checks;
 
 public abstract class CombatCheck extends Check {
-
-    public static final Set<CheckType> combatChecks = Set.of(CheckType.COMBAT_CRITICAL);
 
     public CombatCheck(CheckType checkType, ServerPlayer player) {
         super(checkType, player);
@@ -53,53 +51,45 @@ public abstract class CombatCheck extends Check {
      * @return {@link InteractionResult} of the hit.
      */
     public static InteractionResult performCheck(Player player, Level world, InteractionHand hand, Entity targetEntity, @Nullable EntityHitResult hitResult) {
-        if (player instanceof ServerPlayer pl) {
-            boolean valid = true;
-
+        if (player instanceof ServerPlayer pl && category2checks.get(COMBAT) != null) {
             // Loop through all combat checks
-            Iterator<CheckType> it = combatChecks.iterator();
-            CombatCheck check = null;
-            while (it.hasNext() && valid) {
-                check = (CombatCheck) ((IceJarPlayer) player).getCheck(it.next());
+            for (CheckType type : category2checks.get(COMBAT)) {
+                final CombatCheck check = (CombatCheck) ((IceJarPlayer) player).getCheck(type);
 
                 // Check the hit
-                valid = check.checkCombat(world, hand, targetEntity, hitResult);
-            }
+                if (!check.checkCombat(world, hand, targetEntity, hitResult)) {
+                    // Hit was fake. Let's pretend we don't know though :)
+                    if (!(targetEntity instanceof ArmorStand) && targetEntity instanceof LivingEntity le) {
+                        pl.connection.send(new ClientboundAnimatePacket(targetEntity, ClientboundAnimatePacket.HURT)); // Take damage
 
-            if (!valid) {
-                // Hit was fake. Let's pretend we didn't see it though :)
-                if (!(targetEntity instanceof ArmorStand) && targetEntity instanceof LivingEntity le) {
-                    pl.connection.send(new ClientboundAnimatePacket(targetEntity, ClientboundAnimatePacket.HURT)); // Take damage
+                        // Play sound
+                        pl.connection.send(new ClientboundSoundPacket(((ALivingEntity) le).getHurtSound(DamageSource.playerAttack(pl)),
+                                player.getSoundSource(),
+                                player.getX(),
+                                player.getY(),
+                                player.getZ(),
+                                1.0f,
+                                1.0f));
+                    }
 
-                    // Play sound
-                    pl.connection.send(new ClientboundSoundPacket(((ALivingEntity) le).getHurtSound(DamageSource.playerAttack(pl)),
-                            player.getSoundSource(),
-                            player.getX(),
-                            player.getY(),
-                            player.getZ(),
-                            1.0f,
-                            1.0f));
+                    check.sendFakeHitData(world, hand, targetEntity, hitResult);
+
+                    // Figure out damage modifier to know if magic critical hit packet should be sent as well
+                    ItemStack stack = player.getItemInHand(hand);
+
+                    float modifier = targetEntity instanceof LivingEntity ?
+                        EnchantmentHelper.getDamageBonus(stack, ((LivingEntity) targetEntity).getMobType()) :
+                        EnchantmentHelper.getDamageBonus(stack, MobType.UNDEFINED);
+
+                    modifier *= player.getAttackStrengthScale(0.5F);
+
+                    if (modifier > 0.0f) {
+                        pl.connection.send(new ClientboundAnimatePacket(targetEntity, ClientboundAnimatePacket.MAGIC_CRITICAL_HIT)); // Magic Critical hit
+
+                    }
+
+                    return InteractionResult.FAIL;
                 }
-
-                check.sendFakeHitData(world, hand, targetEntity, hitResult);
-
-                // Figure out damage modifier to know if magic critical hit packet should be sent as well
-                float modifier;
-                ItemStack stack = player.getItemInHand(hand);
-
-                if (targetEntity instanceof LivingEntity) {
-                    modifier = EnchantmentHelper.getDamageBonus(stack, ((LivingEntity)targetEntity).getMobType());
-                } else {
-                    modifier = EnchantmentHelper.getDamageBonus(stack, MobType.UNDEFINED);
-                }
-                modifier *= player.getAttackStrengthScale(0.5F);
-
-                if (modifier > 0.0f) {
-                    pl.connection.send(new ClientboundAnimatePacket(targetEntity, ClientboundAnimatePacket.MAGIC_CRITICAL_HIT)); // Magic Critical hit
-
-                }
-
-                return InteractionResult.FAIL;
             }
         }
 

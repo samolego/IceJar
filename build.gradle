@@ -15,6 +15,7 @@ repositories {
 	maven {
 		url = "https://maven.parchmentmc.org"
 	}
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -28,6 +29,8 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	modImplementation include('com.github.samolego.Config2Brigadier:config2brigadier-fabric:bd3564bccb')
 }
 
 processResources {

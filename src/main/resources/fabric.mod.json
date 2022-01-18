@@ -16,12 +16,12 @@
   },
 
   "license": "GNU-GPL-v3.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/icejar/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "org.samo_lego.icejar.IceJar"
+      "org.samo_lego.icejar.IceJar::onInitialize"
     ]
   },
   "mixins": [

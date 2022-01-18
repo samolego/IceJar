@@ -5,12 +5,10 @@ import net.minecraft.server.level.ServerPlayer;
 import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.util.IceJarPlayer;
 
-import java.util.Iterator;
-import java.util.Set;
+import static org.samo_lego.icejar.check.CheckCategory.MOVEMENT;
+import static org.samo_lego.icejar.check.CheckCategory.category2checks;
 
 public abstract class CancellableMovementCheck extends MovementCheck {
-
-    public static final Set<CheckType> movementChecks = Set.of();
 
     public CancellableMovementCheck(CheckType checkType, ServerPlayer player) {
         super(checkType, player);
@@ -25,27 +23,24 @@ public abstract class CancellableMovementCheck extends MovementCheck {
 
     /**
      * Checks whether player has moved correctly.
+     * @param player player to check.
      * @param packet packet containing movement data.
      * @return whether player has moved correctly.
      */
-    public boolean checkMovement(ServerboundMovePlayerPacket packet) {
-        boolean valid = true;
-
+    public static boolean performCheck(ServerPlayer player, ServerboundMovePlayerPacket packet) {
         // Loop through all movement checks
-        Iterator<CheckType> it = movementChecks.iterator();
-        while (it.hasNext() && valid) {
-            final CancellableMovementCheck check = (CancellableMovementCheck) ((IceJarPlayer) player).getCheck(it.next());
+        if (category2checks.get(MOVEMENT) != null) {
+            for (CheckType type : category2checks.get(MOVEMENT)) {
+                final CancellableMovementCheck check = (CancellableMovementCheck) ((IceJarPlayer) player).getCheck(type);
 
-            // Check movement
-            valid = check.checkMovement(packet);
-        }
-
-        if (!valid) {
-            // Ruberband
-            this.flag();
-            return false;
+                // Check movement
+                if (!check.checkMovement(packet)) {
+                    check.flag();
+                    // Ruberband
+                    return false;
+                }
+            }
         }
         return true;
-
     }
 }

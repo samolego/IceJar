@@ -4,6 +4,10 @@ import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.server.level.ServerPlayer;
 import org.samo_lego.icejar.check.Check;
 import org.samo_lego.icejar.check.CheckType;
+import org.samo_lego.icejar.util.IceJarPlayer;
+
+import static org.samo_lego.icejar.check.CheckCategory.FIXED_MOVEMENT;
+import static org.samo_lego.icejar.check.CheckCategory.category2checks;
 
 public abstract class MovementCheck extends Check {
 
@@ -19,4 +23,19 @@ public abstract class MovementCheck extends Check {
     }
 
     public abstract boolean checkMovement(ServerboundMovePlayerPacket packet);
+
+    public static boolean performCheck(ServerPlayer player, ServerboundMovePlayerPacket packet) {
+        // Loop through all movement checks
+        if (category2checks.get(FIXED_MOVEMENT) != null) {
+            for (CheckType type : category2checks.get(FIXED_MOVEMENT)) {
+                final MovementCheck check = (MovementCheck) ((IceJarPlayer) player).getCheck(type);
+
+                // Check movement
+                if (!check.checkMovement(packet)) {
+                    check.flag();
+                }
+            }
+        }
+        return true;
+    }
 }

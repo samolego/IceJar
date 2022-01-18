@@ -4,7 +4,7 @@
   "package": "org.samo_lego.icejar.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "ServerGamePacketListenerImplMixin_RealData",
+    "ServerGamePacketListenerImplMixin_Movement",
     "ServerPlayerMixin",
     "accessor.ALivingEntity",
     "accessor.APlayer",

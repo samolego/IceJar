@@ -1,6 +1,7 @@
 package org.samo_lego.icejar.check;
 
 import net.minecraft.server.level.ServerPlayer;
+import org.samo_lego.icejar.config.IceConfig;
 import org.samo_lego.icejar.util.IceJarPlayer;
 
 public abstract class Check {
@@ -22,7 +23,7 @@ public abstract class Check {
     }
 
     public long getCooldown() {
-        return 0;
+        return IceConfig.DEFAULT.cooldown;
     }
 
     public void flag() {
