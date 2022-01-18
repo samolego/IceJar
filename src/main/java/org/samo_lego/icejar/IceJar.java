@@ -17,6 +17,6 @@ public class IceJar implements ModInitializer {
 		LOGGER.info("Loading IceJar ...");
 
 		//AttackBlockCallback.EVENT.register();
-		AttackEntityCallback.EVENT.register(new Critical());
+		AttackEntityCallback.EVENT.register(Critical::performCheck);
 	}
 }

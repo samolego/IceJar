@@ -6,7 +6,10 @@
   "mixins": [
     "ServerGamePacketListenerImplMixin_RealData",
     "ServerPlayerMixin",
+    "accessor.ALivingEntityAccessor",
     "accessor.AServerboundMovePlayerPacket",
+    "fake_data.no_fall.LivingEntityMixin_NoFallSound",
+    "fake_data.no_fall.PlayerMixin_NoFallSound"
   ],
   "injectors": {
     "defaultRequire": 1
