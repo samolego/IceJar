@@ -6,10 +6,14 @@
   "mixins": [
     "ServerGamePacketListenerImplMixin_RealData",
     "ServerPlayerMixin",
-    "accessor.ALivingEntityAccessor",
+    "accessor.ALivingEntity",
+    "accessor.APlayer",
     "accessor.AServerboundMovePlayerPacket",
-    "fake_data.no_fall.LivingEntityMixin_NoFallSound",
-    "fake_data.no_fall.PlayerMixin_NoFallSound"
+    "accessor.ASynchedEntityData",
+    "fake_data.no_fall.LivingEntityMixin_FallObserver",
+    "fake_data.no_fall.ServerLevelMixin_SkipNoFallEvent",
+    "fake_data.no_fall.ServerPlayerMixin_NoFallHP",
+    "packet.ClientBoundSetEntityDataMixin_HPTagsRemove"
   ],
   "injectors": {
     "defaultRequire": 1

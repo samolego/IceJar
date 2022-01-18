@@ -19,7 +19,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
 import org.samo_lego.icejar.check.Check;
 import org.samo_lego.icejar.check.CheckType;
-import org.samo_lego.icejar.mixin.accessor.ALivingEntityAccessor;
+import org.samo_lego.icejar.mixin.accessor.ALivingEntity;
 import org.samo_lego.icejar.util.IceJarPlayer;
 
 import java.util.Iterator;
@@ -68,13 +68,11 @@ public abstract class CombatCheck extends Check {
 
             if (!valid) {
                 // Hit was fake. Let's pretend we didn't see it though :)
-                pl.connection.send(new ClientboundAnimatePacket(targetEntity, ClientboundAnimatePacket.SWING_MAIN_HAND)); // Vanilla sends this
-
                 if (!(targetEntity instanceof ArmorStand) && targetEntity instanceof LivingEntity le) {
                     pl.connection.send(new ClientboundAnimatePacket(targetEntity, ClientboundAnimatePacket.HURT)); // Take damage
 
                     // Play sound
-                    pl.connection.send(new ClientboundSoundPacket(((ALivingEntityAccessor) le).getHurtSound(DamageSource.playerAttack(pl)),
+                    pl.connection.send(new ClientboundSoundPacket(((ALivingEntity) le).getHurtSound(DamageSource.playerAttack(pl)),
                             player.getSoundSource(),
                             player.getX(),
                             player.getY(),

@@ -14,15 +14,15 @@ import java.util.List;
 
 public class NoFall extends MovementCheck {
 
-    private int hasNoFallChance = 0;
+    private int hasNoFallChance;
+    private boolean skipDamageEvent;
+    private boolean hasFallen;
 
     public NoFall(ServerPlayer player) {
         super(CheckType.MOVEMENT_NOFALL, player);
-    }
 
-    public boolean hasNoFall() {
-        System.out.println(this.hasNoFallChance);
-        return this.hasNoFallChance > 5;
+        this.hasNoFallChance = 0;
+        this.skipDamageEvent = false;
     }
 
     @Override
@@ -72,14 +72,36 @@ public class NoFall extends MovementCheck {
                 if (++this.hasNoFallChance > 10) {
                     this.hasNoFallChance = 10;
                 }
+            } else if (--this.hasNoFallChance < 0) {
+                this.hasNoFallChance = 0;
             }
         } else {
             if (--this.hasNoFallChance < 0) {
                 this.hasNoFallChance = 0;
             }
-            System.out.println(this.hasNoFallChance);
         }
 
         return true;
+    }
+
+    public void setHasFallen(boolean hasFallen) {
+        this.hasFallen = hasFallen;
+    }
+
+    public boolean hasFallen() {
+        return this.hasFallen;
+    }
+
+
+    public boolean hasNoFall() {
+        return this.hasNoFallChance > 5;
+    }
+
+    public boolean shouldSkipDamageEvent() {
+        return this.skipDamageEvent;
+    }
+
+    public void setSkipDamageEvent(boolean skipDamageEvent) {
+        this.skipDamageEvent = skipDamageEvent;
     }
 }
