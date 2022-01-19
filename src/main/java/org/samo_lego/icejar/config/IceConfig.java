@@ -81,7 +81,7 @@ public class IceConfig implements IBrigadierConfigurator {
 
     @SerializedName("check_configurations")
     public HashMap<CheckType, CheckConfig> checkConfigs = new HashMap<>(Map.of(
-            MOVEMENT_NOFALL, new CheckConfig(500, 10, 1, -1, true)
+            MOVEMENT_NOFALL, new CheckConfig(500, 5, 1, -1, true)
     ));
 
     /**

@@ -13,14 +13,11 @@ import java.util.List;
 
 public class NoFall extends MovementCheck {
 
-    private int hasNoFallChance;
     private boolean skipDamageEvent;
     private boolean hasFallen;
 
     public NoFall(ServerPlayer player) {
         super(CheckType.MOVEMENT_NOFALL, player);
-
-        this.hasNoFallChance = 0;
         this.skipDamageEvent = false;
     }
 
@@ -61,7 +58,7 @@ public class NoFall extends MovementCheck {
                 int max2 = this.getMaxAttemptsBeforeFlag() * 2;
                 if (this.increaseCheatAttempts() > max2) {
                     // we can use this later to lie to player's client
-                    this.hasNoFallChance = max2;
+                    this.setCheatAttempts(max2);
                 }
                 return false;
             } else {
@@ -82,7 +79,7 @@ public class NoFall extends MovementCheck {
     }
 
     public boolean hasNoFall() {
-        return this.hasNoFallChance > this.getMaxAttemptsBeforeFlag();
+        return this.getCheatAttempts() > this.getMaxAttemptsBeforeFlag();
     }
 
     public boolean shouldSkipDamageEvent() {
