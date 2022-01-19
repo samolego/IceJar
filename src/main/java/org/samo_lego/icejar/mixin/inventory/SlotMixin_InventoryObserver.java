@@ -15,7 +15,7 @@ public class SlotMixin_InventoryObserver {
     @Inject(method = "onTake", at = @At("TAIL"))
     private void onTake(Player player, ItemStack stack, CallbackInfo ci) {
         if (player instanceof IceJarPlayer ij) {
-            ij.setOpenGUi(true);
+            ij.ij$setOpenGUI(true);
         }
     }
 }

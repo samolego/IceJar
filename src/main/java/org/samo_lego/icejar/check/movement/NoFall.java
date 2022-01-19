@@ -7,6 +7,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.mixin.accessor.AServerboundMovePlayerPacket;
+import org.samo_lego.icejar.util.IceJarPlayer;
 
 import java.util.List;
 
@@ -15,9 +16,6 @@ public class NoFall extends MovementCheck {
     private int hasNoFallChance;
     private boolean skipDamageEvent;
     private boolean hasFallen;
-    private boolean wasOnGround;
-    private boolean wasLastOnGround;
-    private boolean onGround;
 
     public NoFall(ServerPlayer player) {
         super(CheckType.MOVEMENT_NOFALL, player);
@@ -29,34 +27,35 @@ public class NoFall extends MovementCheck {
     @Override
     public boolean checkMovement(ServerboundMovePlayerPacket packet) {
         if (packet.isOnGround()) {
-            this.updateGroundStatus();
+            IceJarPlayer ij = (IceJarPlayer) this.player;
+            ij.updateGroundStatus();
 
             // Get bottom vehicle bounding box.
+            // Todo: fp when standing on boat and falling
             Entity bottomEntity = this.player.getRootVehicle();
             if (bottomEntity == null) {
-                bottomEntity = player;
+                bottomEntity = this.player;
             }
             final AABB bBox = bottomEntity
                     .getBoundingBox()
-                    .inflate(0, 0.25005D, 0).move(0, packet.getY(player.getY()) - player.getY() - 0.25005D, 0);
+                    .inflate(0, 0.25005D, 0).move(0, packet.getY(this.player.getY()) - this.player.getY() - 0.25005D, 0);
 
-            final Iterable<VoxelShape> collidingBlocks = player.getLevel().getBlockCollisions(bottomEntity, bBox);
+            final Iterable<VoxelShape> collidingBlocks = this.player.getLevel().getBlockCollisions(bottomEntity, bBox);
 
             if (collidingBlocks.iterator().hasNext()) {
                 // Preferring block collisions over entity ones
-                this.onGround = true;
+                ij.ij$setOnGround(true);
             } else {
                 // No block collisions found, check for entity collisions
                 Entity finalBottomEntity = bottomEntity;
-                List<Entity> collidingEntities = player.getLevel().getEntities(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
+                List<Entity> collidingEntities = this.player.getLevel().getEntities(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
 
                 final boolean noCollisions = collidingEntities.isEmpty();
-                this.onGround = !noCollisions;
+                ij.ij$setOnGround(!noCollisions);
             }
 
             // Player isn't on ground but client packet says it is
-
-            if (!this.isNearGround()) {
+            if (!ij.isNearGround()) {
                 ((AServerboundMovePlayerPacket) packet).setOnGround(false);
 
                 int max2 = this.getMaxAttemptsBeforeFlag() * 2;
@@ -73,14 +72,6 @@ public class NoFall extends MovementCheck {
         return true;
     }
 
-    private boolean isNearGround() {
-        return this.wasLastOnGround || this.wasOnGround || this.onGround;
-    }
-
-    private void updateGroundStatus() {
-        this.wasLastOnGround = this.wasOnGround;
-        this.wasOnGround = this.onGround;
-    }
 
     public void setHasFallen(boolean hasFallen) {
         this.hasFallen = hasFallen;

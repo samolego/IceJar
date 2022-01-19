@@ -6,6 +6,8 @@ import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.check.movement.MovementCheck;
 import org.samo_lego.icejar.util.IceJarPlayer;
 
+import java.util.Set;
+
 import static org.samo_lego.icejar.check.CheckCategory.MOVEMENT;
 import static org.samo_lego.icejar.check.CheckCategory.category2checks;
 
@@ -30,13 +32,16 @@ public abstract class CancellableMovementCheck extends MovementCheck {
      */
     public static boolean performCheck(ServerPlayer player, ServerboundMovePlayerPacket packet) {
         // Loop through all movement checks
-        if (category2checks.get(MOVEMENT) != null) {
-            for (CheckType type : category2checks.get(MOVEMENT)) {
+        final Set<CheckType> checks = category2checks.get(MOVEMENT);
+        if (checks != null) {
+            for (CheckType type : checks) {
                 final CancellableMovementCheck check = (CancellableMovementCheck) ((IceJarPlayer) player).getCheck(type);
 
                 // Check movement
                 if (!check.checkMovement(packet)) {
-                    check.flag();
+                    if (check.increaseCheatAttempts() > check.getMaxAttemptsBeforeFlag())
+                        check.flag();
+
                     // Ruberband
                     return false;
                 }

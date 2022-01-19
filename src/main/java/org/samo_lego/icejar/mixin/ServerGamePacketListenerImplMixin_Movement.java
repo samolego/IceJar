@@ -1,15 +1,24 @@
 package org.samo_lego.icejar.mixin;
 
+import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
+import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.entity.Entity;
+import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.check.movement.MovementCheck;
 import org.samo_lego.icejar.check.movement.cancellable.CancellableMovementCheck;
+import org.samo_lego.icejar.check.movement.cancellable.CancellableVehicleMovementCheck;
+import org.samo_lego.icejar.check.movement.cancellable.Timer;
+import org.samo_lego.icejar.util.IceJarPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Set;
 
 @Mixin(ServerGamePacketListenerImpl.class)
 public abstract class ServerGamePacketListenerImplMixin_Movement {
@@ -24,15 +33,12 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
      * @param packet player movement packet.
      * @param ci   callback info.
      */
-    @Inject(
-            method = "handleMovePlayer",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/server/level/ServerPlayer;isPassenger()Z"
-            ),
+    @Inject(method = "handleMovePlayer",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isPassenger()Z"),
             cancellable = true
     )
-    private void checkOnGround(ServerboundMovePlayerPacket packet, CallbackInfo ci) {
+    private void onPlayerMove(ServerboundMovePlayerPacket packet, CallbackInfo ci) {
+        ((IceJarPlayer) player).setMovement(packet);
         MovementCheck.performCheck(player, packet);
         boolean canMove = CancellableMovementCheck.performCheck(player, packet);
 
@@ -40,5 +46,26 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
             this.teleport(player.getX(), player.getY(), player.getZ(), player.getYHeadRot(), player.getXRot());
             ci.cancel();
         }
+    }
+
+    @Inject(method = "handleMoveVehicle", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/entity/Entity;move(Lnet/minecraft/world/entity/MoverType;Lnet/minecraft/world/phys/Vec3;)V"),
+            cancellable = true
+    )
+    private void onVehicleMove(ServerboundMoveVehiclePacket packet, CallbackInfo ci) {
+        ((IceJarPlayer) player).setVehicleMovement(packet);
+        final Entity vh = this.player.getRootVehicle();
+        boolean canMove = CancellableVehicleMovementCheck.performCheck(player, packet, vh);
+
+        if (!canMove) {
+            vh.teleportTo(vh.getX(), vh.getY(), vh.getZ());
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "teleport(DDDFFLjava/util/Set;Z)V", at = @At(value = "TAIL"))
+    private void onTeleport(double d, double e, double f, float g, float h,
+                            Set<ClientboundPlayerPositionPacket.RelativeArgument> set, boolean bl, CallbackInfo ci) {
+        ((Timer) ((IceJarPlayer) player).getCheck(CheckType.CMOVEMENT_TIMER)).rebalance();
     }
 }

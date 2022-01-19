@@ -11,7 +11,7 @@ public abstract class Check {
     protected final ServerPlayer player;
     private long lastFlagTime;
     private double violationLevel;
-    private int cheatAttempts;
+    private double cheatAttempts;
 
     public Check(CheckType checkType, ServerPlayer player) {
         this.checkType = checkType;
@@ -65,21 +65,19 @@ public abstract class Check {
         return IceJar.getInstance().getConfig().checkConfigs.getOrDefault(this.checkType, IceConfig.DEFAULT);
     }
 
-    public int increaseCheatAttempts() {
+    public double increaseCheatAttempts() {
         return ++this.cheatAttempts;
     }
 
     public void decreaseCheatAttempts() {
-        if (--this.cheatAttempts < 0) {
-            this.cheatAttempts = 0;
-        }
+        this.cheatAttempts *= 0.96D;
     }
 
-    public int getCheatAttempts() {
+    public double getCheatAttempts() {
         return this.cheatAttempts;
     }
 
-    public void setCheatAttempts(int attempts) {
+    public void setCheatAttempts(double attempts) {
         this.cheatAttempts = attempts;
     }
 }

@@ -23,9 +23,9 @@ public class PacketMovement extends CancellableMovementCheck {
         final Vec3 current = new Vec3(x, y, z);
         // Only take horizontal distance
         final double distanceHorizontal = previous.horizontalDistanceSqr() - current.horizontalDistanceSqr();
-        System.out.println("Hor : " + distanceHorizontal);
+        //System.out.println("Hor : " + distanceHorizontal);
         final double distanceVertical = previous.y - current.y;
-        System.out.println("Ver: " + distanceVertical);
+        //System.out.println("Ver: " + distanceVertical);
         final double maxDistanceHorizontal = IceJar.getInstance().getConfig().movement.maxHorizontalDistance;
 
         // Get data (make sure to not use a hacked client while training)

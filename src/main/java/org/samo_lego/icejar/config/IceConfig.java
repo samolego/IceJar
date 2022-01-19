@@ -50,6 +50,8 @@ public class IceConfig implements IBrigadierConfigurator {
     public Movement movement = new Movement();
     public static class Movement {
         public double maxHorizontalDistance = 130.1D;
+        public long timerThreshold = 250L;
+        public double vehicleYThreshold = 0D;
     }
 
     public static class CheckConfig {
@@ -65,7 +67,7 @@ public class IceConfig implements IBrigadierConfigurator {
         public boolean enabled;
 
         public CheckConfig() {
-            this(0, 1, 1, -1, true);
+            this(500, 1, 1, -1, true);
         }
         public CheckConfig(long cooldown, int attemptsToFlag, double violationIncrease, double maxViolationLevel, boolean enabled) {
             this.cooldown = cooldown;
@@ -79,7 +81,7 @@ public class IceConfig implements IBrigadierConfigurator {
 
     @SerializedName("check_configurations")
     public HashMap<CheckType, CheckConfig> checkConfigs = new HashMap<>(Map.of(
-            MOVEMENT_NOFALL, new CheckConfig(0, 10, 1, -1, true)
+            MOVEMENT_NOFALL, new CheckConfig(500, 10, 1, -1, true)
     ));
 
     /**

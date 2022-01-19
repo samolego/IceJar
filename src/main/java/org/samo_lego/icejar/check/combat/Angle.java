@@ -22,10 +22,11 @@ public class Angle extends CombatCheck{
         final double victimDistanceSquared = entityHitResult.distanceTo(player);
         final double victimDistance = Math.sqrt(victimDistanceSquared);
 
-        // Angle check
+        // Get NSEW direction
         int xOffset = player.getDirection().getStepX();
         int zOffset = player.getDirection().getStepZ();
-        AABB bBox = targetEntity.getBoundingBox();
+
+        final AABB bBox = targetEntity.getBoundingBox();
 
         // Checking if targetEntity is behind player ("dumb" check)
         if(xOffset * targetEntity.getX() + bBox.getXsize() / 2 - xOffset * player.getX() < 0 ||
@@ -36,11 +37,14 @@ public class Angle extends CombatCheck{
         // Fine check
         final double deltaX = targetEntity.getX() - player.getX();
         final double deltaZ = targetEntity.getZ() - player.getZ();
-        final double beta = Math.atan2(deltaZ, deltaX) - Math.PI / 2;
 
+        // Get the angle between the player and the targetEntity (in radians)
+        final double beta = Math.atan2(deltaZ, deltaX) - Math.PI / 2;
         final double phi = beta - Math.toRadians(player.getYHeadRot());
+
+        // Get diagonal distance of target bounding box
         final double allowedAttackSpace = Math.sqrt(bBox.getXsize() * bBox.getXsize() + bBox.getZsize() * bBox.getZsize());
 
-        return Math.abs(victimDistance * Math.sin(phi)) > allowedAttackSpace / 2 + 0.2D;
+        return Math.abs(victimDistance * Math.sin(phi)) <= allowedAttackSpace / 2 + 0.2D;
     }
 }

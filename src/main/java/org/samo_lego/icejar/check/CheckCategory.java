@@ -10,7 +10,8 @@ public enum CheckCategory {
     COMBAT,
     FIXED_MOVEMENT,
     MOVEMENT,
-    PACKETS;
+    PACKETS,
+    VEHICLE_MOVEMENT;
 
     public static final HashMap<CheckCategory, Set<CheckType>> ALL_CHECKS = new HashMap<>();
     public static HashMap<CheckCategory, Set<CheckType>> category2checks = new HashMap<>();

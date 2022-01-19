@@ -31,7 +31,7 @@ public class ImpossibleHit extends CombatCheck {
         // Cannot hit targets with a wall in front of them, open gui, using item etc.
         boolean wall = Math.sqrt(blockHit.distanceTo(player)) + 0.5D >= victimDistance || player.isPassenger();
         return wall &&
-                !((IceJarPlayer) player).hasOpenGui() &&
+                !((IceJarPlayer) player).ij$hasOpenGui() &&
                 !player.isUsingItem() &&
                 !player.isBlocking();
     }

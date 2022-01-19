@@ -3,7 +3,10 @@ package org.samo_lego.icejar.mixin;
 import net.minecraft.Util;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
+import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.phys.Vec3;
 import org.samo_lego.icejar.check.Check;
 import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.util.IceJarPlayer;
@@ -21,6 +24,20 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     private final ServerPlayer player = (ServerPlayer) (Object) this;
     @Unique
     private boolean guiOpen = false;
+    @Unique
+    private boolean ij$onGround;
+    @Unique
+    private boolean wasOnGround;
+    @Unique
+    private boolean wasLastOnGround;
+    @Unique
+    private Vec3 vehicleMovement;
+    @Unique
+    private Vec3 lastVehicleMovement;
+    @Unique
+    private Vec3 lastMovement;
+    @Unique
+    private Vec3 movement;
 
     @Override
     public Check getCheck(CheckType checkType) {
@@ -48,16 +65,65 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
             }
             this.player.getServer().getPlayerList().broadcastMessage(new TextComponent(this.player.getGameProfile().getName() + " was flagged for " + check.getType()),  ChatType.SYSTEM, Util.NIL_UUID);
             check.setLastFlagTime(now);
+            check.setCheatAttempts(0D);
         }
     }
 
     @Override
-    public void setOpenGUi(boolean open) {
+    public void ij$setOpenGUI(boolean open) {
         this.guiOpen = true;
     }
 
     @Override
-    public boolean hasOpenGui() {
+    public boolean ij$hasOpenGui() {
         return this.guiOpen;
+    }
+
+    @Override
+    public boolean isNearGround() {
+        return this.wasLastOnGround || this.wasOnGround || this.ij$onGround;
+    }
+
+    @Override
+    public void ij$setOnGround(boolean ij$onGround) {
+        this.ij$onGround = ij$onGround;
+    }
+
+    @Override
+    public void updateGroundStatus() {
+        this.wasLastOnGround = this.wasOnGround;
+        this.wasOnGround = this.ij$onGround;
+    }
+
+    @Override
+    public void setVehicleMovement(ServerboundMoveVehiclePacket packet) {
+        this.lastVehicleMovement = this.vehicleMovement;
+        this.vehicleMovement = new Vec3(packet.getX(), packet.getY(), packet.getZ());
+    }
+
+    @Override
+    public Vec3 getLastVehicleMovement() {
+        return lastVehicleMovement;
+    }
+
+    @Override
+    public Vec3 getVehicleMovement() {
+        return vehicleMovement;
+    }
+
+    @Override
+    public void setMovement(ServerboundMovePlayerPacket packet) {
+        this.lastMovement = this.movement;
+        this.movement = new Vec3(packet.getX(this.player.getX()), packet.getY(this.player.getY()), packet.getZ(this.player.getZ()));
+    }
+
+    @Override
+    public Vec3 getLastMovement() {
+        return lastMovement;
+    }
+
+    @Override
+    public Vec3 getMovement() {
+        return movement;
     }
 }

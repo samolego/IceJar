@@ -11,7 +11,7 @@ public class Derp extends MovementCheck {
 
     @Override
     public boolean checkMovement(ServerboundMovePlayerPacket packet) {
-        boolean derpPacket = Math.abs(packet.getXRot(player.getXRot())) > 90 || Math.abs(packet.getYRot(player.getYRot())) > 180;
+        boolean derpPacket = Math.abs(packet.getXRot(player.getXRot())) > 90;
         if (derpPacket && this.increaseCheatAttempts() > this.getMaxAttemptsBeforeFlag()) {
             return false;
         }

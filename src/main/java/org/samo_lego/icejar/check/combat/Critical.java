@@ -65,14 +65,7 @@ public class Critical extends CombatCheck {
      */
     @Override
     public boolean checkCombat(Level _world, InteractionHand hand, Entity targetEntity, @Nullable EntityHitResult _hitResult) {
-        final boolean crit = this.isCritical();
-        final boolean valid = this.isValid();
-
-        if (crit && !valid) {
-            return false;
-        }
-        return true;
-
+        return !this.isCritical() || this.isValid();
     }
 
     @Override
