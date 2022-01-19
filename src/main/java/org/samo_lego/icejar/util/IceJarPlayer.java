@@ -8,4 +8,7 @@ public interface IceJarPlayer {
     void flag(final Check check);
 
     Check getCheck(CheckType type);
+
+    void setOpenGUi(boolean open);
+    boolean hasOpenGui();
 }

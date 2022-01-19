@@ -19,6 +19,8 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     private final HashMap<CheckType, Check> playerChecks = new HashMap<>();
     @Unique
     private final ServerPlayer player = (ServerPlayer) (Object) this;
+    @Unique
+    private boolean guiOpen = false;
 
     @Override
     public Check getCheck(CheckType checkType) {
@@ -34,6 +36,28 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
 
     @Override
     public void flag(final Check check) {
-        this.player.getServer().getPlayerList().broadcastMessage(new TextComponent(this.player.getGameProfile().getName() + " was flagged for " + check.getType()),  ChatType.SYSTEM, Util.NIL_UUID);
+        // See if cooldown is still active on check
+        final long now  = System.currentTimeMillis();
+        final long timeDelta = now - check.getLastFlagTime();
+
+        if (check.getCooldown() < timeDelta) {
+            final double newLvl = check.increaseViolationLevel();
+            final double max = check.getMaxViolationLevel();
+            if (newLvl > max && max > 0) {
+                check.executeAction();
+            }
+            this.player.getServer().getPlayerList().broadcastMessage(new TextComponent(this.player.getGameProfile().getName() + " was flagged for " + check.getType()),  ChatType.SYSTEM, Util.NIL_UUID);
+            check.setLastFlagTime(now);
+        }
+    }
+
+    @Override
+    public void setOpenGUi(boolean open) {
+        this.guiOpen = true;
+    }
+
+    @Override
+    public boolean hasOpenGui() {
+        return this.guiOpen;
     }
 }

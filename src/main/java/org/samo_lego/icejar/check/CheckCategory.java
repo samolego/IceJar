@@ -9,14 +9,14 @@ import java.util.Set;
 public enum CheckCategory {
     COMBAT,
     FIXED_MOVEMENT,
-    MOVEMENT;
+    MOVEMENT,
+    PACKETS;
 
     public static final HashMap<CheckCategory, Set<CheckType>> ALL_CHECKS = new HashMap<>();
     public static HashMap<CheckCategory, Set<CheckType>> category2checks = new HashMap<>();
 
     public static void reloadEnabledChecks() {
         final HashMap<CheckType, IceConfig.CheckConfig> checkConfigs = IceJar.getInstance().getConfig().checkConfigs;
-        System.out.println("Old :: " + category2checks);
         category2checks = new HashMap<>(ALL_CHECKS);
         for (Set<CheckType> checks : category2checks.values()) {
             // Remove disabled checks
@@ -28,7 +28,5 @@ public enum CheckCategory {
                 return false;
             });
         }
-
-        System.out.println("New :: " + category2checks);
     }
 }

@@ -17,11 +17,18 @@ public class LivingEntityMixin_FallObserver {
     @Unique
     private final LivingEntity self = (LivingEntity) (Object) this;
 
+    /**
+     * Updates the {@link NoFall} hasFallen value.
+     * @param source damage source, relevant only if it is {@link DamageSource#FALL}
+     * @param amount amount of damage to be taken.
+     * @param cir mixin callback info returnable.
+     */
     @Inject(method = "hurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;broadcastEntityEvent(Lnet/minecraft/world/entity/Entity;B)V"))
     protected void skipNoFallDamageEvent(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (self instanceof IceJarPlayer player) {
+        if (self instanceof IceJarPlayer player && source == DamageSource.FALL) {
             final boolean noFallEnabled = ((NoFall) player.getCheck(CheckType.MOVEMENT_NOFALL)).hasNoFall();
             ((NoFall) player.getCheck(CheckType.MOVEMENT_NOFALL)).setSkipDamageEvent(noFallEnabled);
+            ((NoFall) player.getCheck(CheckType.MOVEMENT_NOFALL)).setHasFallen(noFallEnabled);
         }
     }
 }

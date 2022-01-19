@@ -27,11 +27,14 @@ import static org.samo_lego.icejar.check.CheckCategory.category2checks;
 
 public abstract class CombatCheck extends Check {
 
+    /** The maximum distance allowed to interact with an entity in creative mode. */
+    public static final double CREATIVE_DISTANCE = 6D;
+
     public CombatCheck(CheckType checkType, ServerPlayer player) {
         super(checkType, player);
     }
 
-    public abstract boolean checkCombat(Level world, InteractionHand hand, Entity targetEntity, @Nullable EntityHitResult hitResult);
+    public abstract boolean checkCombat(Level world, InteractionHand hand, Entity targetEntity, EntityHitResult hitResult);
 
     @Override
     public boolean check(Object ... params) {
@@ -52,12 +55,17 @@ public abstract class CombatCheck extends Check {
      */
     public static InteractionResult performCheck(Player player, Level world, InteractionHand hand, Entity targetEntity, @Nullable EntityHitResult hitResult) {
         if (player instanceof ServerPlayer pl && category2checks.get(COMBAT) != null) {
+            if (hitResult == null) {
+                hitResult = new EntityHitResult(targetEntity);
+            }
             // Loop through all combat checks
             for (CheckType type : category2checks.get(COMBAT)) {
                 final CombatCheck check = (CombatCheck) ((IceJarPlayer) player).getCheck(type);
+                System.out.println("Checking " + check.getType());
 
                 // Check the hit
                 if (!check.checkCombat(world, hand, targetEntity, hitResult)) {
+                    System.out.println("Check failed");
                     // Hit was fake. Let's pretend we don't know though :)
                     if (!(targetEntity instanceof ArmorStand) && targetEntity instanceof LivingEntity le) {
                         pl.connection.send(new ClientboundAnimatePacket(targetEntity, ClientboundAnimatePacket.HURT)); // Take damage
@@ -87,8 +95,12 @@ public abstract class CombatCheck extends Check {
                         pl.connection.send(new ClientboundAnimatePacket(targetEntity, ClientboundAnimatePacket.MAGIC_CRITICAL_HIT)); // Magic Critical hit
 
                     }
+                    if (check.increaseCheatAttempts() > check.getMaxAttemptsBeforeFlag())
+                        check.flag();
 
                     return InteractionResult.FAIL;
+                } else {
+                    check.decreaseCheatAttempts();
                 }
             }
         }

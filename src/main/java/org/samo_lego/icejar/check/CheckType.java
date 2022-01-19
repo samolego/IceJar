@@ -1,18 +1,30 @@
 package org.samo_lego.icejar.check;
 
 import net.minecraft.server.level.ServerPlayer;
+import org.samo_lego.icejar.check.combat.Angle;
 import org.samo_lego.icejar.check.combat.Critical;
+import org.samo_lego.icejar.check.combat.ImpossibleHit;
+import org.samo_lego.icejar.check.combat.NoSwing;
+import org.samo_lego.icejar.check.movement.Derp;
 import org.samo_lego.icejar.check.movement.NoFall;
+import org.samo_lego.icejar.check.movement.cancellable.PacketMovement;
 
 import java.util.HashSet;
 import java.util.function.Function;
 
 import static org.samo_lego.icejar.check.CheckCategory.ALL_CHECKS;
+import static org.samo_lego.icejar.check.CheckCategory.COMBAT;
+import static org.samo_lego.icejar.check.CheckCategory.MOVEMENT;
 import static org.samo_lego.icejar.check.CheckCategory.category2checks;
 
 public enum CheckType {
     COMBAT_CRITICAL(Critical::new, CheckCategory.COMBAT),
-    MOVEMENT_NOFALL(NoFall::new, CheckCategory.FIXED_MOVEMENT);
+    COMBAT_IMPOSSIBLEHIT(ImpossibleHit::new, COMBAT),
+    COMBAT_ANGLE(Angle::new, COMBAT),
+    COMBAT_NOSWING(NoSwing::new, COMBAT),
+    MOVEMENT_NOFALL(NoFall::new, CheckCategory.FIXED_MOVEMENT),
+    MOVEMENT_DERP(Derp::new, CheckCategory.FIXED_MOVEMENT),
+    CMOVEMENT_PACKET(PacketMovement::new, MOVEMENT);
 
     private final Function<ServerPlayer, Check> checkConstructor;
 

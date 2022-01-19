@@ -69,7 +69,6 @@ public class Critical extends CombatCheck {
         final boolean valid = this.isValid();
 
         if (crit && !valid) {
-            this.flag();
             return false;
         }
         return true;

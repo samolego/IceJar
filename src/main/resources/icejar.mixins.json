@@ -13,7 +13,10 @@
     "fake_data.no_fall.LivingEntityMixin_FallObserver",
     "fake_data.no_fall.ServerLevelMixin_SkipNoFallEvent",
     "fake_data.no_fall.ServerPlayerMixin_NoFallHP",
-    "packet.ClientBoundSetEntityDataMixin_HPTagsRemove"
+    "inventory.ServerPlayerMixin_InventoryObserver",
+    "inventory.SlotMixin_InventoryObserver",
+    "packet.ClientBoundSetEntityDataMixin_HPTagsRemove",
+    "packet.ServerGamePacketListenerImplMixin"
   ],
   "injectors": {
     "defaultRequire": 1

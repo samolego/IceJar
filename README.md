@@ -1,5 +1,5 @@
 # IceJar
-A NCP port to Fabric.
+An ACR / NCP port to Fabric.
 
 ## Setup
 
@@ -7,4 +7,4 @@ For setup instructions please see the [fabric wiki page](https://fabricmc.net/wi
 
 ## License
 
-This mod inherits the license of NoCheatPlus.
+This mod inherits the license of NoCheatPlus & AntiCheatReloaded.

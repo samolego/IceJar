@@ -21,9 +21,20 @@ public class IceJarCommand {
                         .then(literal("reload")
                                 .executes(IceJarCommand::reloadConfig)
                         )
+                        .then(literal("save")
+                                .executes(IceJarCommand::saveConfig)
+                        )
                 )
         );
     }
+
+    private static int saveConfig(CommandContext<CommandSourceStack> context) {
+        IceJar.getInstance().getConfig().save();
+        context.getSource().sendSuccess(new TranslatableComponent("gui.done").withStyle(ChatFormatting.GREEN), true);
+
+        return 1;
+    }
+
 
     private static int reloadConfig(CommandContext<CommandSourceStack> context) {
         IceJar.getInstance().getConfig().reload(IceJar.getInstance().getConfigFile());

@@ -55,15 +55,18 @@ public class NoFall extends MovementCheck {
             }
 
             // Player isn't on ground but client packet says it is
+
             if (!this.isNearGround()) {
                 ((AServerboundMovePlayerPacket) packet).setOnGround(false);
-                // we can use this later to lie to player's client
-                if (++this.hasNoFallChance > 10) {
-                    this.hasNoFallChance = 10;
+
+                int max2 = this.getMaxAttemptsBeforeFlag() * 2;
+                if (this.increaseCheatAttempts() > max2) {
+                    // we can use this later to lie to player's client
+                    this.hasNoFallChance = max2;
                 }
                 return false;
-            } else if (--this.hasNoFallChance < 0) {
-                this.hasNoFallChance = 0;
+            } else {
+                this.decreaseCheatAttempts();
             }
         }
 
@@ -88,7 +91,7 @@ public class NoFall extends MovementCheck {
     }
 
     public boolean hasNoFall() {
-        return this.hasNoFallChance > 5;
+        return this.hasNoFallChance > this.getMaxAttemptsBeforeFlag();
     }
 
     public boolean shouldSkipDamageEvent() {

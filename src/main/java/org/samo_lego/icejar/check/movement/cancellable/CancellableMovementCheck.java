@@ -1,8 +1,9 @@
-package org.samo_lego.icejar.check.movement;
+package org.samo_lego.icejar.check.movement.cancellable;
 
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.server.level.ServerPlayer;
 import org.samo_lego.icejar.check.CheckType;
+import org.samo_lego.icejar.check.movement.MovementCheck;
 import org.samo_lego.icejar.util.IceJarPlayer;
 
 import static org.samo_lego.icejar.check.CheckCategory.MOVEMENT;

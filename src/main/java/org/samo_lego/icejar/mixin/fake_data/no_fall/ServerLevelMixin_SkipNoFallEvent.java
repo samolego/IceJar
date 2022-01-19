@@ -19,7 +19,7 @@ public class ServerLevelMixin_SkipNoFallEvent {
      * Works together with {@link LivingEntityMixin_FallObserver#skipNoFallDamageEvent(DamageSource, float, CallbackInfoReturnable)}
      * @param entity entity to broadcast event for.
      * @param state state of the entity.
-     * @param ci callback info.
+     * @param ci mixin callback info.
      */
     @Inject(method = "broadcastEntityEvent", at = @At("HEAD"), cancellable = true)
     private void skipNoFallEvent(Entity entity, byte state, CallbackInfo ci) {

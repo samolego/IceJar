@@ -21,16 +21,22 @@ public class ServerPlayerMixin_NoFallHP {
     @Unique
     private final ServerPlayer player = (ServerPlayer) (Object) this;
 
+    /**
+     * Skips sending health and food to the client if the player has taken fall damage but is using NoFall.
+     * @param ci mixin callback info.
+     */
     @Inject(method = "doTick", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/level/ServerPlayer;getHealth()F", ordinal = 0))
     private void setFakedHealth(CallbackInfo ci) {
         final NoFall check = (NoFall) ((IceJarPlayer) player).getCheck(CheckType.MOVEMENT_NOFALL);
-        if (check.hasFallen() && player.getLastDamageSource() == DamageSource.FALL) {
-            this.lastSentHealth = player.getHealth();
-            this.lastSentFood = player.getFoodData().getFoodLevel();
-            this.lastFoodSaturationZero = player.getFoodData().getSaturationLevel() == 0.0F;
-
-        } else {
-            check.setHasFallen(false);
+        if (check.hasFallen()) {
+            // Damage source is null-ified after about 2 seconds, then we check if no fall is still enabled.
+            if (player.getLastDamageSource() == DamageSource.FALL || (player.getLastDamageSource() == null && check.hasNoFall())) {
+                this.lastSentHealth = player.getHealth();
+                this.lastSentFood = player.getFoodData().getFoodLevel();
+                this.lastFoodSaturationZero = player.getFoodData().getSaturationLevel() == 0.0F;
+            } else {
+                check.setHasFallen(false);
+            }
         }
     }
 }
