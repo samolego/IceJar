@@ -1,7 +1,6 @@
 package org.samo_lego.icejar.check;
 
 import net.minecraft.server.level.ServerPlayer;
-import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.config.IceConfig;
 import org.samo_lego.icejar.util.IceJarPlayer;
 
@@ -62,7 +61,7 @@ public abstract class Check {
     }
 
     public IceConfig.CheckConfig getOptions() {
-        return IceJar.getInstance().getConfig().checkConfigs.getOrDefault(this.checkType, IceConfig.DEFAULT);
+        return IceConfig.getCheckOptions(this);
     }
 
     public double increaseCheatAttempts() {

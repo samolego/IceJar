@@ -39,7 +39,7 @@ public class IceConfig implements IBrigadierConfigurator {
                                         .create();
 
     @SerializedName("default_check_configuration")
-    public static final CheckConfig DEFAULT = new CheckConfig();
+    public final CheckConfig DEFAULT = new CheckConfig();
 
     public Combat combat = new Combat();
 
@@ -130,7 +130,8 @@ public class IceConfig implements IBrigadierConfigurator {
     }
 
     public static CheckConfig getCheckOptions(CheckType type) {
-        return IceJar.getInstance().getConfig().checkConfigs.getOrDefault(type, DEFAULT);
+        final IceConfig config = IceJar.getInstance().getConfig();
+        return config.checkConfigs.getOrDefault(type, config.DEFAULT);
     }
 
     public static CheckConfig getCheckOptions(Check check) {

@@ -12,7 +12,9 @@ import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.util.IceJarPlayer;
 
-
+/**
+ * Todo
+ */
 public class BoatFly extends CancellableVehicleMovementCheck {
     public BoatFly(ServerPlayer player) {
         super(CheckType.VEHICLE_MOVE_BOATFLY, player);

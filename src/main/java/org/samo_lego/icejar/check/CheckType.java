@@ -12,8 +12,10 @@ import org.samo_lego.icejar.check.movement.cancellable.PacketMovement;
 import org.samo_lego.icejar.check.movement.cancellable.Timer;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.function.Function;
 
+import static org.samo_lego.icejar.IceJar.MOD_ID;
 import static org.samo_lego.icejar.check.CheckCategory.ALL_CHECKS;
 import static org.samo_lego.icejar.check.CheckCategory.COMBAT;
 import static org.samo_lego.icejar.check.CheckCategory.FIXED_MOVEMENT;
@@ -45,5 +47,9 @@ public enum CheckType {
 
     public Check createCheck(ServerPlayer player) {
         return this.checkConstructor.apply(player);
+    }
+
+    public String getBypassPermission() {
+        return MOD_ID + ".bypass." + this.toString().toLowerCase(Locale.ROOT);
     }
 }

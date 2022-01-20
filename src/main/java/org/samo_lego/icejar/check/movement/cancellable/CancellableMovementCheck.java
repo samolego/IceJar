@@ -1,5 +1,6 @@
 package org.samo_lego.icejar.check.movement.cancellable;
 
+import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.server.level.ServerPlayer;
 import org.samo_lego.icejar.check.CheckType;
@@ -35,6 +36,8 @@ public abstract class CancellableMovementCheck extends MovementCheck {
         final Set<CheckType> checks = category2checks.get(MOVEMENT);
         if (checks != null) {
             for (CheckType type : checks) {
+                if (Permissions.check(player, type.getBypassPermission(), false)) continue;
+
                 final CancellableMovementCheck check = (CancellableMovementCheck) ((IceJarPlayer) player).getCheck(type);
 
                 // Check movement

@@ -1,5 +1,6 @@
 package org.samo_lego.icejar.check.movement.cancellable;
 
+import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -38,6 +39,8 @@ public abstract class CancellableVehicleMovementCheck extends Check {
         final Set<CheckType> checks = category2checks.get(VEHICLE_MOVEMENT);
         if (checks != null) {
             for (CheckType type : checks) {
+                if (Permissions.check(player, type.getBypassPermission(), false)) continue;
+
                 final CancellableVehicleMovementCheck check = (CancellableVehicleMovementCheck) ((IceJarPlayer) player).getCheck(type);
 
                 // Check movement

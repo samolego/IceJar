@@ -1,8 +1,10 @@
 package org.samo_lego.icejar;
 
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.samo_lego.icejar.check.combat.CombatCheck;
@@ -21,6 +23,7 @@ public class IceJar {
 	private static IceJar INSTANCE;
 	private final File configFile;
 	private final IceConfig config;
+	private MinecraftServer server;
 
 	public IceJar() {
 		LOGGER.info("Loading IceJar ...");
@@ -30,10 +33,19 @@ public class IceJar {
 		//AttackBlockCallback.EVENT.register();
 		AttackEntityCallback.EVENT.register(CombatCheck::performCheck);
 		CommandRegistrationCallback.EVENT.register(IceJarCommand::register);
+		ServerLifecycleEvents.SERVER_STARTED.register(IceJar::onServerStarted);
+	}
+
+	private static void onServerStarted(MinecraftServer server) {
+		INSTANCE.server = server;
 	}
 
 	public File getConfigFile() {
 		return this.configFile;
+	}
+
+	public MinecraftServer getServer() {
+		return this.server;
 	}
 
 	public IceConfig getConfig() {

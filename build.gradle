@@ -16,6 +16,10 @@ repositories {
 		url = "https://maven.parchmentmc.org"
 	}
 	maven { url 'https://jitpack.io' }
+	maven {
+		name = "LuckPerms Maven"
+		url = 'https://oss.sonatype.org/content/repositories/snapshots'
+	}
 }
 
 dependencies {
@@ -30,6 +34,7 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+	modImplementation(include("me.lucko:fabric-permissions-api:0.1-SNAPSHOT"))
 	modImplementation include('com.github.samolego.Config2Brigadier:config2brigadier-fabric:bd3564bccb')
 }
 

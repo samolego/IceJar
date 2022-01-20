@@ -35,8 +35,6 @@ public class Timer extends CancellableMovementCheck {
                 if (!valid) {
                     this.packetRate = 0;
                     return false;
-                } else {
-                    this.decreaseCheatAttempts();
                 }
             }
             if (config.trainMode) {

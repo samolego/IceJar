@@ -1,7 +1,6 @@
 package org.samo_lego.icejar.check.combat;
 
 import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
-import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -14,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
 import org.samo_lego.icejar.check.CheckType;
+import org.samo_lego.icejar.util.DataFaker;
 
 public class Critical extends CombatCheck {
 
@@ -70,15 +70,9 @@ public class Critical extends CombatCheck {
 
     @Override
     protected void sendFakeHitData(Level _world, InteractionHand hand, Entity targetEntity, @Nullable EntityHitResult _hitResult) {
-        player.connection.send(new ClientboundAnimatePacket(targetEntity, ClientboundAnimatePacket.CRITICAL_HIT)); // Critical hit
+        DataFaker.broadcast(targetEntity, player, new ClientboundAnimatePacket(targetEntity, ClientboundAnimatePacket.CRITICAL_HIT)); // Critical hit
 
         // Sound event for critical hit
-        player.connection.send(new ClientboundSoundPacket(SoundEvents.PLAYER_ATTACK_CRIT,
-                this.player.getSoundSource(),
-                this.player.getX(),
-                this.player.getY(),
-                this.player.getZ(),
-                1.0f,
-                1.0f));
+        DataFaker.sendSound(SoundEvents.PLAYER_ATTACK_CRIT, player);
     }
 }
