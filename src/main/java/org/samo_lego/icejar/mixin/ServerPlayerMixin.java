@@ -77,7 +77,7 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
             }
             this.player.getServer().getPlayerList().broadcastMessage(new TextComponent(this.player.getGameProfile().getName() + " was flagged for " + check.getType()),  ChatType.SYSTEM, Util.NIL_UUID);
             check.setLastFlagTime(now);
-            check.setCheatAttempts(0D);
+            check.setCheatAttempts(0);
         }
     }
 

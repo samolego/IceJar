@@ -55,11 +55,20 @@ public class NoFall extends MovementCheck {
 
     @Override
     public CheckType getType() {
-        return this.hasJesus() ? CheckType.SPECIAL_JESUS :this.checkType;
+        return this.hasJesus() ? CheckType.SPECIAL_JESUS : this.checkType;
     }
 
     @Override
-    public void setCheatAttempts(double attempts) {
+    public void setCheatAttempts(int attempts) {
+    }
+
+    @Override
+    public int increaseCheatAttempts() {
+        final int max2 = this.getMaxAttemptsBeforeFlag() * 2;
+        if (++this.cheatAttempts > max2) {
+            this.cheatAttempts = max2;
+        }
+        return this.cheatAttempts;
     }
 
     public void setHasFallen(boolean hasFallen) {
@@ -71,7 +80,7 @@ public class NoFall extends MovementCheck {
     }
 
     public boolean hasNoFall() {
-        return this.getCheatAttempts() > this.getMaxAttemptsBeforeFlag() / 2;
+        return this.getCheatAttempts() > ((double) this.getMaxAttemptsBeforeFlag() / 2);
     }
 
     public boolean shouldSkipDamageEvent() {

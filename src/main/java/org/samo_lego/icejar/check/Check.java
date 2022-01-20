@@ -10,7 +10,7 @@ public abstract class Check {
     protected final ServerPlayer player;
     private long lastFlagTime;
     protected double violationLevel;
-    protected double cheatAttempts;
+    protected int cheatAttempts;
 
     public Check(CheckType checkType, ServerPlayer player) {
         this.checkType = checkType;
@@ -39,7 +39,7 @@ public abstract class Check {
         this.lastFlagTime = now;
     }
 
-    public double getMaxAttemptsBeforeFlag() {
+    public int getMaxAttemptsBeforeFlag() {
         return this.getOptions().attemptsToFlag;
     }
 
@@ -64,19 +64,24 @@ public abstract class Check {
         return IceConfig.getCheckOptions(this);
     }
 
-    public double increaseCheatAttempts() {
-        return ++this.cheatAttempts;
-    }
-
-    public void decreaseCheatAttempts() {
-        --this.cheatAttempts;
-    }
-
-    public double getCheatAttempts() {
+    public int increaseCheatAttempts() {
+        if (++this.cheatAttempts > this.getMaxAttemptsBeforeFlag()) {
+            this.cheatAttempts = this.getMaxAttemptsBeforeFlag() + 1;
+        }
         return this.cheatAttempts;
     }
 
-    public void setCheatAttempts(double attempts) {
+    public void decreaseCheatAttempts() {
+        if(--this.cheatAttempts < 0) {
+            this.cheatAttempts = 0;
+        }
+    }
+
+    public int getCheatAttempts() {
+        return this.cheatAttempts;
+    }
+
+    public void setCheatAttempts(int attempts) {
         this.cheatAttempts = attempts;
     }
 }
