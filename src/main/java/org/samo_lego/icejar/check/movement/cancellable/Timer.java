@@ -14,7 +14,6 @@ public class Timer extends CancellableMovementCheck {
         super(CheckType.CMOVEMENT_TIMER, player);
     }
 
-    // todo rebalance on tp
     @Override
     public boolean checkMovement(ServerboundMovePlayerPacket packet) {
         if(packet instanceof ServerboundMovePlayerPacket.PosRot ||
@@ -31,20 +30,18 @@ public class Timer extends CancellableMovementCheck {
 
             if(lastTime != 0) {
                 this.packetRate += (50 + lastTime - currentPacketTime);
+                boolean valid = this.packetRate <= config.movement.timerThreshold;
+
+                if (!valid) {
+                    this.packetRate = 0;
+                    return false;
+                } else {
+                    this.decreaseCheatAttempts();
+                }
             }
             if (config.trainMode) {
                 config.movement.timerThreshold = Math.max(config.movement.timerThreshold, this.packetRate);
             }
-
-            boolean valid = this.packetRate <= config.movement.timerThreshold;
-
-            if (!valid) {
-                this.packetRate = 0;
-            } else {
-                this.decreaseCheatAttempts();
-            }
-
-            return valid;
         } else {
             this.packetRate = 0;
             this.lastPacketTime = 0;

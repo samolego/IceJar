@@ -70,7 +70,7 @@ public abstract class Check {
     }
 
     public void decreaseCheatAttempts() {
-        this.cheatAttempts *= 0.96D;
+        --this.cheatAttempts;
     }
 
     public double getCheatAttempts() {
