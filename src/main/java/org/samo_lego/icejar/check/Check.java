@@ -57,7 +57,7 @@ public abstract class Check {
     }
 
     public void executeAction() {
-        this.getOptions().action.execute(this.player);
+        this.getOptions().action.execute(this.player, this);
     }
 
     public IceConfig.CheckConfig getOptions() {

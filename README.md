@@ -1,10 +1,12 @@
 # IceJar
-An ACR / NCP port to Fabric.
+Port of  [ACR](https://github.com/Rammelkast/AntiCheatReloaded) and [NCP](https://github.com/Updated-NoCheatPlus/NoCheatPlus) anticheat checks to Fabric,
+with additional [GolfIV](https://github.com/samolego/GolfIV) stuff.
 
-## Setup
+## Usage
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+Here be dragons!
 
 ## License
 
-This mod inherits the license of NoCheatPlus & AntiCheatReloaded.
+This mod inherits the license of NoCheatPlus & AntiCheatReloaded, therefore
+it's licensed under the terms of the [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
