@@ -38,7 +38,7 @@ public abstract class CancellableMovementCheck extends MovementCheck {
             for (CheckType type : checks) {
                 if (Permissions.check(player, type.getBypassPermission(), false)) continue;
 
-                final CancellableMovementCheck check = (CancellableMovementCheck) ((IceJarPlayer) player).getCheck(type);
+                final CancellableMovementCheck check = ((IceJarPlayer) player).getCheck(type);
 
                 // Check movement
                 if (!check.checkMovement(packet)) {

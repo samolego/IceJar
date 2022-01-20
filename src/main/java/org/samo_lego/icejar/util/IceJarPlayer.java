@@ -10,7 +10,8 @@ import org.samo_lego.icejar.check.CheckType;
 public interface IceJarPlayer {
     void flag(final Check check);
 
-    Check getCheck(CheckType type);
+    <T extends Check> T getCheck(CheckType type);
+    <T extends Check> T getCheck(Class<T> type);
 
     void ij$setOpenGUI(boolean open);
     boolean ij$hasOpenGui();

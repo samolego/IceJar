@@ -6,11 +6,11 @@ import org.samo_lego.icejar.util.IceJarPlayer;
 
 public abstract class Check {
 
-    private final CheckType checkType;
+    protected final CheckType checkType;
     protected final ServerPlayer player;
     private long lastFlagTime;
-    private double violationLevel;
-    private double cheatAttempts;
+    protected double violationLevel;
+    protected double cheatAttempts;
 
     public Check(CheckType checkType, ServerPlayer player) {
         this.checkType = checkType;
@@ -39,7 +39,7 @@ public abstract class Check {
         this.lastFlagTime = now;
     }
 
-    public int getMaxAttemptsBeforeFlag() {
+    public double getMaxAttemptsBeforeFlag() {
         return this.getOptions().attemptsToFlag;
     }
 

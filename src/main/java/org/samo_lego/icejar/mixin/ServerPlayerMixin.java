@@ -13,13 +13,15 @@ import org.samo_lego.icejar.util.IceJarPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Map;
 
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin implements IceJarPlayer {
 
     @Unique
-    private final HashMap<CheckType, Check> playerChecks = new HashMap<>();
+    private final Map<Class<?>, Check> playerChecks = new HashMap<>();
     @Unique
     private final ServerPlayer player = (ServerPlayer) (Object) this;
     @Unique
@@ -40,12 +42,22 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     private Vec3 movement;
 
     @Override
-    public Check getCheck(CheckType checkType) {
-        Check check = this.playerChecks.get(checkType);
+    public <T extends Check> T getCheck(CheckType checkType) {
+        return this.getCheck(checkType.getCheckClass());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends Check> T getCheck(Class<T> checkClass) {
+        T check = (T) this.playerChecks.get(checkClass);
         if (check == null) {
             // Create new check from type
-            check = checkType.createCheck(this.player);
-            this.playerChecks.put(checkType, check);
+            try {
+                check = checkClass.getConstructor(ServerPlayer.class).newInstance(this.player);
+                this.playerChecks.put(checkClass, check);
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
         }
 
         return check;

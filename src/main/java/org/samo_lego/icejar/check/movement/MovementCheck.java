@@ -34,11 +34,15 @@ public abstract class MovementCheck extends Check {
             for (CheckType type : checks) {
                 if (Permissions.check(player, type.getBypassPermission(), false)) continue;
 
-                final MovementCheck check = (MovementCheck) ((IceJarPlayer) player).getCheck(type);
+                final MovementCheck check = ((IceJarPlayer) player).getCheck(type);
 
                 // Check movement
-                if (!check.checkMovement(packet)) {
+                if (!check.checkMovement(packet) && check.increaseCheatAttempts() > check.getMaxAttemptsBeforeFlag()) {
                     check.flag();
+
+                    // Jesus ruberband
+                    if (check instanceof NoFall nf && nf.hasJesus())
+                        return false;
                 }
             }
         }

@@ -39,8 +39,7 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
     )
     private void onPlayerMove(ServerboundMovePlayerPacket packet, CallbackInfo ci) {
         ((IceJarPlayer) player).setMovement(packet);
-        MovementCheck.performCheck(player, packet);
-        boolean canMove = CancellableMovementCheck.performCheck(player, packet);
+        boolean canMove = MovementCheck.performCheck(player, packet) && CancellableMovementCheck.performCheck(player, packet);
 
         if (!canMove) {
             this.teleport(player.getX(), player.getY(), player.getZ(), player.getYHeadRot(), player.getXRot());

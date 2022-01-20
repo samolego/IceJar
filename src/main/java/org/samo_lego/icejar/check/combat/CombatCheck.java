@@ -67,7 +67,7 @@ public abstract class CombatCheck extends Check {
             for (CheckType type : checks) {
                 if (Permissions.check(player, type.getBypassPermission(), false)) continue;
 
-                final CombatCheck check = (CombatCheck) ((IceJarPlayer) player).getCheck(type);
+                final CombatCheck check = ((IceJarPlayer) player).getCheck(type);
                 System.out.println("Checking " + check.getType());
 
                 // Check the hit

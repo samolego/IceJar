@@ -41,7 +41,7 @@ public abstract class CancellableVehicleMovementCheck extends Check {
             for (CheckType type : checks) {
                 if (Permissions.check(player, type.getBypassPermission(), false)) continue;
 
-                final CancellableVehicleMovementCheck check = (CancellableVehicleMovementCheck) ((IceJarPlayer) player).getCheck(type);
+                final CancellableVehicleMovementCheck check = ((IceJarPlayer) player).getCheck(type);
 
                 // Check movement
                 if (!check.checkVehicleMovement(packet, vehicle)) {
