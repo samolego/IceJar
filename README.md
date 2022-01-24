@@ -6,6 +6,12 @@ with additional [GolfIV](https://github.com/samolego/GolfIV) stuff.
 
 Here be dragons!
 
+## Features
+
+* When blocking some sorts of hacks, fake info is sent to player
+to make it seem like cheat worked.
+* Each check can be configured in config file.
+
 ## License
 
 This mod inherits the license of NoCheatPlus & AntiCheatReloaded, therefore
