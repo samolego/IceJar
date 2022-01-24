@@ -117,7 +117,7 @@ public class NoFall extends MovementCheck {
         }
 
         // No block collisions found, check for entity collisions (e.g. standing on boat)
-        List<Entity> collidingEntities = entity.getLevel().getEntities(entity, bBox, entity1 -> !entity.equals(entity1));
+        List<VoxelShape> collidingEntities = entity.getLevel().getEntityCollisions(entity, bBox);
 
         return !collidingEntities.isEmpty();
     }
