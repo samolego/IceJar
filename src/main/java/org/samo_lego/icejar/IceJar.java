@@ -29,7 +29,10 @@ public class IceJar {
 
 	public IceJar() {
 		LOGGER.info("Loading IceJar ...");
-		this.configFile = new File(FabricLoader.getInstance().getConfigDir() + "/icejar.json");
+		this.configFile = new File(FabricLoader.getInstance().getConfigDir() + "/" + MOD_ID + "/config.json");
+		if (!this.configFile.exists()) {
+			this.configFile.getParentFile().mkdirs();
+		}
 		this.config = IceConfig.loadConfigFile(this.configFile);
 
 		//AttackBlockCallback.EVENT.register();
