@@ -3,7 +3,6 @@ package org.samo_lego.icejar.mixin.packet;
 import net.minecraft.network.protocol.game.ServerboundSwingPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
-import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.check.combat.NoSwing;
 import org.samo_lego.icejar.util.IceJarPlayer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,6 +18,6 @@ public class ServerGamePacketListenerImplMixin {
 
     @Inject(method = "handleAnimate", at = @At("TAIL"))
     private void onHandSwing(ServerboundSwingPacket packet, CallbackInfo ci) {
-        ((NoSwing) ((IceJarPlayer) this.player).getCheck(CheckType.COMBAT_NOSWING)).onSwing();
+        ((IceJarPlayer) this.player).getCheck(NoSwing.class).onSwing();
     }
 }

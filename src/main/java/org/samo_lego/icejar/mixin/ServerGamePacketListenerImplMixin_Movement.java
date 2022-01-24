@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
-import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.check.movement.MovementCheck;
 import org.samo_lego.icejar.check.movement.cancellable.CancellableMovementCheck;
 import org.samo_lego.icejar.check.movement.cancellable.CancellableVehicleMovementCheck;
@@ -44,12 +43,12 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
             cancellable = true
     )
     private void onPlayerMove(ServerboundMovePlayerPacket packet, CallbackInfo ci) {
+        ((IceJarPlayer) player).setMovement(packet);
         // Movement check only returns false if Jesus hack is active, while CMovementCheck returns false if any check fails.
         boolean valid = MovementCheck.performCheck(player, packet) && CancellableMovementCheck.performCheck(player, packet);
 
         if (!valid) {
             this.ij$validTickCount = 0;
-
             // Teleport to last spot, just don't keep Y value
             Vec3 last = this.lastValidSpot;
 
@@ -61,7 +60,6 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
             this.teleport(last.x(), packet.getY(player.getY()), last.z(), player.getYHeadRot(), player.getXRot());
             ci.cancel();
         } else {
-            ((IceJarPlayer) player).setMovement(packet);
             if (++this.ij$validTickCount >= 50) {
                 this.lastValidSpot = this.player.getPacketCoordinates();
             }
@@ -73,19 +71,23 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
             cancellable = true
     )
     private void onVehicleMove(ServerboundMoveVehiclePacket packet, CallbackInfo ci) {
-        ((IceJarPlayer) player).setVehicleMovement(packet);
         final Entity vh = this.player.getRootVehicle();
         boolean canMove = CancellableVehicleMovementCheck.performCheck(player, packet, vh);
 
         if (!canMove) {
+            //todo
+            // dismount?
+            player.stopRiding();
             vh.teleportTo(vh.getX(), vh.getY(), vh.getZ());
             ci.cancel();
+        } else {
+            ((IceJarPlayer) player).setVehicleMovement(packet);
         }
     }
 
     @Inject(method = "teleport(DDDFFLjava/util/Set;Z)V", at = @At(value = "TAIL"))
     private void onTeleport(double d, double e, double f, float g, float h,
                             Set<ClientboundPlayerPositionPacket.RelativeArgument> set, boolean bl, CallbackInfo ci) {
-        ((Timer) ((IceJarPlayer) player).getCheck(CheckType.CMOVEMENT_TIMER)).rebalance();
+        ((IceJarPlayer) player).getCheck(Timer.class).rebalance();
     }
 }

@@ -3,7 +3,6 @@ package org.samo_lego.icejar.mixin.fake_data.no_fall;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.check.movement.NoFall;
 import org.samo_lego.icejar.util.IceJarPlayer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,9 +22,10 @@ public class ServerLevelMixin_SkipNoFallEvent {
      */
     @Inject(method = "broadcastEntityEvent", at = @At("HEAD"), cancellable = true)
     private void skipNoFallEvent(Entity entity, byte state, CallbackInfo ci) {
-        if (entity instanceof IceJarPlayer player && ((NoFall) player.getCheck(CheckType.MOVEMENT_NOFALL)).shouldSkipDamageEvent()) {
-            ((NoFall) player.getCheck(CheckType.MOVEMENT_NOFALL)).setSkipDamageEvent(false);
-            ((NoFall) player.getCheck(CheckType.MOVEMENT_NOFALL)).setHasFallen(true);
+        if (entity instanceof IceJarPlayer player && player.getCheck(NoFall.class).shouldSkipDamageEvent()) {
+            final NoFall check = player.getCheck(NoFall.class);
+            check.setSkipDamageEvent(false);
+            check.setHasFallen(true);
             ci.cancel();
         }
     }

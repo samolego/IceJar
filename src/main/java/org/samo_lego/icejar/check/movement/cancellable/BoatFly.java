@@ -1,11 +1,10 @@
 package org.samo_lego.icejar.check.movement.cancellable;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.CheckType;
@@ -13,7 +12,7 @@ import org.samo_lego.icejar.check.movement.NoFall;
 import org.samo_lego.icejar.util.IceJarPlayer;
 
 /**
- * Todo
+ * Can still be improved, as this triggers false positive using e.g. slime block launcher.
  */
 public class BoatFly extends CancellableVehicleMovementCheck {
     public BoatFly(ServerPlayer player) {
@@ -31,15 +30,26 @@ public class BoatFly extends CancellableVehicleMovementCheck {
         if (IceJar.getInstance().getConfig().trainMode) {
             IceJar.getInstance().getConfig().movement.vehicleYThreshold = Math.max(IceJar.getInstance().getConfig().movement.vehicleYThreshold, vm.y() - lastVM.y());
         }
-        if (vm.horizontalDistanceSqr() - lastVM.horizontalDistanceSqr() <= 0.0D ||
-            vm.y() - lastVM.y() <= 1E-3 ||
+        Vec3 nMove = new Vec3(packet.getX(), packet.getY(), packet.getZ());
+        final double pDeltaY = vm.y() - lastVM.y();
+        final double deltaY = nMove.y() - vm.y();
+
+        if (/*vm.horizontalDistanceSqr() - lastVM.horizontalDistanceSqr() <= 0.0D ||*/
+            /*pDeltaY <= 1E-3 ||*/
+            ((pDeltaY < deltaY ||
+                pDeltaY < 0.0D ||
+                deltaY < 0.0D) &&
+                pDeltaY != deltaY) ||
             player.isFallFlying()) {
             return true;
         }
 
         if (vehicle.getType() == EntityType.BOAT) {
-            final BlockState bottom = player.getLevel().getBlockState(new BlockPos(packet.getX(), packet.getY(), packet.getZ()));
-            return NoFall.checkOnGround(vehicle, packet.getY() - vehicle.getY(), false) || !bottom.getMaterial().isLiquid();
+            final AABB bBox = vehicle.getBoundingBox().expandTowards(0.0D, -(pDeltaY + 0.25D), 0.0D);
+
+            return NoFall.checkOnGround(vehicle, packet.getY() - vehicle.getY(), false) ||
+                    vehicle.getLevel().containsAnyLiquid(bBox) ||
+                    pDeltaY < deltaY;
         }
         return true;
     }

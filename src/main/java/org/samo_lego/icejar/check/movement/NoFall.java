@@ -95,7 +95,7 @@ public class NoFall extends MovementCheck {
     public static boolean checkOnGround(final Entity entity, final double deltaY, boolean checkLiquid) {
         final AABB bBox = entity
                 .getBoundingBox()
-                .inflate(0, 0.25005D, 0).move(0, deltaY - 0.25005D, 0);
+                .expandTowards(0, -(deltaY + 0.25005D), 0);
 
         final Iterable<VoxelShape> collidingBlocks = entity.getLevel().getBlockCollisions(entity, bBox);
 

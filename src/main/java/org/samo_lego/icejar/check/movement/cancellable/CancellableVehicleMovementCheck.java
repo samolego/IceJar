@@ -45,11 +45,12 @@ public abstract class CancellableVehicleMovementCheck extends Check {
 
                 // Check movement
                 if (!check.checkVehicleMovement(packet, vehicle)) {
-                    if (check.increaseCheatAttempts() > check.getMaxAttemptsBeforeFlag())
+                    if (check.increaseCheatAttempts() > check.getMaxAttemptsBeforeFlag()) {
                         check.flag();
 
-                    // Ruberband
-                    return false;
+                        // Ruberband
+                        return false;
+                    }
                 } else {
                     check.decreaseCheatAttempts();
                 }
