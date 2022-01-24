@@ -6,6 +6,7 @@ import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.check.movement.MovementCheck;
 import org.samo_lego.icejar.check.movement.cancellable.CancellableMovementCheck;
@@ -14,6 +15,7 @@ import org.samo_lego.icejar.check.movement.cancellable.Timer;
 import org.samo_lego.icejar.util.IceJarPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -24,6 +26,10 @@ import java.util.Set;
 public abstract class ServerGamePacketListenerImplMixin_Movement {
     @Shadow
     public ServerPlayer player;
+    @Unique
+    private Vec3 lastValidSpot;
+    @Unique
+    private int ij$validTickCount;
 
     @Shadow public abstract void teleport(double x, double y, double z, float yaw, float pitch);
 
@@ -38,12 +44,27 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
             cancellable = true
     )
     private void onPlayerMove(ServerboundMovePlayerPacket packet, CallbackInfo ci) {
-        ((IceJarPlayer) player).setMovement(packet);
-        boolean canMove = MovementCheck.performCheck(player, packet) && CancellableMovementCheck.performCheck(player, packet);
+        // Movement check only returns false if Jesus hack is active, while CMovementCheck returns false if any check fails.
+        boolean valid = MovementCheck.performCheck(player, packet) && CancellableMovementCheck.performCheck(player, packet);
 
-        if (!canMove) {
-            this.teleport(player.getX(), player.getY(), player.getZ(), player.getYHeadRot(), player.getXRot());
+        if (!valid) {
+            this.ij$validTickCount = 0;
+
+            // Teleport to last spot, just don't keep Y value
+            Vec3 last = this.lastValidSpot;
+
+            if (this.lastValidSpot == null) {
+                this.lastValidSpot = new Vec3(player.getX(), player.getY(), player.getZ());
+                last = this.lastValidSpot;
+            }
+
+            this.teleport(last.x(), packet.getY(player.getY()), last.z(), player.getYHeadRot(), player.getXRot());
             ci.cancel();
+        } else {
+            ((IceJarPlayer) player).setMovement(packet);
+            if (++this.ij$validTickCount >= 50) {
+                this.lastValidSpot = this.player.getPacketCoordinates();
+            }
         }
     }
 

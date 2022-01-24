@@ -101,15 +101,7 @@ public class NoFall extends MovementCheck {
 
         if (collidingBlocks.iterator().hasNext()) {
             // Has collision with blocks
-            // Exclude blocks that are liquids
-            for (VoxelShape shape : collidingBlocks) {
-                if (!entity.getLevel().containsAnyLiquid(shape.bounds())) {
-                    if (checkLiquid && entity instanceof IceJarPlayer pl) {
-                        pl.setAboveLiquid(false);
-                    }
-                    return true;
-                }
-            }
+            return true;
         }
 
         if (checkLiquid && entity instanceof IceJarPlayer pl) {
