@@ -7,6 +7,8 @@ import net.minecraft.world.phys.Vec3;
 import org.samo_lego.icejar.check.Check;
 import org.samo_lego.icejar.check.CheckType;
 
+import java.util.Map;
+
 public interface IceJarPlayer {
     void flag(final Check check);
 
@@ -29,4 +31,10 @@ public interface IceJarPlayer {
     void setMovement(ServerboundMovePlayerPacket packet);
     Vec3 getLastMovement();
     Vec3 getMovement();
+
+    void setAboveLiquid(boolean aboveLiquid);
+    boolean aboveLiquid();
+
+    void copyFrom(IceJarPlayer oldPlayer);
+    Map<Class<?>, Check> getCheckMap();
 }

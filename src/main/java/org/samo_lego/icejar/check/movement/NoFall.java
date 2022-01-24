@@ -27,14 +27,13 @@ public class NoFall extends MovementCheck {
         if (packet.isOnGround()) {
             IceJarPlayer ij = (IceJarPlayer) this.player;
             ij.updateGroundStatus();
-            ij.ij$setOnGround(checkOnGround(this.player, packet.getY(this.player.getY()) - player.getY()));
+            ij.ij$setOnGround(checkOnGround(this.player, packet.getY(this.player.getY()) - player.getY(), true));
 
             // Player isn't on ground but client packet says it is
             if (!ij.isNearGround()) {
                 ((AServerboundMovePlayerPacket) packet).setOnGround(false);
 
-                final AABB bBox = player.getBoundingBox();
-                this.setJesus(player.getLevel().containsAnyLiquid(bBox));
+                this.setJesus(ij.aboveLiquid());
 
                 return false;
             } else {
@@ -60,6 +59,8 @@ public class NoFall extends MovementCheck {
 
     @Override
     public void setCheatAttempts(int attempts) {
+        if (this.hasJesus())
+            super.setCheatAttempts(attempts);
     }
 
     @Override
@@ -91,7 +92,7 @@ public class NoFall extends MovementCheck {
         this.skipDamageEvent = skipDamageEvent;
     }
 
-    public static boolean checkOnGround(final Entity entity, final double deltaY) {
+    public static boolean checkOnGround(final Entity entity, final double deltaY, boolean checkLiquid) {
         final AABB bBox = entity
                 .getBoundingBox()
                 .inflate(0, 0.25005D, 0).move(0, deltaY - 0.25005D, 0);
@@ -100,8 +101,21 @@ public class NoFall extends MovementCheck {
 
         if (collidingBlocks.iterator().hasNext()) {
             // Has collision with blocks
-            return true;
+            // Exclude blocks that are liquids
+            for (VoxelShape shape : collidingBlocks) {
+                if (!entity.getLevel().containsAnyLiquid(shape.bounds())) {
+                    if (checkLiquid && entity instanceof IceJarPlayer pl) {
+                        pl.setAboveLiquid(false);
+                    }
+                    return true;
+                }
+            }
         }
+
+        if (checkLiquid && entity instanceof IceJarPlayer pl) {
+            pl.setAboveLiquid(entity.getLevel().containsAnyLiquid(bBox));
+        }
+
         // No block collisions found, check for entity collisions (e.g. standing on boat)
         List<Entity> collidingEntities = entity.getLevel().getEntities(entity, bBox, entity1 -> !entity.equals(entity1));
 

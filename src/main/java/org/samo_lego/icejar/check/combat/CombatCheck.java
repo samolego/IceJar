@@ -68,11 +68,9 @@ public abstract class CombatCheck extends Check {
                 if (Permissions.check(player, type.getBypassPermission(), false)) continue;
 
                 final CombatCheck check = ((IceJarPlayer) player).getCheck(type);
-                System.out.println("Checking " + check.getType());
 
                 // Check the hit
                 if (!check.checkCombat(world, hand, targetEntity, hitResult)) {
-                    System.out.println("Check failed");
                     // Hit was fake. Let's pretend we don't know though :)
                     if (!(targetEntity instanceof ArmorStand) && targetEntity instanceof LivingEntity le) {
                         // Send "hurt" to everyone but player that was attacked

@@ -1,6 +1,7 @@
 package org.samo_lego.icejar;
 
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.loader.api.FabricLoader;
@@ -10,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.samo_lego.icejar.check.combat.CombatCheck;
 import org.samo_lego.icejar.command.IceJarCommand;
 import org.samo_lego.icejar.config.IceConfig;
+import org.samo_lego.icejar.util.IceJarPlayer;
 
 import java.io.File;
 
@@ -34,6 +36,9 @@ public class IceJar {
 		AttackEntityCallback.EVENT.register(CombatCheck::performCheck);
 		CommandRegistrationCallback.EVENT.register(IceJarCommand::register);
 		ServerLifecycleEvents.SERVER_STARTED.register(IceJar::onServerStarted);
+
+		// Copy data on dimension change etc.
+		ServerPlayerEvents.COPY_FROM.register((old, newPl, _alive) -> ((IceJarPlayer) newPl).copyFrom((IceJarPlayer) old));
 	}
 
 	private static void onServerStarted(MinecraftServer server) {

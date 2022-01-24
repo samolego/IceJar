@@ -21,7 +21,7 @@ import java.util.Map;
 public abstract class ServerPlayerMixin implements IceJarPlayer {
 
     @Unique
-    private final Map<Class<?>, Check> playerChecks = new HashMap<>();
+    private Map<Class<?>, Check> playerChecks = new HashMap<>();
     @Unique
     private final ServerPlayer player = (ServerPlayer) (Object) this;
     @Unique
@@ -40,6 +40,8 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     private Vec3 lastMovement;
     @Unique
     private Vec3 movement;
+    @Unique
+    private boolean aboveLiquid;
 
     @Override
     public <T extends Check> T getCheck(CheckType checkType) {
@@ -137,5 +139,25 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     @Override
     public Vec3 getMovement() {
         return movement;
+    }
+
+    @Override
+    public void setAboveLiquid(boolean aboveLiquid) {
+        this.aboveLiquid = aboveLiquid;
+    }
+
+    @Override
+    public boolean aboveLiquid() {
+        return this.aboveLiquid;
+    }
+
+    @Override
+    public void copyFrom(IceJarPlayer oldPlayer) {
+        this.playerChecks = oldPlayer.getCheckMap();
+    }
+
+    @Override
+    public Map<Class<?>, Check> getCheckMap() {
+        return this.playerChecks;
     }
 }

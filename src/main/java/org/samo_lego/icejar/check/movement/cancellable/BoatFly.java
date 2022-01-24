@@ -39,7 +39,7 @@ public class BoatFly extends CancellableVehicleMovementCheck {
 
         if (vehicle.getType() == EntityType.BOAT) {
             final BlockState bottom = player.getLevel().getBlockState(new BlockPos(packet.getX(), packet.getY(), packet.getZ()));
-            return NoFall.checkOnGround(vehicle, packet.getY() - vehicle.getY()) || !bottom.getMaterial().isLiquid();
+            return NoFall.checkOnGround(vehicle, packet.getY() - vehicle.getY(), false) || !bottom.getMaterial().isLiquid();
         }
         return true;
     }
