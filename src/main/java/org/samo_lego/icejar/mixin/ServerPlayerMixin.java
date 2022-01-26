@@ -1,9 +1,6 @@
 package org.samo_lego.icejar.mixin;
 
-import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -98,7 +95,8 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
                 }
             }
 
-            this.player.getServer().getPlayerList().broadcastMessage(new TextComponent(this.player.getGameProfile().getName() + " was flagged for " + check.getType()),  ChatType.SYSTEM, Util.NIL_UUID);
+            IceJarPlayer.broadcast(this.player, check);
+
             check.setLastFlagTime(now);
             check.setCheatAttempts(0);
         }

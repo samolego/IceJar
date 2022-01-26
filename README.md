@@ -12,6 +12,17 @@ Here be dragons!
 to make it seem like cheat worked.
 * Each check can be configured in config file.
 
+## Permissions
+
+Bypass a check:
+icejar.checks.<check_type>.bypass
+
+Get reports:
+icejar.checks.<check_type>.get_report
+
+*Check types can be found in [CheckType file](./src/main/java/com/iceblink/icejar/CheckType.java).
+Make sure to use them in lower-case style.*
+
 ## License
 
 This mod inherits the license of NoCheatPlus & AntiCheatReloaded, therefore

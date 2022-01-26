@@ -43,6 +43,7 @@ public class IceConfig implements IBrigadierConfigurator {
     public final CheckConfig DEFAULT = new CheckConfig();
 
     public Combat combat = new Combat();
+
     public static class Combat {
         @SerializedName("max_survival_distance")
         public double maxSurvivalDistance = 5.2D;
@@ -57,8 +58,13 @@ public class IceConfig implements IBrigadierConfigurator {
         public final String _comment_maxLevel0 = "";
         @SerializedName("// and averaged. Can be -1 as well.")
         public final String _comment_maxLevel1 = "";
-        public double maxLevel = 5;
+        public double maxLevel = 60.0D / (CheckType.values().length);
         public ActionTypes action = ActionTypes.KICK;
+
+        @SerializedName("// Default permission lvl to send reports to, if permission is not set.")
+        public final String _comment_defaultReportPermissionLevel = "";
+        @SerializedName("default_report_permission_lvl")
+        public int defaultReportPermissionLevel = 4;
     }
 
     public Movement movement = new Movement();
@@ -98,6 +104,9 @@ public class IceConfig implements IBrigadierConfigurator {
             MOVEMENT_NOFALL, new CheckConfig(500, 5, 1, -1, true),
             VEHICLE_MOVE_BOATFLY, new CheckConfig(200, 40, 1, -1, true)
     ));
+
+    @SerializedName("report_message")
+    public String reportMessage = "Player %s was flagged for %s.";
 
     /**
      * Which messages should be used when kicking client on cheat attempts.
