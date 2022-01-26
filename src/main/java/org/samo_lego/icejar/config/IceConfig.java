@@ -43,11 +43,24 @@ public class IceConfig implements IBrigadierConfigurator {
     public final CheckConfig DEFAULT = new CheckConfig();
 
     public Combat combat = new Combat();
-
     public static class Combat {
         @SerializedName("max_survival_distance")
         public double maxSurvivalDistance = 5.2D;
     }
+
+    @SerializedName("// Global violation settings")
+    public final String _comment_violations = "";
+    public Violations violations = new Violations();
+
+    public static class Violations {
+        @SerializedName("// Maximum violation level from checks, calculated from all violations")
+        public final String _comment_maxLevel0 = "";
+        @SerializedName("// and averaged. Can be -1 as well.")
+        public final String _comment_maxLevel1 = "";
+        public double maxLevel = 5;
+        public ActionTypes action = ActionTypes.KICK;
+    }
+
     public Movement movement = new Movement();
     public static class Movement {
         public double maxHorizontalDistance = 130.1D;

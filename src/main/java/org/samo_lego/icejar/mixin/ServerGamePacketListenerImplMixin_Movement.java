@@ -43,7 +43,7 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
             cancellable = true
     )
     private void onPlayerMove(ServerboundMovePlayerPacket packet, CallbackInfo ci) {
-        ((IceJarPlayer) player).setMovement(packet);
+        ((IceJarPlayer) player).ij$setMovement(packet);
         // Movement check only returns false if Jesus hack is active, while CMovementCheck returns false if any check fails.
         boolean valid = MovementCheck.performCheck(player, packet) && CancellableMovementCheck.performCheck(player, packet);
 
@@ -81,7 +81,7 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
             vh.teleportTo(vh.getX(), vh.getY(), vh.getZ());
             ci.cancel();
         } else {
-            ((IceJarPlayer) player).setVehicleMovement(packet);
+            ((IceJarPlayer) player).ij$setVehicleMovement(packet);
         }
     }
 

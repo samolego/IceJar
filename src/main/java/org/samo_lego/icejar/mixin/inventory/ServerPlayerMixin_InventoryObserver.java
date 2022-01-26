@@ -28,7 +28,7 @@ public class ServerPlayerMixin_InventoryObserver {
         player.ij$setOpenGUI(true);
     }
 
-    @Inject(method = "closeContainer", at = @At("HEAD"))
+    @Inject(method = "doCloseContainer", at = @At("HEAD"))
     private void onCloseMenu(CallbackInfo ci) {
         player.ij$setOpenGUI(false);
     }

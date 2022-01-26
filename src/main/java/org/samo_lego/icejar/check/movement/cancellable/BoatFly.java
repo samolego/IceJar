@@ -21,8 +21,8 @@ public class BoatFly extends CancellableVehicleMovementCheck {
 
     @Override
     public boolean checkVehicleMovement(ServerboundMoveVehiclePacket packet, Entity vehicle) {
-        final Vec3 lastVM = ((IceJarPlayer) player).getLastVehicleMovement();
-        final Vec3 vm = ((IceJarPlayer) player).getVehicleMovement();
+        final Vec3 lastVM = ((IceJarPlayer) player).ij$getLastVehicleMovement();
+        final Vec3 vm = ((IceJarPlayer) player).ij$getVehicleMovement();
 
         if (lastVM == null || vm == null)
             return true;

@@ -47,6 +47,10 @@ public abstract class Check {
         return this.getOptions().violationIncrease;
     }
 
+    public double getViolationLevel() {
+        return this.violationLevel;
+    }
+
     public double increaseViolationLevel() {
         this.violationLevel += this.getViolationIncrease();
         return this.violationLevel;

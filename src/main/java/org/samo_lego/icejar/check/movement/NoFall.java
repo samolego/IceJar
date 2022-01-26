@@ -26,14 +26,14 @@ public class NoFall extends MovementCheck {
     public boolean checkMovement(ServerboundMovePlayerPacket packet) {
         if (packet.isOnGround()) {
             IceJarPlayer ij = (IceJarPlayer) this.player;
-            ij.updateGroundStatus();
+            ij.ij$updateGroundStatus();
             ij.ij$setOnGround(checkOnGround(this.player, packet.getY(this.player.getY()) - player.getY(), true));
 
             // Player isn't on ground but client packet says it is
-            if (!ij.isNearGround()) {
+            if (!ij.ij$nearGround()) {
                 ((AServerboundMovePlayerPacket) packet).setOnGround(false);
 
-                this.setJesus(ij.aboveLiquid());
+                this.setJesus(ij.ij$aboveLiquid());
 
                 return false;
             } else {
@@ -105,7 +105,7 @@ public class NoFall extends MovementCheck {
         }
 
         if (checkLiquid && entity instanceof IceJarPlayer pl) {
-            pl.setAboveLiquid(entity.getLevel().containsAnyLiquid(bBox));
+            pl.ij$setAboveLiquid(entity.getLevel().containsAnyLiquid(bBox));
         }
 
         // No block collisions found, check for entity collisions (e.g. standing on boat)

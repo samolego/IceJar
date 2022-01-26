@@ -1,17 +1,23 @@
 package org.samo_lego.icejar.mixin;
 
 import net.minecraft.Util;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
+import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.Check;
 import org.samo_lego.icejar.check.CheckType;
+import org.samo_lego.icejar.config.IceConfig;
 import org.samo_lego.icejar.util.IceJarPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -42,6 +48,8 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     private Vec3 movement;
     @Unique
     private boolean aboveLiquid;
+    @Unique
+    private double violationLevel;
 
     @Override
     public <T extends Check> T getCheck(CheckType checkType) {
@@ -72,11 +80,21 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
         final long timeDelta = now - check.getLastFlagTime();
 
         if (check.getCooldown() < timeDelta) {
+            final double prevLvl = check.getViolationLevel();
             final double newLvl = check.increaseViolationLevel();
             final double max = check.getMaxViolationLevel();
             if (newLvl > max && max > 0) {
                 check.executeAction();
+            } else {
+                this.violationLevel += (newLvl - prevLvl) / this.playerChecks.keySet().size();
+                final IceConfig config = IceJar.getInstance().getConfig();
+                final double maxLevel = config.violations.maxLevel;
+                if (this.violationLevel > maxLevel && maxLevel > 0) {
+                    // Execute action for global violation
+                    config.violations.action.execute(this.player, check);
+                }
             }
+
             this.player.getServer().getPlayerList().broadcastMessage(new TextComponent(this.player.getGameProfile().getName() + " was flagged for " + check.getType()),  ChatType.SYSTEM, Util.NIL_UUID);
             check.setLastFlagTime(now);
             check.setCheatAttempts(0);
@@ -85,7 +103,7 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
 
     @Override
     public void ij$setOpenGUI(boolean open) {
-        this.guiOpen = true;
+        this.guiOpen = open;
     }
 
     @Override
@@ -94,7 +112,7 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     }
 
     @Override
-    public boolean isNearGround() {
+    public boolean ij$nearGround() {
         return this.wasLastOnGround || this.wasOnGround || this.ij$onGround;
     }
 
@@ -104,60 +122,81 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     }
 
     @Override
-    public void updateGroundStatus() {
+    public void ij$updateGroundStatus() {
         this.wasLastOnGround = this.wasOnGround;
         this.wasOnGround = this.ij$onGround;
     }
 
     @Override
-    public void setVehicleMovement(ServerboundMoveVehiclePacket packet) {
+    public void ij$setVehicleMovement(ServerboundMoveVehiclePacket packet) {
         this.lastVehicleMovement = this.vehicleMovement;
         this.vehicleMovement = new Vec3(packet.getX(), packet.getY(), packet.getZ());
     }
 
     @Override
-    public Vec3 getLastVehicleMovement() {
+    public Vec3 ij$getLastVehicleMovement() {
         return lastVehicleMovement;
     }
 
     @Override
-    public Vec3 getVehicleMovement() {
+    public Vec3 ij$getVehicleMovement() {
         return vehicleMovement;
     }
 
     @Override
-    public void setMovement(ServerboundMovePlayerPacket packet) {
+    public void ij$setMovement(ServerboundMovePlayerPacket packet) {
         this.lastMovement = this.movement;
         this.movement = new Vec3(packet.getX(this.player.getX()), packet.getY(this.player.getY()), packet.getZ(this.player.getZ()));
     }
 
     @Override
-    public Vec3 getLastMovement() {
+    public Vec3 ij$getLastMovement() {
         return lastMovement;
     }
 
     @Override
-    public Vec3 getMovement() {
+    public Vec3 ij$getMovement() {
         return movement;
     }
 
     @Override
-    public void setAboveLiquid(boolean aboveLiquid) {
+    public void ij$setAboveLiquid(boolean aboveLiquid) {
         this.aboveLiquid = aboveLiquid;
     }
 
     @Override
-    public boolean aboveLiquid() {
+    public boolean ij$aboveLiquid() {
         return this.aboveLiquid;
     }
 
     @Override
-    public void copyFrom(IceJarPlayer oldPlayer) {
+    public void ij$copyFrom(IceJarPlayer oldPlayer) {
+        this.violationLevel = oldPlayer.ij$getViolationLevel();
         this.playerChecks = oldPlayer.getCheckMap();
     }
 
     @Override
     public Map<Class<?>, Check> getCheckMap() {
         return this.playerChecks;
+    }
+
+    @Override
+    public double ij$getViolationLevel() {
+        return this.violationLevel;
+    }
+
+    @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
+    private void onSave(CompoundTag nbt, CallbackInfo ci) {
+        final CompoundTag data = new CompoundTag();
+        data.putDouble("violationLevel", this.violationLevel);
+        nbt.put("IceJar", data);
+    }
+
+    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
+    private void onLoad(CompoundTag nbt, CallbackInfo ci) {
+        if (nbt.contains("IceJar")) {
+            final CompoundTag data = nbt.getCompound("IceJar");
+            this.violationLevel = data.getDouble("violationLevel");
+        }
     }
 }

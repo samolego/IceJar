@@ -38,7 +38,7 @@ public abstract class CombatCheck extends Check {
         super(checkType, player);
     }
 
-    public abstract boolean checkCombat(Level world, InteractionHand hand, Entity targetEntity, EntityHitResult hitResult);
+    public abstract boolean checkCombat(final Level world, final InteractionHand hand, final Entity targetEntity, final EntityHitResult hitResult);
 
     @Override
     public boolean check(Object ... params) {
@@ -57,7 +57,7 @@ public abstract class CombatCheck extends Check {
      * @param hitResult hit result.
      * @return {@link InteractionResult} of the hit.
      */
-    public static InteractionResult performCheck(Player player, Level world, InteractionHand hand, Entity targetEntity, @Nullable EntityHitResult hitResult) {
+    public static InteractionResult performCheck(final Player player, final Level world, final InteractionHand hand, final Entity targetEntity, @Nullable EntityHitResult hitResult) {
         final Set<CheckType> checks = category2checks.get(COMBAT);
         if (player instanceof ServerPlayer pl && checks != null) {
             if (hitResult == null) {
@@ -117,7 +117,7 @@ public abstract class CombatCheck extends Check {
      * @param targetEntity entity that was hit.
      * @param hitResult hit result.
      */
-    protected void sendFakeHitData(Level world, InteractionHand hand, Entity targetEntity, @Nullable EntityHitResult hitResult) {
+    protected void sendFakeHitData(final Level world, final InteractionHand hand, final Entity targetEntity, @Nullable EntityHitResult hitResult) {
         ItemStack itemStack = player.getItemInHand(InteractionHand.MAIN_HAND);
         if (itemStack.getItem() instanceof SwordItem) {
             // Send sweep attack sound

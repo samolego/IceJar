@@ -18,23 +18,25 @@ public interface IceJarPlayer {
     void ij$setOpenGUI(boolean open);
     boolean ij$hasOpenGui();
 
-    boolean isNearGround();
+    boolean ij$nearGround();
 
     void ij$setOnGround(boolean ij$onGround);
 
-    void updateGroundStatus();
+    void ij$updateGroundStatus();
 
-    void setVehicleMovement(ServerboundMoveVehiclePacket packet);
-    Vec3 getLastVehicleMovement();
-    Vec3 getVehicleMovement();
+    void ij$setVehicleMovement(ServerboundMoveVehiclePacket packet);
+    Vec3 ij$getLastVehicleMovement();
+    Vec3 ij$getVehicleMovement();
 
-    void setMovement(ServerboundMovePlayerPacket packet);
-    Vec3 getLastMovement();
-    Vec3 getMovement();
+    void ij$setMovement(ServerboundMovePlayerPacket packet);
+    Vec3 ij$getLastMovement();
+    Vec3 ij$getMovement();
 
-    void setAboveLiquid(boolean aboveLiquid);
-    boolean aboveLiquid();
+    void ij$setAboveLiquid(boolean aboveLiquid);
+    boolean ij$aboveLiquid();
 
-    void copyFrom(IceJarPlayer oldPlayer);
+    void ij$copyFrom(IceJarPlayer oldPlayer);
     Map<Class<?>, Check> getCheckMap();
+
+    double ij$getViolationLevel();
 }

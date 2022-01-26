@@ -6,9 +6,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.util.IceJarPlayer;
+
+import static org.samo_lego.icejar.check.combat.Reach.getMaxDist;
 
 
 /**
@@ -25,7 +26,10 @@ public class ImpossibleHit extends CombatCheck {
     public boolean checkCombat(Level world, InteractionHand hand, Entity targetEntity, EntityHitResult hitResult) {
         // Check if there's a wall in front of the player
         final double victimDistance = Math.sqrt(hitResult.distanceTo(player));
-        final double dist = player.isCreative() ? CREATIVE_DISTANCE : IceJar.getInstance().getConfig().combat.maxSurvivalDistance;
+        final double dist = player.isCreative() ?
+                CREATIVE_DISTANCE :
+                getMaxDist(targetEntity);
+
         final BlockHitResult blockHit = (BlockHitResult) player.pick(Math.sqrt(dist * dist), 0, false);
 
         // Cannot hit targets with a wall in front of them, open gui, using item etc.
