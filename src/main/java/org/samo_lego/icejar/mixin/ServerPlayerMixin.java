@@ -23,6 +23,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.samo_lego.icejar.check.CheckCategory.category2checks;
+
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin implements IceJarPlayer {
 
@@ -86,12 +88,13 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
             if (newLvl > max && max > 0) {
                 check.executeAction();
             } else {
-                this.violationLevel += (newLvl - prevLvl) / this.playerChecks.keySet().size();
+                this.violationLevel += (newLvl - prevLvl) / category2checks.keySet().size();
                 final IceConfig config = IceJar.getInstance().getConfig();
                 final double maxLevel = config.violations.maxLevel;
                 if (this.violationLevel > maxLevel && maxLevel > 0) {
                     // Execute action for global violation
                     config.violations.action.execute(this.player, check);
+                    this.violationLevel = 0;
                 }
             }
 
