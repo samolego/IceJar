@@ -15,12 +15,12 @@ to make it seem like cheat worked.
 ## Permissions
 
 Bypass a check:
-icejar.checks.<check_type>.bypass
+`icejar.checks.<check_type>.bypass`
 
 Get reports:
-icejar.checks.<check_type>.get_report
+`icejar.checks.<check_type>.get_report`
 
-*Check types can be found in [CheckType file](./src/main/java/com/iceblink/icejar/CheckType.java).
+*Check types can be found in [CheckType file](./src/main/java/org/samo_lego/icejar/check/CheckType.java).
 Make sure to use them in lower-case style.*
 
 ## License
