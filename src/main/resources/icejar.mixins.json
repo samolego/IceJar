@@ -9,6 +9,7 @@
     "accessor.ALivingEntity",
     "accessor.APlayer",
     "accessor.AServerboundMovePlayerPacket",
+    "accessor.ASignBlockEntity",
     "accessor.ASynchedEntityData",
     "fake_data.no_fall.LivingEntityMixin_FallObserver",
     "fake_data.no_fall.ServerLevelMixin_SkipNoFallEvent",

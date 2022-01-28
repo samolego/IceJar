@@ -58,9 +58,12 @@ public class IceConfig implements IBrigadierConfigurator {
         public final String _comment_maxLevel0 = "";
         @SerializedName("// and averaged. Can be -1 as well.")
         public final String _comment_maxLevel1 = "";
-        public double maxLevel = 60.0D / (CheckType.values().length);
+        public double maxLevel = Math.round(6000.0D / (CheckType.values().length)) / 100.0D;
         public ActionTypes action = ActionTypes.KICK;
 
+
+        @SerializedName("report_message")
+        public String reportMessage = "Player %s was flagged for %s.";
         @SerializedName("// Default permission lvl to send reports to, if permission is not set.")
         public final String _comment_defaultReportPermissionLevel = "";
         @SerializedName("default_report_permission_lvl")
@@ -105,8 +108,6 @@ public class IceConfig implements IBrigadierConfigurator {
             VEHICLE_MOVE_BOATFLY, new CheckConfig(200, 40, 1, -1, true)
     ));
 
-    @SerializedName("report_message")
-    public String reportMessage = "Player %s was flagged for %s.";
 
     /**
      * Which messages should be used when kicking client on cheat attempts.

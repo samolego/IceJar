@@ -51,7 +51,7 @@ public interface IceJarPlayer {
     double ij$getViolationLevel();
 
     static void broadcast(ServerPlayer player, Check failedCheck) {
-        final String reportMessage = IceJar.getInstance().getConfig().reportMessage;
+        final String reportMessage = IceJar.getInstance().getConfig().violations.reportMessage;
         final CheckType type = failedCheck.getType();
 
         final MutableComponent report = ID.copy().append(new TranslatableComponent(reportMessage,
