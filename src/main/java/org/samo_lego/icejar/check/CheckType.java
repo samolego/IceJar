@@ -11,7 +11,9 @@ import org.samo_lego.icejar.check.movement.NoFall;
 import org.samo_lego.icejar.check.movement.cancellable.BoatFly;
 import org.samo_lego.icejar.check.movement.cancellable.PacketMovement;
 import org.samo_lego.icejar.check.movement.cancellable.Timer;
+import org.samo_lego.icejar.check.world.block.AirPlace;
 import org.samo_lego.icejar.check.world.block.AutoSign;
+import org.samo_lego.icejar.check.world.block.BlockDirection;
 import org.samo_lego.icejar.check.world.block.ReachBlock;
 
 import java.util.HashSet;
@@ -44,7 +46,9 @@ public enum CheckType {
     CMOVEMENT_TIMER(Timer.class, MOVEMENT),
     SPECIAL_JESUS,
     WORLD_BLOCK_REACH(ReachBlock.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT)),
-    WORLD_BLOCK_AUTOSIGN(AutoSign.class, WORLD_BLOCK_INTERACT);
+    WORLD_BLOCK_AUTOSIGN(AutoSign.class, WORLD_BLOCK_INTERACT),
+    WORLD_BLOCK_DIRECTION(BlockDirection.class, Set.of(WORLD_BLOCK_INTERACT, WORLD_BLOCK_BREAK)),
+    WORLD_BLOCK_AIR_PLACE(AirPlace.class, WORLD_BLOCK_INTERACT);
 
 
     private final Class<?> checkClass;

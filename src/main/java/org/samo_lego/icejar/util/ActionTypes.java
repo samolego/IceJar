@@ -16,7 +16,7 @@ public enum ActionTypes {
     KICK,
     NONE;
 
-    private static final MutableComponent icejarPrefix = new TextComponent("[IceJar] ").withStyle(ChatFormatting.AQUA);
+    private static final MutableComponent icejarPrefix = new TextComponent("[IceJar]\n").withStyle(ChatFormatting.AQUA);
 
     public void execute(ServerPlayer pl, Check failedCheck) {
         // todo integrate Patbox's banhammer

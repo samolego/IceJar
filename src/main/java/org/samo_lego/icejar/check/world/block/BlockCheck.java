@@ -36,23 +36,22 @@ public abstract class BlockCheck extends Check {
                                                  final InteractionHand interactionHand, final BlockPos blockPos, Direction direction) {
 
         // Loop through all block interact checks
-        if (player instanceof IceJarPlayer ij) {
-            final Set<CheckType> checks = category2checks.get(category);
-            if (checks != null) {
-                for (CheckType type : checks) {
-                    if (Permissions.check(player, type.getBypassPermission(), false)) continue;
+        final Set<CheckType> checks = category2checks.get(category);
+        if (checks != null && player instanceof IceJarPlayer ij) {
+            for (CheckType type : checks) {
+                if (Permissions.check(player, type.getBypassPermission(), false)) continue;
 
-                    final BlockCheck check = ij.getCheck(type);
+                final BlockCheck check = ij.getCheck(type);
 
-                    // Check
-                    if (!check.checkBlockAction(level, interactionHand, blockPos, direction)) {
-                        if (check.increaseCheatAttempts() > check.getMaxAttemptsBeforeFlag())
-                            check.flag();
-                        return InteractionResult.FAIL;
-                    }
+                // Check
+                if (!check.checkBlockAction(level, interactionHand, blockPos, direction)) {
+                    if (check.increaseCheatAttempts() > check.getMaxAttemptsBeforeFlag())
+                        check.flag();
+                    return InteractionResult.FAIL;
                 }
             }
         }
         return InteractionResult.PASS;
     }
+
 }

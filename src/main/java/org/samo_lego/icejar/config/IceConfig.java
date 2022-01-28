@@ -28,6 +28,8 @@ import static org.samo_lego.icejar.IceJar.MOD_ID;
 import static org.samo_lego.icejar.check.CheckCategory.reloadEnabledChecks;
 import static org.samo_lego.icejar.check.CheckType.MOVEMENT_NOFALL;
 import static org.samo_lego.icejar.check.CheckType.VEHICLE_MOVE_BOATFLY;
+import static org.samo_lego.icejar.check.CheckType.WORLD_BLOCK_AIR_PLACE;
+import static org.samo_lego.icejar.check.CheckType.WORLD_BLOCK_DIRECTION;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class IceConfig implements IBrigadierConfigurator {
@@ -105,7 +107,9 @@ public class IceConfig implements IBrigadierConfigurator {
     @SerializedName("check_configurations")
     public HashMap<CheckType, CheckConfig> checkConfigs = new HashMap<>(Map.of(
             MOVEMENT_NOFALL, new CheckConfig(500, 5, 1, -1, true),
-            VEHICLE_MOVE_BOATFLY, new CheckConfig(200, 40, 1, -1, true)
+            VEHICLE_MOVE_BOATFLY, new CheckConfig(200, 40, 1, -1, true),
+            WORLD_BLOCK_AIR_PLACE, new CheckConfig(200, 1, 15, -1, true),
+            WORLD_BLOCK_DIRECTION, new CheckConfig(200, 1, 15, -1, true)
     ));
 
 

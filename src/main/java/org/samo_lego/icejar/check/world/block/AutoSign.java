@@ -17,11 +17,11 @@ public class AutoSign extends BlockCheck {
 
     /* From NCP */
     /** Fastest time "possible" estimate for an empty sign. */
-    private static long minEditTime = 150;
+    private static final long minEditTime = 150;
     /** Minimum time needed to add one extra line (not the first). */
-    private static long minLineTime = 50;
+    private static final long minLineTime = 50;
     /** Minimum time needed to type a character. */
-    private static long minCharTime = 50;
+    private static final long minCharTime = 50;
 
     private long lastPlacedSign;
     final Set<Character> chars = new HashSet<>(15 * 4);
