@@ -14,8 +14,24 @@ public class BlockDirection extends BlockCheck {
 
     @Override
     public boolean checkBlockAction(Level level, InteractionHand hand, BlockPos blockPos, Direction direction) {
-        // Player can't interact with the block facing the same way.
-        // Very basic
-        return !player.getDirection().equals(direction);
+        // East and West
+        final double deltaX = blockPos.getX() - player.getX();
+        // North and South
+        final double deltaZ = blockPos.getZ() - player.getZ();
+
+        // Facing E / NE /SE but interacting with W
+        if (deltaX < 0 && direction.equals(Direction.WEST))
+            return false;
+
+        // Facing W / NW / SW but interacting with E
+        if (deltaX > 0 && direction.equals(Direction.EAST))
+            return false;
+
+        // Facing S / SE / SW but interacting with N
+        if (deltaZ < 0 && direction.equals(Direction.NORTH))
+            return false;
+
+        // The last one, facing N / NE / NW but interacting with S
+        return !(deltaZ > 0) || !direction.equals(Direction.SOUTH);
     }
 }
