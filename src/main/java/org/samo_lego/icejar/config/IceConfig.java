@@ -51,6 +51,13 @@ public class IceConfig implements IBrigadierConfigurator {
         public double maxSurvivalDistance = 5.2D;
     }
 
+
+    public World world = new World();
+
+    public static class World {
+        public double maxBlockReachDistance = 5.4D;
+    }
+
     @SerializedName("// Global violation settings")
     public final String _comment_violations = "";
     public Violations violations = new Violations();
