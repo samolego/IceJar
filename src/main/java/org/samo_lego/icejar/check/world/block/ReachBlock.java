@@ -11,8 +11,6 @@ import net.minecraft.world.level.Level;
 import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.CheckType;
 
-import static org.samo_lego.icejar.check.combat.CombatCheck.CREATIVE_DISTANCE;
-
 public class ReachBlock extends BlockCheck {
     private double distance;
 
@@ -23,9 +21,7 @@ public class ReachBlock extends BlockCheck {
     @Override
     public boolean checkBlockAction(final Level level, final InteractionHand interactionHand, final BlockPos blockPos, final Direction direction) {
         this.distance = Math.sqrt(blockPos.distSqr(player.getEyePosition(), false));
-        final double maxDist = player.isCreative() ?
-                CREATIVE_DISTANCE :
-                IceJar.getInstance().getConfig().world.maxBlockReachDistance;
+        final double maxDist = IceJar.getInstance().getConfig().world.maxBlockReachDistance;
 
         return this.distance <= maxDist;
     }

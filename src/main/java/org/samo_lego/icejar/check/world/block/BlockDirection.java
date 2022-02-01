@@ -16,22 +16,38 @@ public class BlockDirection extends BlockCheck {
     public boolean checkBlockAction(Level level, InteractionHand hand, BlockPos blockPos, Direction direction) {
         // East and West
         final double deltaX = blockPos.getX() - player.getX();
-        // North and South
-        final double deltaZ = blockPos.getZ() - player.getZ();
 
-        // Facing E / NE /SE but interacting with W
+        // Facing W / NW / SW *AND* interacting with W
         if (deltaX < 0 && direction.equals(Direction.WEST))
             return false;
 
-        // Facing W / NW / SW but interacting with E
+        // Facing E / NE / SE *AND* interacting with E
         if (deltaX > 0 && direction.equals(Direction.EAST))
             return false;
 
-        // Facing S / SE / SW but interacting with N
+        // North and South
+        final double deltaZ = blockPos.getZ() - player.getZ();
+
+        // Facing N / NE / NW *AND* interacting with N
         if (deltaZ < 0 && direction.equals(Direction.NORTH))
             return false;
 
+        if (deltaZ > 0 && direction.equals(Direction.SOUTH))
+            return false;
+
+        // Y deltas
+        final double deltaY = blockPos.getY() - player.getEyeY();
+
+        // Facing down but interacting with up
+        if (deltaY > 1 && player.getXRot() > 0.0F)
+            return false;
+        if (deltaY < -1 && player.getXRot() < 0.0F)
+            return false;
+
+        System.out.println(player.getXRot());
+        System.out.println(player.getYHeadRot());
+
         // The last one, facing N / NE / NW but interacting with S
-        return !(deltaZ > 0) || !direction.equals(Direction.SOUTH);
+        return true;
     }
 }
