@@ -1,5 +1,7 @@
 package org.samo_lego.icejar.check;
 
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import org.samo_lego.icejar.config.IceConfig;
 import org.samo_lego.icejar.util.IceJarPlayer;
@@ -49,6 +51,14 @@ public abstract class Check {
 
     public double getViolationLevel() {
         return this.violationLevel;
+    }
+
+    /**
+     * Gets additional information about check circumstances as a {@link MutableComponent}.
+     * @return additional information about check circumstances.
+     */
+    public MutableComponent getAdditionalFlagInfo() {
+        return TextComponent.EMPTY.copy();
     }
 
     public double increaseViolationLevel() {

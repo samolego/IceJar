@@ -76,6 +76,8 @@ public interface IceJarPlayer {
                                             new TextComponent(String.format("%.2f", failedCheck.getViolationLevel()))
                                                     .withStyle(ChatFormatting.YELLOW)
                                     )
+                                    .append("\n")
+                                    .append(failedCheck.getAdditionalFlagInfo())
                             )
                         )
         ));

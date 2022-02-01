@@ -24,15 +24,14 @@ public class NoFall extends MovementCheck {
 
     @Override
     public boolean checkMovement(ServerboundMovePlayerPacket packet) {
+        final boolean onGround = checkOnGround(this.player, packet.getY(this.player.getY()) - player.getY(), true);
         if (packet.isOnGround()) {
             IceJarPlayer ij = (IceJarPlayer) this.player;
             ij.ij$updateGroundStatus();
-            ij.ij$setOnGround(checkOnGround(this.player, packet.getY(this.player.getY()) - player.getY(), true));
+            ij.ij$setOnGround(onGround);
 
             // Player isn't on ground but client packet says it is
             if (!ij.ij$nearGround()) {
-                ((AServerboundMovePlayerPacket) packet).setOnGround(false);
-
                 this.setJesus(ij.ij$aboveLiquid());
 
                 return false;
@@ -40,6 +39,8 @@ public class NoFall extends MovementCheck {
                 this.decreaseCheatAttempts();
             }
         }
+        // Prevent anti-hunger by setting the real ground value to packet.
+        ((AServerboundMovePlayerPacket) packet).setOnGround(onGround);
 
         return true;
     }

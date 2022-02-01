@@ -108,8 +108,8 @@ public class IceConfig implements IBrigadierConfigurator {
     public HashMap<CheckType, CheckConfig> checkConfigs = new HashMap<>(Map.of(
             MOVEMENT_NOFALL, new CheckConfig(500, 5, 1, -1, true),
             VEHICLE_MOVE_BOATFLY, new CheckConfig(200, 40, 1, -1, true),
-            WORLD_BLOCK_AIR_PLACE, new CheckConfig(200, 1, 15, -1, true),
-            WORLD_BLOCK_DIRECTION, new CheckConfig(200, 1, 15, -1, true)
+            WORLD_BLOCK_AIR_PLACE, new CheckConfig(200, 1, CheckType.values().length / 2.0D, -1, true),
+            WORLD_BLOCK_DIRECTION, new CheckConfig(200, 1, CheckType.values().length / 2.0D, -1, true)
     ));
 
 
