@@ -8,6 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.util.IceJarPlayer;
 
@@ -21,7 +22,7 @@ import static org.samo_lego.icejar.util.ChatColor.styleBoolean;
  * (i.e.: while blocking)
  */
 public class ImpossibleHit extends CombatCheck {
-    private boolean wall;
+    private boolean noWall;
 
     public ImpossibleHit(ServerPlayer player) {
         super(CheckType.COMBAT_IMPOSSIBLEHIT, player);
@@ -35,11 +36,13 @@ public class ImpossibleHit extends CombatCheck {
                 CREATIVE_DISTANCE :
                 getMaxDist(targetEntity);
 
-        final BlockHitResult blockHit = (BlockHitResult) player.pick(Math.sqrt(dist * dist), 0, false);
+        final BlockHitResult blockHit = (BlockHitResult) player.pick(dist, 0, false);
 
         // Cannot hit targets with a wall in front of them, open gui, using item etc.
-        this.wall = Math.sqrt(blockHit.distanceTo(player)) + 0.5D >= victimDistance || player.isPassenger();
-        return wall &&
+        this.noWall = blockHit.getType().equals(HitResult.Type.MISS) ||
+                Math.sqrt(blockHit.distanceTo(player)) + 0.5D >= victimDistance ||
+                player.isPassenger(); // ignore players riding other entities
+        return noWall &&
                 !((IceJarPlayer) player).ij$hasOpenGui() &&
                 !player.isUsingItem() &&
                 !player.isBlocking();
@@ -48,7 +51,7 @@ public class ImpossibleHit extends CombatCheck {
     @Override
     public MutableComponent getAdditionalFlagInfo() {
         return new TextComponent("Wall: ")
-                .append(styleBoolean(!this.wall))
+                .append(styleBoolean(!this.noWall))
                 .append("\n")
                 .append(new TextComponent("GUI open: ")
                 .append(styleBoolean(((IceJarPlayer) player).ij$hasOpenGui())))

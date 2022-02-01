@@ -6,9 +6,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.CheckType;
 
-// todo: fix fp when farming
 public class AirPlace extends BlockInteractCheck {
 
     public AirPlace(ServerPlayer player) {
@@ -19,6 +20,12 @@ public class AirPlace extends BlockInteractCheck {
     protected boolean checkBlockInteract(Level level, InteractionHand hand, BlockPos blockPos, Direction direction) {
         final BlockState state = level.getBlockState(blockPos);
         // Check if block is liquid or air
+        if (state.isAir() || state.getMaterial().isLiquid()) {
+            final double dist = IceJar.getInstance().getConfig().world.maxBlockReachDistance;
+
+            final BlockHitResult blockHit = (BlockHitResult) player.pick(dist, 0, false);
+            return blockHit.getType().equals(BlockHitResult.Type.BLOCK);
+        }
         return !state.isAir() && !state.getMaterial().isLiquid();
     }
 }
