@@ -41,13 +41,6 @@ public class BlockDirection extends BlockCheck {
         // Facing down but interacting with up
         if (deltaY > 1 && player.getXRot() > 0.0F)
             return false;
-        if (deltaY < -1 && player.getXRot() < 0.0F)
-            return false;
-
-        System.out.println(player.getXRot());
-        System.out.println(player.getYHeadRot());
-
-        // The last one, facing N / NE / NW but interacting with S
-        return true;
+        return !(deltaY < -1) || !(player.getXRot() < 0.0F);
     }
 }
