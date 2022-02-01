@@ -1,5 +1,7 @@
 package org.samo_lego.icejar.check.combat;
 
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -64,12 +66,23 @@ public class Critical extends CombatCheck {
      * @return InteractionResult#PASS if action can continue, otherwise InteractionResult#FAIL.
      */
     @Override
-    public boolean checkCombat(Level _world, InteractionHand hand, Entity targetEntity, @Nullable EntityHitResult _hitResult) {
+    public boolean checkCombat(final Level _world, final InteractionHand hand, final Entity targetEntity, final EntityHitResult _hitResult) {
         return !this.isCritical() || this.isValid();
     }
 
+
     @Override
-    protected void sendFakeHitData(Level _world, InteractionHand hand, Entity targetEntity, @Nullable EntityHitResult _hitResult) {
+    public MutableComponent getAdditionalFlagInfo() {
+        return new TextComponent("Standing in: ")
+                .append(player.getFeetBlockState().getBlock().getName())
+                .append("\n")
+                .append(new TextComponent("y mod 1: ")
+                .append(String.format("%.2f", player.position().y() % 1.0d)));
+
+    }
+
+    @Override
+    protected void sendFakeHitData(final Level _world, final InteractionHand hand, final Entity targetEntity, @Nullable EntityHitResult _hitResult) {
         DataFaker.broadcast(targetEntity, player, new ClientboundAnimatePacket(targetEntity, ClientboundAnimatePacket.CRITICAL_HIT)); // Critical hit
 
         // Sound event for critical hit

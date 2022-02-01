@@ -8,10 +8,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.samo_lego.icejar.check.CheckType;
 
+// todo: fix fp when farming
 public class AirPlace extends BlockInteractCheck {
 
     public AirPlace(ServerPlayer player) {
-        super(CheckType.WORLD_BLOCK_AIR_PLACE, player);
+        super(CheckType.WORLD_BLOCK_PLACE_AIR, player);
     }
 
     @Override

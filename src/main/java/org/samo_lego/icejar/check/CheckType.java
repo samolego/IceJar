@@ -9,11 +9,13 @@ import org.samo_lego.icejar.check.combat.Reach;
 import org.samo_lego.icejar.check.movement.Derp;
 import org.samo_lego.icejar.check.movement.NoFall;
 import org.samo_lego.icejar.check.movement.cancellable.BoatFly;
+import org.samo_lego.icejar.check.movement.cancellable.ForceSaddle;
 import org.samo_lego.icejar.check.movement.cancellable.PacketMovement;
 import org.samo_lego.icejar.check.movement.cancellable.Timer;
 import org.samo_lego.icejar.check.world.block.AirPlace;
 import org.samo_lego.icejar.check.world.block.AutoSign;
 import org.samo_lego.icejar.check.world.block.BlockDirection;
+import org.samo_lego.icejar.check.world.block.ImpossibleBreak;
 import org.samo_lego.icejar.check.world.block.ReachBlock;
 
 import java.util.HashSet;
@@ -48,7 +50,9 @@ public enum CheckType {
     WORLD_BLOCK_REACH(ReachBlock.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT)),
     WORLD_BLOCK_AUTOSIGN(AutoSign.class, WORLD_BLOCK_INTERACT),
     WORLD_BLOCK_DIRECTION(BlockDirection.class, Set.of(WORLD_BLOCK_INTERACT, WORLD_BLOCK_BREAK)),
-    WORLD_BLOCK_AIR_PLACE(AirPlace.class, WORLD_BLOCK_INTERACT);
+    WORLD_BLOCK_PLACE_AIR(AirPlace.class, WORLD_BLOCK_INTERACT),
+    VEHICLE_MOVE_FORCE_SADDLE(ForceSaddle.class, VEHICLE_MOVEMENT, true),
+    WORLD_BLOCK_BREAK_IMPOSSIBLE(ImpossibleBreak.class, WORLD_BLOCK_BREAK);
 
 
     private final Class<?> checkClass;
@@ -68,8 +72,12 @@ public enum CheckType {
         this(checkClass, Set.of(category), false);
     }
 
+    <T extends Check> CheckType(Class<T> checkClass, CheckCategory category, boolean exclude) {
+        this(checkClass, Set.of(category), exclude);
+    }
+
     CheckType() {
-        this(null, null, true);
+        this(null, (Iterable<CheckCategory>) null, true);
     }
 
     <T extends Check> CheckType(Class<T> reachBlockClass, Set<CheckCategory> categories) {
@@ -84,10 +92,10 @@ public enum CheckType {
     }
 
     public String getBypassPermission() {
-        return MOD_ID + ".checks." + this.toString().toLowerCase(Locale.ROOT) + ".bypass";
+        return MOD_ID + ".checks.bypass" + this.toString().toLowerCase(Locale.ROOT);
     }
 
     public String getReportPermission() {
-        return MOD_ID + ".checks." + this.toString().toLowerCase(Locale.ROOT) + ".get_report";
+        return MOD_ID + ".checks.get_report." + this.toString().toLowerCase(Locale.ROOT);
     }
 }
