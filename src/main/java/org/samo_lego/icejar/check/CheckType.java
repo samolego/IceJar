@@ -92,7 +92,7 @@ public enum CheckType {
     }
 
     public String getBypassPermission() {
-        return MOD_ID + ".checks.bypass" + this.toString().toLowerCase(Locale.ROOT);
+        return MOD_ID + ".checks.bypass." + this.toString().toLowerCase(Locale.ROOT);
     }
 
     public String getReportPermission() {
