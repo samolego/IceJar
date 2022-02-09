@@ -174,6 +174,7 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     public void ij$copyFrom(IceJarPlayer oldPlayer) {
         this.violationLevel = oldPlayer.ij$getViolationLevel();
         this.playerChecks = oldPlayer.getCheckMap();
+        this.playerChecks.forEach((checkType, check) -> check.setPlayer(this.player));
     }
 
     @Override

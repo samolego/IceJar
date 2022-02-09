@@ -10,7 +10,6 @@ import org.samo_lego.icejar.check.movement.Derp;
 import org.samo_lego.icejar.check.movement.NoFall;
 import org.samo_lego.icejar.check.movement.cancellable.BoatFly;
 import org.samo_lego.icejar.check.movement.cancellable.ForceSaddle;
-import org.samo_lego.icejar.check.movement.cancellable.PacketMovement;
 import org.samo_lego.icejar.check.movement.cancellable.Timer;
 import org.samo_lego.icejar.check.world.block.AirPlace;
 import org.samo_lego.icejar.check.world.block.AutoSign;
@@ -43,7 +42,6 @@ public enum CheckType {
     MOVEMENT_NOFALL(NoFall.class, FIXED_MOVEMENT),
     MOVEMENT_DERP(Derp.class, FIXED_MOVEMENT),
 
-    CMOVEMENT_PACKET(PacketMovement.class, MOVEMENT),
     VEHICLE_MOVE_BOATFLY(BoatFly.class, VEHICLE_MOVEMENT),
     CMOVEMENT_TIMER(Timer.class, MOVEMENT),
     SPECIAL_JESUS,

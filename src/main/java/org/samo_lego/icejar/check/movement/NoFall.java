@@ -1,5 +1,6 @@
 package org.samo_lego.icejar.check.movement;
 
+import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -10,6 +11,8 @@ import org.samo_lego.icejar.mixin.accessor.AServerboundMovePlayerPacket;
 import org.samo_lego.icejar.util.IceJarPlayer;
 
 import java.util.List;
+
+import static org.samo_lego.icejar.check.CheckType.SPECIAL_JESUS;
 
 public class NoFall extends MovementCheck {
 
@@ -24,6 +27,7 @@ public class NoFall extends MovementCheck {
 
     @Override
     public boolean checkMovement(ServerboundMovePlayerPacket packet) {
+        boolean pass = true;
         final boolean onGround = checkOnGround(this.player, packet.getY(this.player.getY()) - player.getY(), true);
         if (packet.isOnGround()) {
             IceJarPlayer ij = (IceJarPlayer) this.player;
@@ -32,9 +36,8 @@ public class NoFall extends MovementCheck {
 
             // Player isn't on ground but client packet says it is
             if (!ij.ij$nearGround()) {
-                this.setJesus(ij.ij$aboveLiquid());
-
-                return false;
+                this.setJesus(ij.ij$aboveLiquid() && !Permissions.check(player, SPECIAL_JESUS.getBypassPermission(), false));
+                pass = false;
             } else {
                 this.decreaseCheatAttempts();
             }
@@ -42,7 +45,7 @@ public class NoFall extends MovementCheck {
         // Prevent anti-hunger by setting the real ground value to packet.
         ((AServerboundMovePlayerPacket) packet).setOnGround(onGround);
 
-        return true;
+        return pass;
     }
 
     private void setJesus(boolean onWater) {
@@ -55,7 +58,7 @@ public class NoFall extends MovementCheck {
 
     @Override
     public CheckType getType() {
-        return this.hasJesus() ? CheckType.SPECIAL_JESUS : this.checkType;
+        return this.hasJesus() ? SPECIAL_JESUS : this.checkType;
     }
 
     @Override

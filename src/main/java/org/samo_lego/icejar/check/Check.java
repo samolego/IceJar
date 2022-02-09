@@ -9,7 +9,7 @@ import org.samo_lego.icejar.util.IceJarPlayer;
 public abstract class Check {
 
     protected final CheckType checkType;
-    protected final ServerPlayer player;
+    protected ServerPlayer player;
     private long lastFlagTime;
     protected double violationLevel;
     protected int cheatAttempts;
@@ -97,5 +97,9 @@ public abstract class Check {
 
     public void setCheatAttempts(int attempts) {
         this.cheatAttempts = attempts;
+    }
+
+    public void setPlayer(ServerPlayer player) {
+        this.player = player;
     }
 }
