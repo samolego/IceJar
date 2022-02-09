@@ -53,6 +53,7 @@ public interface IceJarPlayer {
     static void broadcast(ServerPlayer player, Check failedCheck) {
         final String reportMessage = IceJar.getInstance().getConfig().violations.reportMessage;
         final CheckType type = failedCheck.getType();
+        final MutableComponent additionalInfo = failedCheck.getAdditionalFlagInfo();
 
         final MutableComponent report = ID.copy().append(new TranslatableComponent(reportMessage,
                 new TextComponent(player.getGameProfile().getName())
@@ -76,8 +77,8 @@ public interface IceJarPlayer {
                                             new TextComponent(String.format("%.2f", failedCheck.getViolationLevel()))
                                                     .withStyle(ChatFormatting.YELLOW)
                                     )
-                                    .append("\n")
-                                    .append(failedCheck.getAdditionalFlagInfo())
+                                    .append(additionalInfo.getString().isEmpty() ? "" : "\n")
+                                    .append(additionalInfo)
                             )
                         )
         ));
