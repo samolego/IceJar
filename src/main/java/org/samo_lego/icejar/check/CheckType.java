@@ -9,6 +9,7 @@ import org.samo_lego.icejar.check.combat.Reach;
 import org.samo_lego.icejar.check.movement.Derp;
 import org.samo_lego.icejar.check.movement.NoFall;
 import org.samo_lego.icejar.check.movement.cancellable.BoatFly;
+import org.samo_lego.icejar.check.movement.cancellable.FastLadder;
 import org.samo_lego.icejar.check.movement.cancellable.ForceSaddle;
 import org.samo_lego.icejar.check.movement.cancellable.Timer;
 import org.samo_lego.icejar.check.world.block.AirPlace;
@@ -52,7 +53,8 @@ public enum CheckType {
     WORLD_BLOCK_PLACE_AIR(AirPlace.class, WORLD_BLOCK_INTERACT),
     VEHICLE_MOVE_FORCE_SADDLE(ForceSaddle.class, VEHICLE_MOVEMENT, true),
     WORLD_BLOCK_BREAK_IMPOSSIBLE(ImpossibleBreak.class, WORLD_BLOCK_BREAK),
-    WORLD_BLOCK_PLACE_IMPOSSIBLE(ImpossiblePlace.class, WORLD_BLOCK_INTERACT);
+    WORLD_BLOCK_PLACE_IMPOSSIBLE(ImpossiblePlace.class, WORLD_BLOCK_INTERACT),
+    CMOVEMENT_FAST_LADDER(FastLadder.class, MOVEMENT);
 
 
     private final Class<?> checkClass;

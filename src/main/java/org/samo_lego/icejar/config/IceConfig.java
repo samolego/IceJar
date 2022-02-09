@@ -81,9 +81,10 @@ public class IceConfig implements IBrigadierConfigurator {
 
     public Movement movement = new Movement();
     public static class Movement {
-        public double maxHorizontalDistance = 130.1D;
         public long timerThreshold = 250L;
         public double vehicleYThreshold = 0D;
+        public double ladderSpeedUpMax = 0.12D;
+        public double ladderSpeedDownMax = -0.23D;
     }
 
     public static class CheckConfig {
