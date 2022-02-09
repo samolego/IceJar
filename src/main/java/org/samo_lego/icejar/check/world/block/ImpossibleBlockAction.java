@@ -12,18 +12,13 @@ import org.samo_lego.icejar.util.IceJarPlayer;
 
 import static org.samo_lego.icejar.util.ChatColor.styleBoolean;
 
-/**
- * Checks whether a player can interact with blocks.
- * Circumstances that disallow breaking blocks are similar
- * to {@link ImpossibleBreak}.
- */
-public class ImpossiblePlace extends BlockInteractCheck {
-    public ImpossiblePlace(ServerPlayer player) {
-        super(CheckType.WORLD_BLOCK_PLACE_IMPOSSIBLE, player);
+public class ImpossibleBlockAction extends BlockCheck {
+    public ImpossibleBlockAction(ServerPlayer player) {
+        super(CheckType.WORLD_BLOCK_IMPOSSIBLE_ACTION, player);
     }
 
     @Override
-    protected boolean checkBlockInteract(final Level level, final InteractionHand hand, final BlockPos blockPos, final Direction direction) {
+    public boolean checkBlockAction(Level level, InteractionHand hand, BlockPos blockPos, Direction direction) {
         return !((IceJarPlayer) player).ij$hasOpenGui() &&
                 !player.isUsingItem() &&
                 !player.isBlocking();
@@ -40,4 +35,5 @@ public class ImpossiblePlace extends BlockInteractCheck {
                 .append(new TextComponent("Blocking: ")
                         .append(styleBoolean(player.isBlocking())));
     }
+
 }

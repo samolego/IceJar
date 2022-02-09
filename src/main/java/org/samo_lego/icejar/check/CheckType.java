@@ -15,8 +15,7 @@ import org.samo_lego.icejar.check.movement.cancellable.Timer;
 import org.samo_lego.icejar.check.world.block.AirPlace;
 import org.samo_lego.icejar.check.world.block.AutoSign;
 import org.samo_lego.icejar.check.world.block.BlockDirection;
-import org.samo_lego.icejar.check.world.block.ImpossibleBreak;
-import org.samo_lego.icejar.check.world.block.ImpossiblePlace;
+import org.samo_lego.icejar.check.world.block.ImpossibleBlockAction;
 import org.samo_lego.icejar.check.world.block.ReachBlock;
 
 import java.util.HashSet;
@@ -52,9 +51,8 @@ public enum CheckType {
     WORLD_BLOCK_DIRECTION(BlockDirection.class, Set.of(WORLD_BLOCK_INTERACT, WORLD_BLOCK_BREAK)),
     WORLD_BLOCK_PLACE_AIR(AirPlace.class, WORLD_BLOCK_INTERACT),
     VEHICLE_MOVE_FORCE_SADDLE(ForceSaddle.class, VEHICLE_MOVEMENT, true),
-    WORLD_BLOCK_BREAK_IMPOSSIBLE(ImpossibleBreak.class, WORLD_BLOCK_BREAK),
-    WORLD_BLOCK_PLACE_IMPOSSIBLE(ImpossiblePlace.class, WORLD_BLOCK_INTERACT),
-    CMOVEMENT_FAST_LADDER(FastLadder.class, MOVEMENT);
+    CMOVEMENT_FAST_LADDER(FastLadder.class, MOVEMENT),
+    WORLD_BLOCK_IMPOSSIBLE_ACTION(ImpossibleBlockAction.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT));
 
 
     private final Class<?> checkClass;
