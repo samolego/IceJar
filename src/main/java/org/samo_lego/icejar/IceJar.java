@@ -6,11 +6,13 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.samo_lego.icejar.check.combat.CombatCheck;
+import org.samo_lego.icejar.check.inventory.ItemUseCheck;
 import org.samo_lego.icejar.check.world.block.BlockBreakCheck;
 import org.samo_lego.icejar.check.world.block.BlockInteractCheck;
 import org.samo_lego.icejar.command.IceJarCommand;
@@ -44,6 +46,8 @@ public class IceJar {
 		AttackBlockCallback.EVENT.register(BlockBreakCheck::performCheck);
 		UseBlockCallback.EVENT.register(BlockInteractCheck::performCheck);
 		AttackEntityCallback.EVENT.register(CombatCheck::performCheck);
+		UseItemCallback.EVENT.register(ItemUseCheck::performCheck);
+
 		CommandRegistrationCallback.EVENT.register(IceJarCommand::register);
 		ServerLifecycleEvents.SERVER_STARTED.register(IceJar::onServerStarted);
 

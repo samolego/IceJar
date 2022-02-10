@@ -2,9 +2,12 @@
 Port of  [ACR](https://github.com/Rammelkast/AntiCheatReloaded) and [NCP](https://github.com/Updated-NoCheatPlus/NoCheatPlus) anticheat checks to Fabric,
 with additional [GolfIV](https://github.com/samolego/GolfIV) stuff.
 
-## Usage
+## Download
 
-Here be dragons!
+IceJar has a long way to go and release as stable.
+You can however play with it and test it at your own risk.
+Download the latest version from [CircleCI](https://app.circleci.com/pipelines/github/samolego/IceJar)
+(navigate to latest build and click the "artifacts" tab).
 
 ## Features
 

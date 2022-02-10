@@ -14,7 +14,7 @@ public enum CheckCategory {
     VEHICLE_MOVEMENT,
     WORLD_BLOCK_BREAK,
     WORLD_BLOCK_INTERACT,
-    ENTITY_INTERACT;
+    ENTITY_INTERACT, INVENTORY;
 
     public static final HashMap<CheckCategory, Set<CheckType>> ALL_CHECKS = new HashMap<>();
     public static HashMap<CheckCategory, Set<CheckType>> category2checks = new HashMap<>();

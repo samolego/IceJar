@@ -57,9 +57,9 @@ public class FastLadder extends CancellableMovementCheck {
     @Override
     public MutableComponent getAdditionalFlagInfo() {
         return new TextComponent("Direction: ")
-                .append(new TranslatableComponent("gui." + (this.deltaY < 0 ? "down" : "up") + "\n")
+                .append(new TranslatableComponent("gui." + (this.deltaY < 0 ? "down" : "up"))
                         .withStyle(ChatFormatting.GREEN))
-                .append("Movement: ")
+                .append("\nMovement delta: ")
                 .append(new TextComponent(String.format("%.2f", deltaY)).withStyle(ChatFormatting.RED));
     }
 }

@@ -6,6 +6,7 @@ import org.samo_lego.icejar.check.combat.Critical;
 import org.samo_lego.icejar.check.combat.ImpossibleHit;
 import org.samo_lego.icejar.check.combat.NoSwing;
 import org.samo_lego.icejar.check.combat.Reach;
+import org.samo_lego.icejar.check.inventory.ImpossibleUse;
 import org.samo_lego.icejar.check.movement.Derp;
 import org.samo_lego.icejar.check.movement.NoFall;
 import org.samo_lego.icejar.check.movement.cancellable.BoatFly;
@@ -27,6 +28,7 @@ import static org.samo_lego.icejar.check.CheckCategory.ALL_CHECKS;
 import static org.samo_lego.icejar.check.CheckCategory.COMBAT;
 import static org.samo_lego.icejar.check.CheckCategory.ENTITY_INTERACT;
 import static org.samo_lego.icejar.check.CheckCategory.FIXED_MOVEMENT;
+import static org.samo_lego.icejar.check.CheckCategory.INVENTORY;
 import static org.samo_lego.icejar.check.CheckCategory.MOVEMENT;
 import static org.samo_lego.icejar.check.CheckCategory.VEHICLE_MOVEMENT;
 import static org.samo_lego.icejar.check.CheckCategory.WORLD_BLOCK_BREAK;
@@ -52,7 +54,8 @@ public enum CheckType {
     WORLD_BLOCK_PLACE_AIR(AirPlace.class, WORLD_BLOCK_INTERACT),
     VEHICLE_MOVE_FORCE_SADDLE(ForceSaddle.class, VEHICLE_MOVEMENT, true),
     CMOVEMENT_FAST_LADDER(FastLadder.class, MOVEMENT),
-    WORLD_BLOCK_IMPOSSIBLE_ACTION(ImpossibleBlockAction.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT));
+    WORLD_BLOCK_IMPOSSIBLE_ACTION(ImpossibleBlockAction.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT)),
+    INVENTORY_IMPOSSIBLE_ITEM_USE(ImpossibleUse.class, INVENTORY);
 
 
     private final Class<?> checkClass;
