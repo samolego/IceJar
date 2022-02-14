@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
+import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.movement.MovementCheck;
 import org.samo_lego.icejar.check.movement.cancellable.CancellableMovementCheck;
 import org.samo_lego.icejar.check.movement.cancellable.CancellableVehicleMovementCheck;
@@ -45,7 +46,7 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
     private void onPlayerMove(ServerboundMovePlayerPacket packet, CallbackInfo ci) {
         ((IceJarPlayer) player).ij$setMovement(packet);
         // Movement check only returns false if Jesus hack is active, while CMovementCheck returns false if any check fails.
-        boolean valid = MovementCheck.performCheck(player, packet) && CancellableMovementCheck.performCheck(player, packet);
+        boolean valid = MovementCheck.performCheck(player, packet) && CancellableMovementCheck.performCheck(player, packet) && !IceJar.getInstance().getConfig().debug;
 
         if (!valid) {
             this.ij$validTickCount = 0;

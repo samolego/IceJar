@@ -10,6 +10,7 @@ public abstract class Check {
 
     protected final CheckType checkType;
     protected ServerPlayer player;
+    protected IceJarPlayer ijp;
     private long lastFlagTime;
     protected double violationLevel;
     protected int cheatAttempts;
@@ -17,6 +18,7 @@ public abstract class Check {
     public Check(CheckType checkType, ServerPlayer player) {
         this.checkType = checkType;
         this.player = player;
+        this.ijp = (IceJarPlayer) this.player;
     }
 
     public abstract boolean check(Object ... params);

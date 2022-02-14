@@ -18,6 +18,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
+import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.Check;
 import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.mixin.accessor.ALivingEntity;
@@ -100,7 +101,7 @@ public abstract class CombatCheck extends Check {
                     if (check.increaseCheatAttempts() > check.getMaxAttemptsBeforeFlag())
                         check.flag();
 
-                    return InteractionResult.FAIL;
+                    return IceJar.getInstance().getConfig().debug ? InteractionResult.PASS : InteractionResult.FAIL;
                 } else {
                     check.decreaseCheatAttempts();
                 }

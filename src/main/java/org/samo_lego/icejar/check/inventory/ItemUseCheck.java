@@ -7,6 +7,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.Check;
 import org.samo_lego.icejar.check.CheckCategory;
 import org.samo_lego.icejar.check.CheckType;
@@ -44,7 +45,10 @@ public abstract class ItemUseCheck extends Check {
                 if (!check.checkItemUse(level, handStack, hand)) {
                     if (check.increaseCheatAttempts() > check.getMaxAttemptsBeforeFlag())
                         check.flag();
-                    return InteractionResultHolder.fail(handStack);
+
+                    return IceJar.getInstance().getConfig().debug ?
+                            InteractionResultHolder.pass(handStack) :
+                            InteractionResultHolder.fail(handStack);
                 }
             }
         }

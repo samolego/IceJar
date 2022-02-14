@@ -8,6 +8,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.Check;
 import org.samo_lego.icejar.check.CheckCategory;
 import org.samo_lego.icejar.check.CheckType;
@@ -47,7 +48,9 @@ public abstract class BlockCheck extends Check {
                 if (!check.checkBlockAction(level, interactionHand, blockPos, direction)) {
                     if (check.increaseCheatAttempts() > check.getMaxAttemptsBeforeFlag())
                         check.flag();
-                    return InteractionResult.FAIL;
+                    return IceJar.getInstance().getConfig().debug ?
+                            InteractionResult.PASS :
+                            InteractionResult.FAIL;
                 }
             }
         }
