@@ -11,6 +11,7 @@ import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.Check;
 import org.samo_lego.icejar.check.CheckCategory;
 import org.samo_lego.icejar.check.CheckType;
+import org.samo_lego.icejar.check.movement.cancellable.Timer;
 import org.samo_lego.icejar.util.IceJarPlayer;
 
 import java.util.Set;
@@ -36,6 +37,9 @@ public abstract class ItemUseCheck extends Check {
 
         final Set<CheckType> checks = category2checks.get(CheckCategory.INVENTORY);
         if (checks != null && player instanceof IceJarPlayer ij) {
+
+            ij.getCheck(Timer.class).rebalance();  // Fixes #2
+
             for (CheckType type : checks) {
                 if (Permissions.check(player, type.getBypassPermission(), false)) continue;
 
@@ -54,5 +58,4 @@ public abstract class ItemUseCheck extends Check {
         }
         return InteractionResultHolder.pass(handStack);
     }
-
 }

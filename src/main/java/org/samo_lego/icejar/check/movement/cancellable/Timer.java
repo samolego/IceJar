@@ -30,15 +30,13 @@ public class Timer extends CancellableMovementCheck {
 
             if(lastTime != 0) {
                 this.packetRate += (50 + lastTime - currentPacketTime);
-                boolean valid = this.packetRate <= config.movement.timerThreshold;
 
-                if (!valid) {
+                if (config.trainMode) {
+                    config.movement.timerThreshold = Math.max(config.movement.timerThreshold, this.packetRate);
+                } else if (this.packetRate > config.movement.timerThreshold) {
                     this.packetRate = 0;
                     return false;
                 }
-            }
-            if (config.trainMode) {
-                config.movement.timerThreshold = Math.max(config.movement.timerThreshold, this.packetRate);
             }
         } else {
             this.packetRate = 0;

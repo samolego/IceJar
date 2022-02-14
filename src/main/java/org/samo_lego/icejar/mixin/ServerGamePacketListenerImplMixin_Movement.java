@@ -46,9 +46,9 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
     private void onPlayerMove(ServerboundMovePlayerPacket packet, CallbackInfo ci) {
         ((IceJarPlayer) player).ij$setMovement(packet);
         // Movement check only returns false if Jesus hack is active, while CMovementCheck returns false if any check fails.
-        boolean valid = MovementCheck.performCheck(player, packet) && CancellableMovementCheck.performCheck(player, packet) && !IceJar.getInstance().getConfig().debug;
+        boolean valid = MovementCheck.performCheck(player, packet) && CancellableMovementCheck.performCheck(player, packet);
 
-        if (!valid) {
+        if (!valid && !IceJar.getInstance().getConfig().debug) {
             this.ij$validTickCount = 0;
             // Teleport to last spot, just don't keep Y value
             Vec3 last = this.lastValidSpot;

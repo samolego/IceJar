@@ -45,7 +45,6 @@ public class Critical extends CombatCheck {
         final Block block = feetState.getBlock();
 
         // Really basic check, detects "packet" mode only
-        // todo - config
         return player.position().y() % 1.0d > 0.001d &&
                 player.position().y() % 0.5d > 0.001d &&
 
@@ -77,7 +76,7 @@ public class Critical extends CombatCheck {
                 .append(player.getFeetBlockState().getBlock().getName())
                 .append("\n")
                 .append(new TextComponent("y mod 1: ")
-                .append(String.format("%.2f", player.position().y() % 1.0d)));
+                .append(String.format("%.2f", player.getY() % 1.0d)));
 
     }
 

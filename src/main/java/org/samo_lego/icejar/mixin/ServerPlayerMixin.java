@@ -32,23 +32,12 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     @Unique
     private boolean guiOpen = false;
     @Unique
-    private boolean ij$onGround;
+    private boolean ij$onGround, wasOnGround, wasLastOnGround, aboveLiquid;
     @Unique
-    private boolean wasOnGround;
-    @Unique
-    private boolean wasLastOnGround;
-    @Unique
-    private Vec3 vehicleMovement;
-    @Unique
-    private Vec3 lastVehicleMovement;
-    @Unique
-    private Vec3 lastMovement;
-    @Unique
-    private Vec3 movement;
-    @Unique
-    private boolean aboveLiquid;
+    private Vec3 vehicleMovement, lastVehicleMovement, lastMovement, movement;
     @Unique
     private double violationLevel;
+
 
     @Override
     public <T extends Check> T getCheck(CheckType checkType) {
@@ -63,7 +52,12 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
             // Create new check from type
             try {
                 check = checkClass.getConstructor(ServerPlayer.class).newInstance(this.player);
-                this.playerChecks.put(checkClass, check);
+
+                // Save check only if enabled
+                IceConfig.CheckConfig cfg = IceJar.getInstance().getConfig().checkConfigs.get(check.getType());
+                if (cfg != null ? cfg.enabled : IceJar.getInstance().getConfig().DEFAULT.enabled) {
+                    this.playerChecks.put(checkClass, check);
+                }
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 e.printStackTrace();
             }
