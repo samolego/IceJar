@@ -22,6 +22,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Set;
 
+import static org.samo_lego.icejar.check.CheckType.CMOVEMENT_TIMER;
+
 @Mixin(ServerGamePacketListenerImpl.class)
 public abstract class ServerGamePacketListenerImplMixin_Movement {
     @Shadow
@@ -89,6 +91,8 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
     @Inject(method = "teleport(DDDFFLjava/util/Set;Z)V", at = @At(value = "TAIL"))
     private void onTeleport(double d, double e, double f, float g, float h,
                             Set<ClientboundPlayerPositionPacket.RelativeArgument> set, boolean bl, CallbackInfo ci) {
-        ((IceJarPlayer) player).getCheck(Timer.class).rebalance();
+        if (CMOVEMENT_TIMER.isEnabled()) {
+            ((IceJarPlayer) player).getCheck(Timer.class).rebalance();
+        }
     }
 }

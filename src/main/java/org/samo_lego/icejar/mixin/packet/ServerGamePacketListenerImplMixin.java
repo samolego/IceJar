@@ -27,6 +27,8 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 
+import static org.samo_lego.icejar.check.CheckType.COMBAT_NOSWING;
+import static org.samo_lego.icejar.check.CheckType.WORLD_BLOCK_AUTOSIGN;
 import static org.samo_lego.icejar.mixin.accessor.ASignBlockEntity.FILTERED_TEXT_FIELD_NAMES;
 import static org.samo_lego.icejar.mixin.accessor.ASignBlockEntity.RAW_TEXT_FIELD_NAMES;
 
@@ -39,7 +41,8 @@ public abstract class ServerGamePacketListenerImplMixin {
 
     @Inject(method = "handleAnimate", at = @At("TAIL"))
     private void onHandSwing(ServerboundSwingPacket packet, CallbackInfo ci) {
-        ((IceJarPlayer) this.player).getCheck(NoSwing.class).onSwing();
+        if (COMBAT_NOSWING.isEnabled())
+            ((IceJarPlayer) this.player).getCheck(NoSwing.class).onSwing();
     }
 
     @Inject(method = "updateSignText",
@@ -48,32 +51,34 @@ public abstract class ServerGamePacketListenerImplMixin {
             cancellable = true)
     private void onSignUpdate(ServerboundSignUpdatePacket packet, List<TextFilter.FilteredText> signText, CallbackInfo ci,
                               ServerLevel level, BlockPos pos, BlockState state, BlockEntity blockEntity) {
-       if (!((IceJarPlayer) this.player).getCheck(AutoSign.class).allowPlace(packet)) {
-           // Seems like Minecraft sends another update packet after this one, so it's cancelled out.
-           // todo figure out a way to prevent the second packet / fake it.
-           final ClientboundBlockEntityDataPacket fakeData = ClientboundBlockEntityDataPacket.create(blockEntity, be -> {
-               CompoundTag tag = new CompoundTag();
+        if (WORLD_BLOCK_AUTOSIGN.isEnabled()) {
+            if (!((IceJarPlayer) this.player).getCheck(AutoSign.class).allowPlace(packet)) {
+                // Seems like Minecraft sends another update packet after this one, so it's cancelled out.
+                // todo figure out a way to prevent the second packet / fake it.
+                final ClientboundBlockEntityDataPacket fakeData = ClientboundBlockEntityDataPacket.create(blockEntity, be -> {
+                    CompoundTag tag = new CompoundTag();
 
-               for (int i = 0; i < signText.size(); ++i) {
-                   final TextFilter.FilteredText text = signText.get(i);
+                    for (int i = 0; i < signText.size(); ++i) {
+                        final TextFilter.FilteredText text = signText.get(i);
 
-                   if (this.player.isTextFilteringEnabled()) {
-                       String textFiltered = text.getFiltered();
-                       tag.putString(FILTERED_TEXT_FIELD_NAMES()[i], Component.Serializer.toJson(new TextComponent(textFiltered)));
-                   } else {
-                       String textRaw = text.getRaw();
-                       tag.putString(RAW_TEXT_FIELD_NAMES()[i], Component.Serializer.toJson(new TextComponent(textRaw)));
-                   }
+                        if (this.player.isTextFilteringEnabled()) {
+                            String textFiltered = text.getFiltered();
+                            tag.putString(FILTERED_TEXT_FIELD_NAMES()[i], Component.Serializer.toJson(new TextComponent(textFiltered)));
+                        } else {
+                            String textRaw = text.getRaw();
+                            tag.putString(RAW_TEXT_FIELD_NAMES()[i], Component.Serializer.toJson(new TextComponent(textRaw)));
+                        }
 
-               }
+                    }
 
-               tag.putString("Color", ((SignBlockEntity) blockEntity).getColor().getName());
-               tag.putBoolean("GlowingText", ((SignBlockEntity) be).hasGlowingText());
+                    tag.putString("Color", ((SignBlockEntity) blockEntity).getColor().getName());
+                    tag.putBoolean("GlowingText", ((SignBlockEntity) be).hasGlowingText());
 
-               return tag;
-           });
-           this.send(fakeData);
-           ci.cancel();
-       }
+                    return tag;
+                });
+                this.send(fakeData);
+                ci.cancel();
+            }
+        }
     }
 }

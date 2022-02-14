@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static org.samo_lego.icejar.check.CheckType.MOVEMENT_NOFALL;
+
 @Mixin(ServerLevel.class)
 public class ServerLevelMixin_SkipNoFallEvent {
 
@@ -22,7 +24,7 @@ public class ServerLevelMixin_SkipNoFallEvent {
      */
     @Inject(method = "broadcastEntityEvent", at = @At("HEAD"), cancellable = true)
     private void skipNoFallEvent(Entity entity, byte state, CallbackInfo ci) {
-        if (entity instanceof IceJarPlayer player && player.getCheck(NoFall.class).shouldSkipDamageEvent()) {
+        if (entity instanceof IceJarPlayer player && player.getCheck(NoFall.class).shouldSkipDamageEvent() && MOVEMENT_NOFALL.isEnabled()) {
             final NoFall check = player.getCheck(NoFall.class);
             check.setSkipDamageEvent(false);
             check.setHasFallen(true);

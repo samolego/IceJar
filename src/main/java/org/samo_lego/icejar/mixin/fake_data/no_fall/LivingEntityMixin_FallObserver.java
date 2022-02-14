@@ -10,6 +10,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static org.samo_lego.icejar.check.CheckType.MOVEMENT_NOFALL;
+
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin_FallObserver {
 
@@ -24,7 +26,7 @@ public class LivingEntityMixin_FallObserver {
      */
     @Inject(method = "hurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;broadcastEntityEvent(Lnet/minecraft/world/entity/Entity;B)V"))
     protected void skipNoFallDamageEvent(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (self instanceof IceJarPlayer player && source == DamageSource.FALL) {
+        if (self instanceof IceJarPlayer player && source == DamageSource.FALL && MOVEMENT_NOFALL.isEnabled()) {
             final NoFall check = player.getCheck(NoFall.class);
             final boolean noFallEnabled = check.hasNoFall();
             check.setSkipDamageEvent(noFallEnabled);

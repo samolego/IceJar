@@ -17,6 +17,7 @@ import org.samo_lego.icejar.util.IceJarPlayer;
 import java.util.Set;
 
 import static org.samo_lego.icejar.check.CheckCategory.category2checks;
+import static org.samo_lego.icejar.check.CheckType.CMOVEMENT_TIMER;
 
 public abstract class ItemUseCheck extends Check {
     public ItemUseCheck(CheckType checkType, ServerPlayer player) {
@@ -38,7 +39,11 @@ public abstract class ItemUseCheck extends Check {
         final Set<CheckType> checks = category2checks.get(CheckCategory.INVENTORY);
         if (checks != null && player instanceof IceJarPlayer ij) {
 
-            ij.getCheck(Timer.class).rebalance();  // Fixes #2
+
+            if (CMOVEMENT_TIMER.isEnabled()) {
+                // Fixes #2
+                ((IceJarPlayer) player).getCheck(Timer.class).rebalance();
+            }
 
             for (CheckType type : checks) {
                 if (Permissions.check(player, type.getBypassPermission(), false)) continue;

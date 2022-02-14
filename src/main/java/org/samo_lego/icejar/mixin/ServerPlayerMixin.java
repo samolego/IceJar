@@ -52,12 +52,7 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
             // Create new check from type
             try {
                 check = checkClass.getConstructor(ServerPlayer.class).newInstance(this.player);
-
-                // Save check only if enabled
-                IceConfig.CheckConfig cfg = IceJar.getInstance().getConfig().checkConfigs.get(check.getType());
-                if (cfg != null ? cfg.enabled : IceJar.getInstance().getConfig().DEFAULT.enabled) {
-                    this.playerChecks.put(checkClass, check);
-                }
+                this.playerChecks.put(checkClass, check);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 e.printStackTrace();
             }

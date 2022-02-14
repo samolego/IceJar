@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static org.samo_lego.icejar.check.CheckType.MOVEMENT_NOFALL;
+
 @Mixin(ServerPlayer.class)
 public class ServerPlayerMixin_NoFallHP {
 
@@ -25,15 +27,17 @@ public class ServerPlayerMixin_NoFallHP {
      */
     @Inject(method = "doTick", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/level/ServerPlayer;getHealth()F", ordinal = 0))
     private void setFakedHealth(CallbackInfo ci) {
-        final NoFall check = ((IceJarPlayer) ij$player).getCheck(NoFall.class);
-        if (check.hasFallen()) {
-            // Damage source is null-ified after about 2 seconds, then we check if no fall is still enabled.
-            if (ij$player.getLastDamageSource() == DamageSource.FALL || (ij$player.getLastDamageSource() == null && check.hasNoFall())) {
-                this.lastSentHealth = ij$player.getHealth();
-                this.lastSentFood = ij$player.getFoodData().getFoodLevel();
-                this.lastFoodSaturationZero = ij$player.getFoodData().getSaturationLevel() == 0.0F;
-            } else {
-                check.setHasFallen(false);
+        if (MOVEMENT_NOFALL.isEnabled()) {
+            final NoFall check = ((IceJarPlayer) ij$player).getCheck(NoFall.class);
+            if (check.hasFallen()) {
+                // Damage source is null-ified after about 2 seconds, then we check if no fall is still enabled.
+                if (ij$player.getLastDamageSource() == DamageSource.FALL || (ij$player.getLastDamageSource() == null && check.hasNoFall())) {
+                    this.lastSentHealth = ij$player.getHealth();
+                    this.lastSentFood = ij$player.getFoodData().getFoodLevel();
+                    this.lastFoodSaturationZero = ij$player.getFoodData().getSaturationLevel() == 0.0F;
+                } else {
+                    check.setHasFallen(false);
+                }
             }
         }
     }

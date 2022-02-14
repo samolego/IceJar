@@ -82,7 +82,7 @@ public class Critical extends CombatCheck {
 
     @Override
     protected void sendFakeHitData(final Level _world, final InteractionHand hand, final Entity targetEntity, @Nullable EntityHitResult _hitResult) {
-        DataFaker.broadcast(targetEntity, player, new ClientboundAnimatePacket(targetEntity, ClientboundAnimatePacket.CRITICAL_HIT)); // Critical hit
+        DataFaker.broadcast(targetEntity, player, new ClientboundAnimatePacket(targetEntity, ClientboundAnimatePacket.CRITICAL_HIT));  // Critical hit
 
         // Sound event for critical hit
         DataFaker.sendSound(SoundEvents.PLAYER_ATTACK_CRIT, player);
