@@ -57,17 +57,16 @@ public class BlockDirection extends BlockCheck {
         }
 
         // Y deltas
-        // todo door fp
         final double deltaY = blockPos.getY() - player.getEyeY();
 
         // Facing down but interacting with up
-        if (deltaY > 0.8D && player.getXRot() > 0.0F) {
+        if (deltaY > 0.8D && (player.getXRot() > 0.0F || direction.equals(Direction.UP))) {
             this.lookingDirection = Direction.DOWN;
             return false;
         }
 
         this.lookingDirection = Direction.UP;
-        return !(deltaY < -0.8D) || !(player.getXRot() < 0.0F);
+        return !(deltaY < -0.8D) || (!(player.getXRot() < 0.0F) && !direction.equals(Direction.DOWN));
     }
 
     @Override

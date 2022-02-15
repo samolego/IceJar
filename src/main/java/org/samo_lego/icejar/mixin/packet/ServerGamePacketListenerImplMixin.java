@@ -26,6 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static org.samo_lego.icejar.check.CheckType.COMBAT_NOSWING;
 import static org.samo_lego.icejar.check.CheckType.WORLD_BLOCK_AUTOSIGN;
@@ -53,8 +54,6 @@ public abstract class ServerGamePacketListenerImplMixin {
                               ServerLevel level, BlockPos pos, BlockState state, BlockEntity blockEntity) {
         if (WORLD_BLOCK_AUTOSIGN.isEnabled()) {
             if (!((IceJarPlayer) this.player).getCheck(AutoSign.class).allowPlace(packet)) {
-                // Seems like Minecraft sends another update packet after this one, so it's cancelled out.
-                // todo figure out a way to prevent the second packet / fake it.
                 final ClientboundBlockEntityDataPacket fakeData = ClientboundBlockEntityDataPacket.create(blockEntity, be -> {
                     CompoundTag tag = new CompoundTag();
 
@@ -76,7 +75,17 @@ public abstract class ServerGamePacketListenerImplMixin {
 
                     return tag;
                 });
-                this.send(fakeData);
+
+                // Seems like Minecraft sends another update packet after this one, so it's cancelled out.
+                // todo figure out a way to prevent the second packet / fake it. This is an ugly workaround.
+                CompletableFuture.runAsync(() -> {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    this.send(fakeData);
+                });
                 ci.cancel();
             }
         }
