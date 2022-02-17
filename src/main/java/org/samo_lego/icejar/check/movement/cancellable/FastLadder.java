@@ -32,8 +32,8 @@ public class FastLadder extends CancellableMovementCheck {
         }
 
         final IceConfig cf = IceJar.getInstance().getConfig();
-        final double maxUp = cf.movement.ladderSpeedUpMax;
-        final double maxDown = cf.movement.ladderSpeedDownMax;
+        final double maxUp = cf.movement.ladder.speedUpMax;
+        final double maxDown = cf.movement.ladder.speedDownMax;
 
         final Vec3 lastMovement = ((IceJarPlayer) player).ij$getLastMovement();
 
@@ -43,9 +43,9 @@ public class FastLadder extends CancellableMovementCheck {
 
         if (cf.trainMode) {
             if (deltaY > maxUp) {
-                cf.movement.ladderSpeedUpMax = deltaY;
+                cf.movement.ladder.speedUpMax = deltaY;
             } else if (deltaY < maxDown) {
-                cf.movement.ladderSpeedDownMax = deltaY;
+                cf.movement.ladder.speedDownMax = deltaY;
             }
 
             return true;

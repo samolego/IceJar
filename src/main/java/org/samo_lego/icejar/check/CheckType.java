@@ -11,6 +11,7 @@ import org.samo_lego.icejar.check.inventory.ImpossibleUse;
 import org.samo_lego.icejar.check.movement.Derp;
 import org.samo_lego.icejar.check.movement.NoFall;
 import org.samo_lego.icejar.check.movement.cancellable.BoatFly;
+import org.samo_lego.icejar.check.movement.cancellable.DirectionSpeed;
 import org.samo_lego.icejar.check.movement.cancellable.FastLadder;
 import org.samo_lego.icejar.check.movement.cancellable.ForceSaddle;
 import org.samo_lego.icejar.check.movement.cancellable.Timer;
@@ -57,7 +58,8 @@ public enum CheckType {
     VEHICLE_MOVE_FORCE_SADDLE(ForceSaddle.class, VEHICLE_MOVEMENT, true),
     CMOVEMENT_FAST_LADDER(FastLadder.class, MOVEMENT),
     WORLD_BLOCK_IMPOSSIBLE_ACTION(ImpossibleBlockAction.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT)),
-    INVENTORY_IMPOSSIBLE_ITEM_USE(ImpossibleUse.class, INVENTORY);
+    INVENTORY_IMPOSSIBLE_ITEM_USE(ImpossibleUse.class, INVENTORY),
+    CMOVEMENT_DIRECTION_SPEED(DirectionSpeed.class, MOVEMENT);
 
 
     private final Class<?> checkClass;
