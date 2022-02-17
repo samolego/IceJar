@@ -34,7 +34,7 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     @Unique
     private boolean ij$onGround, wasOnGround, wasLastOnGround, aboveLiquid;
     @Unique
-    private Vec3 vehicleMovement, lastVehicleMovement, lastMovement, movement;
+    private Vec3 vehicleMovement, lastVehicleMovement, lastMovement, movement, last2Movement;
     @Unique
     private double violationLevel;
 
@@ -135,18 +135,24 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
 
     @Override
     public void ij$setMovement(ServerboundMovePlayerPacket packet) {
+        this.last2Movement = this.lastMovement;
         this.lastMovement = this.movement;
         this.movement = new Vec3(packet.getX(this.player.getX()), packet.getY(this.player.getY()), packet.getZ(this.player.getZ()));
     }
 
     @Override
+    public Vec3 ij$getLast2Movement() {
+        return this.last2Movement;
+    }
+
+    @Override
     public Vec3 ij$getLastMovement() {
-        return lastMovement;
+        return this.lastMovement;
     }
 
     @Override
     public Vec3 ij$getMovement() {
-        return movement;
+        return this.movement;
     }
 
     @Override

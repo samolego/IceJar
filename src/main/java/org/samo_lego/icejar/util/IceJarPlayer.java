@@ -39,6 +39,7 @@ public interface IceJarPlayer {
     Vec3 ij$getVehicleMovement();
 
     void ij$setMovement(ServerboundMovePlayerPacket packet);
+    Vec3 ij$getLast2Movement();
     Vec3 ij$getLastMovement();
     Vec3 ij$getMovement();
 
@@ -89,4 +90,5 @@ public interface IceJarPlayer {
             }
         });
     }
+
 }

@@ -60,13 +60,13 @@ public class BlockDirection extends BlockCheck {
         final double deltaY = blockPos.getY() - player.getEyeY();
 
         // Facing down but interacting with up
-        if (deltaY > 0.8D && (player.getXRot() > 0.0F || direction.equals(Direction.UP))) {
+        if (player.getXRot() > 0.0F && (deltaY > 0.8D || direction.equals(Direction.DOWN))) {
             this.lookingDirection = Direction.DOWN;
             return false;
         }
 
         this.lookingDirection = Direction.UP;
-        return !(deltaY < -0.8D) || (!(player.getXRot() < 0.0F) && !direction.equals(Direction.DOWN));
+        return !(player.getXRot() < 0.0F) || (!(deltaY < -0.8D) && !direction.equals(Direction.UP));
     }
 
     @Override
