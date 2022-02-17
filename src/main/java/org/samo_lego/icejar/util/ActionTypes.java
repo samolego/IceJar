@@ -6,16 +6,18 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.IpBanList;
 import net.minecraft.server.players.IpBanListEntry;
+import org.apache.logging.log4j.core.lookup.StrSubstitutor;
 import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.Check;
-import org.samo_lego.icejar.config.IceConfig;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public enum ActionTypes {
     BAN,
     KICK,
-    COMMAND,
     NONE;
 
     private static final MutableComponent icejarPrefix = new TextComponent("[IceJar]\n").withStyle(ChatFormatting.AQUA);
@@ -24,13 +26,37 @@ public enum ActionTypes {
         switch (this) {
             case KICK -> this.disconnectInStyle(pl);
             case BAN -> this.ban(pl, failedCheck);
-            case COMMAND -> this.executeCommand(pl, failedCheck);
             default -> {}
+        }
+
+        if (failedCheck.getOptions().command != null) {
+            this.executeCommand(pl, failedCheck);
         }
     }
 
+    public void executeCommand(ServerPlayer player, String command) {
+        Map<String, String> valuesMap = new HashMap<>();
+        valuesMap.put("player", player.getGameProfile().getName());
+        valuesMap.put("uuid", player.getGameProfile().getId().toString());
+        valuesMap.put("ip", player.getIpAddress());
+        StrSubstitutor sub = new StrSubstitutor(valuesMap);
+
+        player.getServer().getCommands().performCommand(player.getServer().createCommandSourceStack(),
+                sub.replace(command));
+
+    }
+
     private void executeCommand(ServerPlayer player, Check failedCheck) {
-        player.getServer().getCommands().performCommand(player.getServer().createCommandSourceStack(), IceConfig.getCheckOptions(failedCheck).command);
+        Map<String, String> valuesMap = new HashMap<>();
+        valuesMap.put("player", player.getGameProfile().getName());
+        valuesMap.put("uuid", player.getGameProfile().getId().toString());
+        valuesMap.put("ip", player.getIpAddress());
+        valuesMap.put("check", failedCheck.getType().toString().toLowerCase(Locale.ROOT));
+        StrSubstitutor sub = new StrSubstitutor(valuesMap);
+
+        player.getServer().getCommands().performCommand(player.getServer().createCommandSourceStack(),
+                sub.replace(failedCheck.getOptions().command));
+
     }
 
     private void ban(ServerPlayer player, Check failedCheck) {

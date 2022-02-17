@@ -38,6 +38,7 @@ public class IceConfig implements IBrigadierConfigurator {
     private static final Gson GSON = new GsonBuilder()
                                         .setPrettyPrinting()
                                         .setLenient()
+                                        .serializeNulls()
                                         .disableHtmlEscaping()
                                         .create();
 
@@ -67,8 +68,11 @@ public class IceConfig implements IBrigadierConfigurator {
         public final String _comment_maxLevel0 = "";
         @SerializedName("// and averaged. Can be -1 as well.")
         public final String _comment_maxLevel1 = "";
+        @SerializedName("max_level")
         public double maxLevel = Math.round(6000.0D / (CheckType.values().length)) / 100.0D;
         public ActionTypes action = ActionTypes.KICK;
+        @SerializedName("punish_command")
+        public String command = null;
 
 
         @SerializedName("report_message")
@@ -108,6 +112,10 @@ public class IceConfig implements IBrigadierConfigurator {
         @SerializedName("max_violation_level")
         public double maxViolationLevel;
         public boolean enabled;
+        @SerializedName("// Command to execute on on flag after ACTION.")
+        public final String _comment_command0 = "";
+        @SerializedName("// Available placeholders: ${player}, ${uuid}, ${ip}, ${check}.")
+        public final String _comment_command1 = "";
         @SerializedName("punish_command")
         public String command;
 
@@ -121,7 +129,7 @@ public class IceConfig implements IBrigadierConfigurator {
             this.maxViolationLevel = maxViolationLevel;
             this.enabled = enabled;
             this.action = ActionTypes.NONE;
-            this.command = "";
+            this.command = null;
         }
     }
 
