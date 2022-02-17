@@ -10,4 +10,8 @@ public interface AServerboundMovePlayerPacket {
     @Mutable
     @Accessor("onGround")
     void setOnGround(boolean onGround);
+
+    @Mutable
+    @Accessor("xRot")
+    void setXRot(float xRot);
 }
