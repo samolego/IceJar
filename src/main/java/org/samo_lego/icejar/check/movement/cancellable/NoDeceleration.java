@@ -25,7 +25,7 @@ public class NoDeceleration extends CancellableMovementCheck {
 
     @Override
     public boolean checkMovement(ServerboundMovePlayerPacket packet) {
-        if (packet.hasRotation()) {
+        if (packet.hasRotation() && this.ijp.ij$getLast2Movement() != null) {
             final var cfg = IceJar.getInstance().getConfig();
 
             final float yaw = this.player.getYRot();
@@ -43,7 +43,6 @@ public class NoDeceleration extends CancellableMovementCheck {
                     if (cfg.trainMode) {
                         cfg.movement.speed.minDeceleration = Math.min(cfg.movement.speed.minDeceleration, diff);
                     } else {
-                        //System.out.println("[IceJar] Movement difference while rotating: " + diff);
                         return this.diff >= cfg.movement.speed.minDeceleration;
                     }
                 }

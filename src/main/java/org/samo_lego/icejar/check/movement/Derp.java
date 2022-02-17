@@ -7,6 +7,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.server.level.ServerPlayer;
 import org.samo_lego.icejar.check.CheckType;
+import org.samo_lego.icejar.mixin.accessor.AServerboundMovePlayerPacket;
 
 public class Derp extends MovementCheck {
     private float xRot;
@@ -17,9 +18,10 @@ public class Derp extends MovementCheck {
 
     @Override
     public boolean checkMovement(ServerboundMovePlayerPacket packet) {
-        if (packet.hasRotation()) {
-            this.xRot = Math.abs(packet.getXRot(player.getXRot()));
-            return xRot <= 90;
+        this.xRot = Math.abs(packet.getXRot(player.getXRot()));
+        if (packet.hasRotation() && this.xRot > 90) {
+            ((AServerboundMovePlayerPacket) packet).setXRot(player.getXRot());
+            return false;
         }
         return true;
     }

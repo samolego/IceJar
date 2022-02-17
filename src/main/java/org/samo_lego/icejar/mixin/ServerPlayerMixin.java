@@ -80,7 +80,9 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
                 if (this.violationLevel > maxLevel && maxLevel > 0) {
                     // Execute action for global violation
                     config.violations.action.execute(this.player, check);
-                    config.violations.action.executeCommand(this.player, config.violations.command);
+                    if (config.violations.command != null) {
+                        config.violations.action.executeCommand(this.player, config.violations.command);
+                    }
                     this.violationLevel = 0;
                 }
             }

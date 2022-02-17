@@ -1,6 +1,6 @@
 # IceJar
-Port of  [ACR](https://github.com/Rammelkast/AntiCheatReloaded) and [NCP](https://github.com/Updated-NoCheatPlus/NoCheatPlus) anticheat checks to Fabric,
-with additional [GolfIV](https://github.com/samolego/GolfIV) stuff.
+Port of some [ACR](https://github.com/Rammelkast/AntiCheatReloaded) and [NCP](https://github.com/Updated-NoCheatPlus/NoCheatPlus) anticheat checks to Fabric,
+with additional [GolfIV](https://github.com/samolego/GolfIV) & other stuff.
 
 ## Download
 
