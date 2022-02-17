@@ -108,6 +108,8 @@ public class IceConfig implements IBrigadierConfigurator {
         @SerializedName("max_violation_level")
         public double maxViolationLevel;
         public boolean enabled;
+        @SerializedName("punish_command")
+        public String command;
 
         public CheckConfig() {
             this(500, 1, 1, -1, true);
@@ -119,6 +121,7 @@ public class IceConfig implements IBrigadierConfigurator {
             this.maxViolationLevel = maxViolationLevel;
             this.enabled = enabled;
             this.action = ActionTypes.NONE;
+            this.command = "";
         }
     }
 

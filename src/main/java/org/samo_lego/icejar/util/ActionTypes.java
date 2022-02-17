@@ -8,23 +8,29 @@ import net.minecraft.server.players.IpBanList;
 import net.minecraft.server.players.IpBanListEntry;
 import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.Check;
+import org.samo_lego.icejar.config.IceConfig;
 
 import java.util.List;
 
 public enum ActionTypes {
     BAN,
     KICK,
+    COMMAND,
     NONE;
 
     private static final MutableComponent icejarPrefix = new TextComponent("[IceJar]\n").withStyle(ChatFormatting.AQUA);
 
     public void execute(ServerPlayer pl, Check failedCheck) {
-        // todo integrate Patbox's banhammer
         switch (this) {
             case KICK -> this.disconnectInStyle(pl);
             case BAN -> this.ban(pl, failedCheck);
+            case COMMAND -> this.executeCommand(pl, failedCheck);
             default -> {}
         }
+    }
+
+    private void executeCommand(ServerPlayer player, Check failedCheck) {
+        player.getServer().getCommands().performCommand(player.getServer().createCommandSourceStack(), IceConfig.getCheckOptions(failedCheck).command);
     }
 
     private void ban(ServerPlayer player, Check failedCheck) {
