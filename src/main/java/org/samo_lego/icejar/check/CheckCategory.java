@@ -8,13 +8,13 @@ import java.util.Set;
 
 public enum CheckCategory {
     COMBAT,
-    FIXED_MOVEMENT,  // cannot be cancelled (tp-ed back)
-    MOVEMENT,  // allow canceling (tp-ing back)
+    ENTITY_INTERACT,
+    FIXED_MOVEMENT, // cannot be cancelled (tp-ed back)
+    INVENTORY,
+    MOVEMENT, // allow canceling (tp-ing back)
     PACKETS,
     VEHICLE_MOVEMENT,
-    WORLD_BLOCK_BREAK,
-    WORLD_BLOCK_INTERACT,
-    ENTITY_INTERACT, INVENTORY;
+    WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT;
 
     public static final HashMap<CheckCategory, Set<CheckType>> ALL_CHECKS = new HashMap<>();
     public static HashMap<CheckCategory, Set<CheckType>> category2checks = new HashMap<>();

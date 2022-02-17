@@ -11,16 +11,16 @@ import org.samo_lego.icejar.check.CheckType;
 
 
 /**
- * Checks for invalid deceleration of speed.
+ * Checks for invalid deceleration of speed while rotating.
  * Doesn't catch strafe.
  * Inspired by https://www.youtube.com/watch?v=-SiqszHE9rQ
  */
-public class DirectionSpeed extends CancellableMovementCheck {
+public class NoDeceleration extends CancellableMovementCheck {
 
     private double diff;
 
-    public DirectionSpeed(ServerPlayer player) {
-        super(CheckType.CMOVEMENT_DIRECTION_SPEED, player);
+    public NoDeceleration(ServerPlayer player) {
+        super(CheckType.CMOVEMENT_NO_DECELERATION, player);
     }
 
     @Override
@@ -43,6 +43,7 @@ public class DirectionSpeed extends CancellableMovementCheck {
                     if (cfg.trainMode) {
                         cfg.movement.speed.minDeceleration = Math.min(cfg.movement.speed.minDeceleration, diff);
                     } else {
+                        //System.out.println("[IceJar] Movement difference while rotating: " + diff);
                         return this.diff >= cfg.movement.speed.minDeceleration;
                     }
                 }
@@ -55,7 +56,7 @@ public class DirectionSpeed extends CancellableMovementCheck {
 
     @Override
     public MutableComponent getAdditionalFlagInfo() {
-        return new TextComponent("Movement difference while rotating: ")
-                .append(new TextComponent(String.format("%.4f", this.diff)).withStyle(ChatFormatting.RED));
+        return new TextComponent("Deceleration while rotating: ")
+                .append(new TextComponent(String.format("x * 10^-%d", (int) Math.log10(1/(this.diff)))).withStyle(ChatFormatting.RED));
     }
 }

@@ -11,9 +11,9 @@ import org.samo_lego.icejar.check.inventory.ImpossibleUse;
 import org.samo_lego.icejar.check.movement.Derp;
 import org.samo_lego.icejar.check.movement.NoFall;
 import org.samo_lego.icejar.check.movement.cancellable.BoatFly;
-import org.samo_lego.icejar.check.movement.cancellable.DirectionSpeed;
 import org.samo_lego.icejar.check.movement.cancellable.FastLadder;
 import org.samo_lego.icejar.check.movement.cancellable.ForceSaddle;
+import org.samo_lego.icejar.check.movement.cancellable.NoDeceleration;
 import org.samo_lego.icejar.check.movement.cancellable.Timer;
 import org.samo_lego.icejar.check.world.block.AirPlace;
 import org.samo_lego.icejar.check.world.block.AutoSign;
@@ -39,27 +39,27 @@ import static org.samo_lego.icejar.check.CheckCategory.WORLD_BLOCK_INTERACT;
 import static org.samo_lego.icejar.check.CheckCategory.category2checks;
 
 public enum CheckType {
-    COMBAT_CRITICAL(Critical.class, COMBAT),
-    COMBAT_IMPOSSIBLEHIT(ImpossibleHit.class, COMBAT),
-    COMBAT_ANGLE(Angle.class, COMBAT),
-    COMBAT_NOSWING(NoSwing.class, COMBAT),
-    COMBAT_REACH(Reach.class, Set.of(COMBAT, ENTITY_INTERACT)),
-
-    MOVEMENT_NOFALL(NoFall.class, FIXED_MOVEMENT),
-    MOVEMENT_DERP(Derp.class, FIXED_MOVEMENT),
-
-    VEHICLE_MOVE_BOATFLY(BoatFly.class, VEHICLE_MOVEMENT),
+    CMOVEMENT_FAST_LADDER(FastLadder.class, MOVEMENT),
+    CMOVEMENT_NO_DECELERATION(NoDeceleration.class, MOVEMENT),
     CMOVEMENT_TIMER(Timer.class, MOVEMENT),
+    COMBAT_ANGLE(Angle.class, COMBAT),
+    COMBAT_CRITICAL(Critical.class, COMBAT),
+
+    COMBAT_IMPOSSIBLEHIT(ImpossibleHit.class, COMBAT),
+    COMBAT_NOSWING(NoSwing.class, COMBAT),
+
+    COMBAT_REACH(Reach.class, Set.of(COMBAT, ENTITY_INTERACT)),
+    INVENTORY_IMPOSSIBLE_ITEM_USE(ImpossibleUse.class, INVENTORY),
+    MOVEMENT_DERP(Derp.class, FIXED_MOVEMENT),
+    MOVEMENT_NOFALL(NoFall.class, FIXED_MOVEMENT),
     SPECIAL_JESUS,
-    WORLD_BLOCK_REACH(ReachBlock.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT)),
+    VEHICLE_MOVE_BOATFLY(BoatFly.class, VEHICLE_MOVEMENT),
+    VEHICLE_MOVE_FORCE_SADDLE(ForceSaddle.class, VEHICLE_MOVEMENT, true),
     WORLD_BLOCK_AUTOSIGN(AutoSign.class, WORLD_BLOCK_INTERACT),
     WORLD_BLOCK_DIRECTION(BlockDirection.class, Set.of(WORLD_BLOCK_INTERACT, WORLD_BLOCK_BREAK)),
-    WORLD_BLOCK_PLACE_AIR(AirPlace.class, WORLD_BLOCK_INTERACT),
-    VEHICLE_MOVE_FORCE_SADDLE(ForceSaddle.class, VEHICLE_MOVEMENT, true),
-    CMOVEMENT_FAST_LADDER(FastLadder.class, MOVEMENT),
     WORLD_BLOCK_IMPOSSIBLE_ACTION(ImpossibleBlockAction.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT)),
-    INVENTORY_IMPOSSIBLE_ITEM_USE(ImpossibleUse.class, INVENTORY),
-    CMOVEMENT_DIRECTION_SPEED(DirectionSpeed.class, MOVEMENT);
+    WORLD_BLOCK_PLACE_AIR(AirPlace.class, WORLD_BLOCK_INTERACT),
+    WORLD_BLOCK_REACH(ReachBlock.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT));
 
 
     private final Class<?> checkClass;

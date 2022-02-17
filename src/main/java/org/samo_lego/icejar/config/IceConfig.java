@@ -72,7 +72,7 @@ public class IceConfig implements IBrigadierConfigurator {
 
 
         @SerializedName("report_message")
-        public String reportMessage = "Player %s was flagged for %s.";
+        public String reportMessage = "%s failed %s check.";
         @SerializedName("// Default permission lvl to send reports to, if permission is not set.")
         public final String _comment_defaultReportPermissionLevel = "";
         @SerializedName("default_report_permission_lvl")
@@ -93,7 +93,7 @@ public class IceConfig implements IBrigadierConfigurator {
         public Speed speed = new Speed();
         public static class Speed {
             public double minYawDifference = 1.5D;
-            public double minDeceleration = 3.49E-5D;
+            public double minDeceleration = 1.4E-6D;
         }
     }
 

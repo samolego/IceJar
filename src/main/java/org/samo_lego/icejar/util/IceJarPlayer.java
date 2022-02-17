@@ -19,7 +19,7 @@ import org.samo_lego.icejar.check.CheckType;
 import java.util.Map;
 
 public interface IceJarPlayer {
-    MutableComponent ID = new TextComponent("[IceJar] ").withStyle(ChatFormatting.GREEN);
+    MutableComponent ID = new TextComponent("[IJ] ").withStyle(ChatFormatting.AQUA);
     void flag(final Check check);
 
     <T extends Check> T getCheck(CheckType type);
@@ -67,7 +67,7 @@ public interface IceJarPlayer {
                 .withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + player.getGameProfile().getId().toString()))
                 .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslatableComponent("chat.coordinates.tooltip")))
         ))
-        .append(new TextComponent(" Hover for more.")
+        .append(new TextComponent(" (hover)")
                         .withStyle(ChatFormatting.ITALIC)
                         .withStyle(ChatFormatting.BLUE)
                         .withStyle(s -> s
