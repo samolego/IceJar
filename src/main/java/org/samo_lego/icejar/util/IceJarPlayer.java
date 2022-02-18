@@ -11,11 +11,13 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.Check;
 import org.samo_lego.icejar.check.CheckType;
 
+import java.util.Locale;
 import java.util.Map;
 
 public interface IceJarPlayer {
@@ -43,6 +45,12 @@ public interface IceJarPlayer {
     Vec3 ij$getLastMovement();
     Vec3 ij$getMovement();
 
+
+    void ij$setRotation(ServerboundMovePlayerPacket packet);
+    Vec2 ij$getLast2Rotation();
+    Vec2 ij$getLastRotation();
+    Vec2 ij$getRotation();
+
     void ij$setAboveLiquid(boolean aboveLiquid);
     boolean ij$aboveLiquid();
 
@@ -56,7 +64,13 @@ public interface IceJarPlayer {
         final CheckType type = failedCheck.getType();
         final MutableComponent additionalInfo = failedCheck.getAdditionalFlagInfo();
 
-        final MutableComponent report = ID.copy().append(new TranslatableComponent(reportMessage,
+        final MutableComponent report = ID.copy()
+                .withStyle(s -> s
+                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslatableComponent("Disable %s check for %s.",
+                                new TextComponent(type.toString().toLowerCase(Locale.ROOT)).withStyle(ChatFormatting.LIGHT_PURPLE),
+                                player.getName().copy().withStyle(ChatFormatting.GREEN))))
+                        .withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/lp user " + player.getGameProfile().getName() + " permission set icejar.checks.bypass." + type.toString().toLowerCase(Locale.ROOT))))
+                .append(new TranslatableComponent(reportMessage,
                 new TextComponent(player.getGameProfile().getName())
                         .withStyle(ChatFormatting.GOLD),
                 new TextComponent(type.toString().toLowerCase())

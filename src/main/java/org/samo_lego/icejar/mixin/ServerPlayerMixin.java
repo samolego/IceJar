@@ -4,6 +4,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.Check;
@@ -34,9 +36,15 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     @Unique
     private boolean ij$onGround, wasOnGround, wasLastOnGround, aboveLiquid;
     @Unique
-    private Vec3 vehicleMovement, lastVehicleMovement, lastMovement, movement, last2Movement;
+    private Vec3 vehicleMovement,
+            lastVehicleMovement,
+            lastMovement,
+            movement,
+            last2Movement;
     @Unique
     private double violationLevel;
+    @Unique
+    private Vec2 rotation, lastRotation, last2Rotation;
 
 
     @Override
@@ -166,6 +174,32 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     @Override
     public boolean ij$aboveLiquid() {
         return this.aboveLiquid;
+    }
+
+    @Override
+    public void ij$setRotation(ServerboundMovePlayerPacket packet) {
+        this.last2Rotation = this.lastRotation;
+        this.lastRotation = this.rotation;
+        this.rotation = new Vec2(Mth.wrapDegrees(packet.getYRot(this.player.getYRot())) % 360.0f,
+                                Mth.clamp(Mth.wrapDegrees(packet.getXRot(this.player.getXRot())),
+                                        -90.0F,
+                                        90.0F) %
+                                        360.0f);
+    }
+
+    @Override
+    public Vec2 ij$getLast2Rotation() {
+        return this.last2Rotation;
+    }
+
+    @Override
+    public Vec2 ij$getLastRotation() {
+        return this.lastRotation;
+    }
+
+    @Override
+    public Vec2 ij$getRotation() {
+        return this.rotation;
     }
 
     @Override
