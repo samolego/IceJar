@@ -10,6 +10,7 @@ import org.samo_lego.icejar.check.combat.Reach;
 import org.samo_lego.icejar.check.inventory.ImpossibleUse;
 import org.samo_lego.icejar.check.movement.Derp;
 import org.samo_lego.icejar.check.movement.NoFall;
+import org.samo_lego.icejar.check.movement.SmoothYaw;
 import org.samo_lego.icejar.check.movement.cancellable.BoatFly;
 import org.samo_lego.icejar.check.movement.cancellable.FastLadder;
 import org.samo_lego.icejar.check.movement.cancellable.ForceSaddle;
@@ -52,6 +53,7 @@ public enum CheckType {
     INVENTORY_IMPOSSIBLE_ITEM_USE(ImpossibleUse.class, INVENTORY),
     MOVEMENT_DERP(Derp.class, FIXED_MOVEMENT),
     MOVEMENT_NOFALL(NoFall.class, FIXED_MOVEMENT),
+    MOVEMENT_SMOOTH_ROTATION(SmoothYaw.class, FIXED_MOVEMENT),
     SPECIAL_JESUS,
     VEHICLE_MOVE_BOATFLY(BoatFly.class, VEHICLE_MOVEMENT),
     VEHICLE_MOVE_FORCE_SADDLE(ForceSaddle.class, VEHICLE_MOVEMENT, true),
