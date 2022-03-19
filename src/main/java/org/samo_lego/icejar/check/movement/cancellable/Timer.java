@@ -31,7 +31,7 @@ public class Timer extends CancellableMovementCheck {
             if(lastTime != 0) {
                 this.packetRate += (50 + lastTime - currentPacketTime);
 
-                if (config.trainMode) {
+                if (this.trainModeActive()) {
                     config.movement.timerThreshold = Math.max(config.movement.timerThreshold, this.packetRate);
                 } else if (this.packetRate > config.movement.timerThreshold) {
                     this.packetRate = 0;

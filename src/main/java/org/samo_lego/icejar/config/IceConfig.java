@@ -118,6 +118,8 @@ public class IceConfig implements IBrigadierConfigurator {
         public final String _comment_command1 = "";
         @SerializedName("punish_command")
         public String command;
+        @SerializedName("train_mode")
+        public boolean trainMode;
 
         public CheckConfig() {
             this(500, 1, 1, -1, true);
@@ -130,6 +132,7 @@ public class IceConfig implements IBrigadierConfigurator {
             this.enabled = enabled;
             this.action = ActionTypes.NONE;
             this.command = null;
+            this.trainMode = false;
         }
     }
 
@@ -159,7 +162,16 @@ public class IceConfig implements IBrigadierConfigurator {
             "If you have great power, you should\n use it with even greater responsibility."
     ));
 
+    @SerializedName("// Whether to 'learn' valid values from the clients connected. E.g. max speed, vehicle speed, etc.")
+    public final String _comment_trainMode0 = "";
+    @SerializedName("// WARNING: Use for testing purposes only. Do not use in production.")
+    public final String _comment_trainMode1 = "";
+    @SerializedName("universal_train_mode")
     public boolean trainMode = true;
+
+    @SerializedName("// Whether to still report failed checks but not prevent them.")
+    public final String _comment_debug = "";
+    @SerializedName("universal_debug_mode")
     public boolean debug = true;
 
     /**

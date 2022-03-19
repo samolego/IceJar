@@ -27,7 +27,7 @@ public class BoatFly extends CancellableVehicleMovementCheck {
         if (lastVM == null || vm == null)
             return true;
 
-        if (IceJar.getInstance().getConfig().trainMode) {
+        if (this.trainModeActive()) {
             IceJar.getInstance().getConfig().movement.vehicleYThreshold = Math.max(IceJar.getInstance().getConfig().movement.vehicleYThreshold, vm.y() - lastVM.y());
         }
         Vec3 nMove = new Vec3(packet.getX(), packet.getY(), packet.getZ());

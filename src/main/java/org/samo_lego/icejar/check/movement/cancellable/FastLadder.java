@@ -41,7 +41,7 @@ public class FastLadder extends CancellableMovementCheck {
 
         this.deltaY = packet.getY(player.getY()) - lastMovement.y;
 
-        if (cf.trainMode) {
+        if (this.trainModeActive()) {
             if (deltaY > maxUp) {
                 cf.movement.ladder.speedUpMax = deltaY;
             } else if (deltaY < maxDown) {

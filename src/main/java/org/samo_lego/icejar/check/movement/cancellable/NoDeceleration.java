@@ -40,7 +40,7 @@ public class NoDeceleration extends CancellableMovementCheck {
                     final double xzDeltaPrev = this.ijp.ij$getLastMovement().subtract(this.ijp.ij$getLast2Movement()).horizontalDistance();
                     this.diff = Math.abs(xzDelta - xzDeltaPrev);
 
-                    if (cfg.trainMode) {
+                    if (this.trainModeActive()) {
                         cfg.movement.speed.minDeceleration = Math.min(cfg.movement.speed.minDeceleration, diff);
                     } else {
                         return this.diff >= cfg.movement.speed.minDeceleration;
