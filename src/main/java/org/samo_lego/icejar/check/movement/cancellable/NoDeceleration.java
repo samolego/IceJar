@@ -13,7 +13,7 @@ import org.samo_lego.icejar.check.CheckType;
 /**
  * Checks for invalid deceleration of speed while rotating.
  * Doesn't catch strafe.
- * Inspired by https://www.youtube.com/watch?v=-SiqszHE9rQ
+ * Inspired by <a href="https://www.youtube.com/watch?v=-SiqszHE9rQ">https://www.youtube.com/watch?v=-SiqszHE9rQ</a>
  */
 public class NoDeceleration extends CancellableMovementCheck {
 
@@ -25,11 +25,13 @@ public class NoDeceleration extends CancellableMovementCheck {
 
     @Override
     public boolean checkMovement(ServerboundMovePlayerPacket packet) {
-        if (packet.hasRotation() && this.ijp.ij$getLast2Movement() != null) {
+        if (packet.hasRotation() && this.ijp.ij$getLast2Movement() != null && !this.player.isPassenger()) {
             final var cfg = IceJar.getInstance().getConfig();
 
             final float yaw = this.player.getYRot();
-            final double yawDiff = Math.abs(yaw - Mth.wrapDegrees(packet.getYRot(yaw)));
+            // wrapDegrees returns an angle between -180 and 180
+            final float packetYaw = Mth.wrapDegrees(packet.getYRot(yaw));
+            final double yawDiff = Math.abs(yaw - packetYaw);
 
             // Activate only if yaw difference is bigger than config
             if (yawDiff > cfg.movement.speed.minYawDifference) {
