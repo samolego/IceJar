@@ -25,7 +25,7 @@ public class NoDeceleration extends CancellableMovementCheck {
 
     @Override
     public boolean checkMovement(ServerboundMovePlayerPacket packet) {
-        if (packet.hasRotation() && this.ijp.ij$getLast2Movement() != null && !this.player.isPassenger()) {
+        if (packet.hasRotation() && this.ijp.ij$getLast2Movement() != null && !this.player.isPassenger() && !player.isFallFlying()) {
             final var cfg = IceJar.getInstance().getConfig();
 
             final float yaw = this.player.getYRot();
