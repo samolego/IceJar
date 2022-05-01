@@ -2,9 +2,8 @@
   "schemaVersion": 1,
   "id": "icejar",
   "version": "${version}",
-
   "name": "IceJar",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "Fabric port of some NoCheatPlus & AntiCheatReloaded checks, additional GolfIV stuff and more.",
   "authors": [
     "xaw3ep",
     "Lysandr0",
@@ -35,6 +34,5 @@
     "java": ">=17"
   },
   "suggests": {
-    "another-mod": "*"
   }
 }
