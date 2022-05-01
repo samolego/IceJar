@@ -9,6 +9,13 @@ You can however play with it and test it at your own risk.
 Download the latest version from [CircleCI](https://app.circleci.com/pipelines/github/samolego/IceJar)
 (navigate to latest build and click the "artifacts" tab).
 
+**Please report false positives for checks that cannot be configured.**
+
+Also, currently there's no special mod compatibility system, so please avoid
+reporting false positives that are a result of mod incompatibility.
+
+Thanks :)
+
 ## Features
 
 * When blocking some sorts of hacks, fake info is sent to player
