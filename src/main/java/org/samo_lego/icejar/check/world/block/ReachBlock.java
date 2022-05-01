@@ -21,7 +21,7 @@ public class ReachBlock extends BlockCheck {
 
     @Override
     public boolean checkBlockAction(final Level level, final InteractionHand interactionHand, final BlockPos blockPos, final Direction direction) {
-        this.distance = player.getEyePosition().distanceToSqr(Vec3.atCenterOf(blockPos));
+        this.distance = player.getEyePosition().distanceTo(Vec3.atCenterOf(blockPos));
         final double maxDist = IceJar.getInstance().getConfig().world.maxBlockReachDistance;
 
         return this.distance <= maxDist;
