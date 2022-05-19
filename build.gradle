@@ -33,10 +33,18 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	[
+			"fabric-api-base",
+			"fabric-command-api-v1",
+			"fabric-lifecycle-events-v1",
+			"fabric-entity-events-v1",
+			"fabric-events-interaction-v0"
+	].forEach {
+		include(modImplementation(fabricApi.module(it, project.fabric_version)))
+	}
 
 	modImplementation(include("me.lucko:fabric-permissions-api:0.1-SNAPSHOT"))
-	modImplementation include('com.github.samolego.Config2Brigadier:config2brigadier-fabric:bd3564bccb')
+	modImplementation include('com.github.samolego.Config2Brigadier:config2brigadier-fabric:1.1.2')
 }
 
 processResources {

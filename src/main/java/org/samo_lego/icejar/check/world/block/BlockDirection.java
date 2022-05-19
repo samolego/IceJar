@@ -3,9 +3,8 @@ package org.samo_lego.icejar.check.world.block;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.Level;
@@ -71,8 +70,8 @@ public class BlockDirection extends BlockCheck {
 
     @Override
     public MutableComponent getAdditionalFlagInfo() {
-        return new TranslatableComponent("Looking: %s\nBlock: %s",
-                new TextComponent(this.lookingDirection.getName()).withStyle(ChatFormatting.GREEN),
-                new TextComponent(this.blockDirection.getName()).withStyle(ChatFormatting.RED));
+        return Component.translatable("Looking: %s\nBlock: %s",
+                Component.translatable(this.lookingDirection.getName()).withStyle(ChatFormatting.GREEN),
+                Component.translatable(this.blockDirection.getName()).withStyle(ChatFormatting.RED));
     }
 }

@@ -5,7 +5,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import org.samo_lego.icejar.IceJar;
 
 import static net.minecraft.commands.Commands.literal;
@@ -30,7 +30,7 @@ public class IceJarCommand {
 
     private static int saveConfig(CommandContext<CommandSourceStack> context) {
         IceJar.getInstance().getConfig().save();
-        context.getSource().sendSuccess(new TranslatableComponent("gui.done").withStyle(ChatFormatting.GREEN), true);
+        context.getSource().sendSuccess(Component.translatable("gui.done").withStyle(ChatFormatting.GREEN), true);
 
         return 1;
     }
@@ -38,7 +38,7 @@ public class IceJarCommand {
 
     private static int reloadConfig(CommandContext<CommandSourceStack> context) {
         IceJar.getInstance().getConfig().reload(IceJar.getInstance().getConfigFile());
-        context.getSource().sendSuccess(new TranslatableComponent("gui.done").withStyle(ChatFormatting.GREEN), true);
+        context.getSource().sendSuccess(Component.translatable("gui.done").withStyle(ChatFormatting.GREEN), true);
 
         return 1;
     }

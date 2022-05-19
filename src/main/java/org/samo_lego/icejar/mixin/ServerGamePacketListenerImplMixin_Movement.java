@@ -71,7 +71,7 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
             ci.cancel();
         } else {
             if (++this.ij$validTickCount >= 50) {
-                this.lastValidSpot = this.player.getPacketCoordinates();
+                this.lastValidSpot = new Vec3(packet.getX(player.getX()), packet.getY(player.getY()), packet.getZ(player.getZ()));
             }
         }
     }
