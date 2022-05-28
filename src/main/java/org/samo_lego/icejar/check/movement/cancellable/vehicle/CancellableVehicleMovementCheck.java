@@ -1,4 +1,4 @@
-package org.samo_lego.icejar.check.movement.cancellable;
+package org.samo_lego.icejar.check.movement.cancellable.vehicle;
 
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;

@@ -31,7 +31,6 @@ public class NoFall extends MovementCheck {
         final boolean onGround = checkOnGround(this.player, packet.getY(this.player.getY()) - player.getY(), true);
         if (packet.isOnGround()) {
             IceJarPlayer ij = (IceJarPlayer) this.player;
-            ij.ij$updateGroundStatus();
             ij.ij$setOnGround(onGround);
 
             // Player isn't on ground but client packet says it is

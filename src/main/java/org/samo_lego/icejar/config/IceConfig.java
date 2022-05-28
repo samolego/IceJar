@@ -90,6 +90,8 @@ public class IceConfig implements IBrigadierConfigurator {
 
         public float entityControlDifference = 0.5F;
         public EntityControlProperties entityControl = new EntityControlProperties();
+        public short maxAirTicks = 10;
+
         public static class EntityControlProperties {
             public double diffY = 0D;
             public double diffX = 0D;

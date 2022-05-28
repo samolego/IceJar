@@ -1,4 +1,4 @@
-package org.samo_lego.icejar.check.movement.cancellable;
+package org.samo_lego.icejar.check.movement.cancellable.vehicle;
 
 import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,7 +18,7 @@ public class EntityControl extends CancellableVehicleMovementCheck {
 
     @Override
     public boolean checkVehicleMovement(ServerboundMoveVehiclePacket packet, Entity vehicle) {
-        if (player.getVehicle() instanceof Saddleable sd && !sd.isSaddled() && sd instanceof Mob mob) {
+        if (vehicle instanceof Saddleable sd && !sd.isSaddled() && sd instanceof Mob mob) {
             final float diffY = Math.abs(packet.getYRot() - mob.getYRot()) % 360.0f;
 
             // We check mob's goals, if they are empty, player shouldn't be controlling it.

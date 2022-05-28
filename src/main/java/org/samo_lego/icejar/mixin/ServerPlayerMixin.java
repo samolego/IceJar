@@ -85,9 +85,13 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
                 this.violationLevel += (newLvl - prevLvl) / category2checks.keySet().size();
                 final IceConfig config = IceJar.getInstance().getConfig();
                 final double maxLevel = config.violations.maxLevel;
+
                 if (this.violationLevel > maxLevel && maxLevel > 0) {
                     // Execute action for global violation
-                    config.violations.action.execute(this.player, check);
+                    if (!IceJar.getInstance().getConfig().debug) {
+                        check.executeAction();
+                    }
+
                     if (config.violations.command != null) {
                         config.violations.action.executeCommand(this.player, config.violations.command);
                     }
@@ -124,6 +128,7 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
 
     @Override
     public void ij$updateGroundStatus() {
+        this.ij$onGround = this.player.isOnGround();
         this.wasLastOnGround = this.wasOnGround;
         this.wasOnGround = this.ij$onGround;
     }
