@@ -11,6 +11,7 @@ import org.samo_lego.icejar.check.inventory.ImpossibleUse;
 import org.samo_lego.icejar.check.movement.Derp;
 import org.samo_lego.icejar.check.movement.NoFall;
 import org.samo_lego.icejar.check.movement.cancellable.BoatFly;
+import org.samo_lego.icejar.check.movement.cancellable.EntityControl;
 import org.samo_lego.icejar.check.movement.cancellable.FastLadder;
 import org.samo_lego.icejar.check.movement.cancellable.NoDeceleration;
 import org.samo_lego.icejar.check.movement.cancellable.Timer;
@@ -58,7 +59,8 @@ public enum CheckType {
     WORLD_BLOCK_DIRECTION(BlockDirection.class, Set.of(WORLD_BLOCK_INTERACT, WORLD_BLOCK_BREAK)),
     WORLD_BLOCK_IMPOSSIBLE_ACTION(ImpossibleBlockAction.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT)), WORLD_BLOCK_PLACE_AIR(AirPlace.class, WORLD_BLOCK_INTERACT),
     WORLD_BLOCK_REACH(ReachBlock.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT)),
-    CMOVEMENT_ROTATION(WrongRotation.class, MOVEMENT);
+    CMOVEMENT_ROTATION(WrongRotation.class, MOVEMENT),
+    VEHICLE_MOVE_ENTITY_CONTROL(EntityControl.class, VEHICLE_MOVEMENT);
 
     private final Class<?> checkClass;
 

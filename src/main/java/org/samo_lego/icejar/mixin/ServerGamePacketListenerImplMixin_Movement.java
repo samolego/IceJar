@@ -84,7 +84,7 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
         final Entity vh = this.player.getRootVehicle();
         boolean canMove = CancellableVehicleMovementCheck.performCheck(player, packet, vh);
 
-        if (!canMove) {
+        if (!canMove && !IceJar.getInstance().getConfig().debug) {
             //todo
             // dismount?
             player.stopRiding();

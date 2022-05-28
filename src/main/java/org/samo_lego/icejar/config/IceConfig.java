@@ -88,8 +88,16 @@ public class IceConfig implements IBrigadierConfigurator {
         public long timerThreshold = 250L;
         public double vehicleYThreshold = 0D;
 
+        public float entityControlDifference = 0.5F;
+        public EntityControlProperties entityControl = new EntityControlProperties();
+        public static class EntityControlProperties {
+            public double diffY = 0D;
+            public double diffX = 0D;
+        }
+
         public double maxRotationDiff = 110D;
         public Ladder ladder = new Ladder();
+
 
         public static class Ladder {
             public double speedUpMax = 0.12D;

@@ -79,7 +79,7 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
             final double prevLvl = check.getViolationLevel();
             final double newLvl = check.increaseViolationLevel();
             final double max = check.getMaxViolationLevel();
-            if (newLvl > max && max > 0) {
+            if (newLvl > max && max > 0 && !IceJar.getInstance().getConfig().debug) {
                 check.executeAction();
             } else {
                 this.violationLevel += (newLvl - prevLvl) / category2checks.keySet().size();

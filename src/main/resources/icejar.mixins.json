@@ -7,6 +7,7 @@
     "ServerGamePacketListenerImplMixin_Movement",
     "ServerPlayerMixin",
     "accessor.ALivingEntity",
+    "accessor.AMob",
     "accessor.APlayer",
     "accessor.AServerboundMovePlayerPacket",
     "accessor.ASignBlockEntity",
