@@ -57,6 +57,7 @@ public class IceConfig implements IBrigadierConfigurator {
 
     public static class World {
         public double maxBlockReachDistance = 6.0D;
+        public double direction = 0.8D;
     }
 
     @SerializedName("// Global violation settings")

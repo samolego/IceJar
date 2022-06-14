@@ -8,6 +8,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.Level;
+import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.CheckType;
 
 public class BlockDirection extends BlockCheck {
@@ -21,28 +22,36 @@ public class BlockDirection extends BlockCheck {
     @Override
     public boolean checkBlockAction(Level level, InteractionHand hand, BlockPos blockPos, Direction direction) {
         // East and West
-        final double deltaX = blockPos.getX() - player.getX();
         this.blockDirection = direction;
-
-        // North and South
-        final double deltaZ = blockPos.getZ() - player.getZ();
-
-        if (deltaZ > 0.7D && direction.equals(Direction.SOUTH)) {
-            this.lookingDirection = Direction.SOUTH;
-            return false;
-        }
 
         // Y deltas
         final double deltaY = blockPos.getY() - player.getEyeY();
 
+        final var cfg = IceJar.getInstance().getConfig().world;
+
         // Facing down but interacting with up
-        if (player.getXRot() > 0.0F && (deltaY > 0.8D || direction.equals(Direction.DOWN))) {
+        if (player.getXRot() > 0.0F && (deltaY > cfg.direction || direction.equals(Direction.DOWN))) {
+            if (this.trainModeActive() && deltaY > cfg.direction) {
+                cfg.direction = deltaY;
+                return true;
+            }
+
             this.lookingDirection = Direction.DOWN;
             return false;
         }
 
-        this.lookingDirection = Direction.UP;
-        return !(player.getXRot() < 0.0F) || (!(deltaY < -0.8D) && !direction.equals(Direction.UP));
+
+        if (player.getXRot() < 0.0F && (deltaY < -cfg.direction || direction.equals(Direction.UP))) {
+            if (this.trainModeActive() && deltaY < -cfg.direction) {
+                cfg.direction = -deltaY;
+                return true;
+            }
+
+            this.lookingDirection = Direction.UP;
+            return false;
+        }
+
+        return true;
     }
 
     @Override
