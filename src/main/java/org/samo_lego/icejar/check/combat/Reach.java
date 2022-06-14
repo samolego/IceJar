@@ -1,8 +1,8 @@
 package org.samo_lego.icejar.check.combat;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -33,8 +33,8 @@ public class Reach extends CombatCheck {
 
     @Override
     public MutableComponent getAdditionalFlagInfo() {
-        return new TextComponent("Distance: ")
-                .append(new TextComponent(String.format("%.2f", this.victimDistance)).withStyle(ChatFormatting.RED));
+        return Component.literal("Distance: ")
+                .append(Component.literal(String.format("%.2f", this.victimDistance)).withStyle(ChatFormatting.RED));
     }
 
     /**

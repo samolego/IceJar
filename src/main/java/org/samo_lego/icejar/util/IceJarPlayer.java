@@ -4,10 +4,9 @@ package org.samo_lego.icejar.util;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,7 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public interface IceJarPlayer {
-    MutableComponent ID = new TextComponent("[IJ] ").withStyle(ChatFormatting.AQUA);
+    MutableComponent ID = Component.literal("[IJ] ").withStyle(ChatFormatting.AQUA);
     void flag(final Check check);
 
     <T extends Check> T getCheck(CheckType type);
@@ -66,30 +65,30 @@ public interface IceJarPlayer {
 
         final MutableComponent report = ID.copy()
                 .withStyle(s -> s
-                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslatableComponent("Disable %s check for %s.",
-                                new TextComponent(type.toString().toLowerCase(Locale.ROOT)).withStyle(ChatFormatting.LIGHT_PURPLE),
+                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.translatable("Disable %s check for %s.",
+                                Component.literal(type.toString().toLowerCase(Locale.ROOT)).withStyle(ChatFormatting.LIGHT_PURPLE),
                                 player.getName().copy().withStyle(ChatFormatting.GREEN))))
                         .withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/lp user " + player.getGameProfile().getName() + " permission set icejar.checks.bypass." + type.toString().toLowerCase(Locale.ROOT))))
-                .append(new TranslatableComponent(reportMessage,
-                new TextComponent(player.getGameProfile().getName())
+                .append(Component.translatable(reportMessage,
+                Component.literal(player.getGameProfile().getName())
                         .withStyle(ChatFormatting.GOLD),
-                new TextComponent(type.toString().toLowerCase())
+                Component.literal(type.toString().toLowerCase())
                         .withStyle(ChatFormatting.YELLOW)
         )
         .withStyle(ChatFormatting.GRAY)
         .withStyle(s -> s
                 .withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + player.getGameProfile().getId().toString()))
-                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslatableComponent("chat.coordinates.tooltip")))
+                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.translatable("chat.coordinates.tooltip")))
         ))
-        .append(new TextComponent(" (hover)")
+        .append(Component.literal(" (hover)")
                         .withStyle(ChatFormatting.ITALIC)
                         .withStyle(ChatFormatting.BLUE)
                         .withStyle(s -> s
                             .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                    new TranslatableComponent("Violation level: %s\nCheck violation level: %s",
-                                            new TextComponent(String.format("%.2f", ((IceJarPlayer) player).ij$getViolationLevel()))
+                                    Component.translatable("Violation level: %s\nCheck violation level: %s",
+                                            Component.literal(String.format("%.2f", ((IceJarPlayer) player).ij$getViolationLevel()))
                                                     .withStyle(ChatFormatting.GOLD),
-                                            new TextComponent(String.format("%.2f", failedCheck.getViolationLevel()))
+                                            Component.literal(String.format("%.2f", failedCheck.getViolationLevel()))
                                                     .withStyle(ChatFormatting.YELLOW)
                                     )
                                     .append(additionalInfo.getString().isEmpty() ? "" : "\n")
@@ -100,7 +99,7 @@ public interface IceJarPlayer {
 
         player.getServer().getPlayerList().getPlayers().forEach(p -> {
             if (Permissions.check(p, type.getReportPermission(), p.hasPermissions(4))) {
-                p.sendMessage(report, player.getUUID());
+                p.sendSystemMessage(report);
             }
         });
     }

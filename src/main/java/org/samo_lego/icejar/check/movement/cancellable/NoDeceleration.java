@@ -1,8 +1,8 @@
 package org.samo_lego.icejar.check.movement.cancellable;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -57,7 +57,7 @@ public class NoDeceleration extends CancellableMovementCheck {
 
     @Override
     public MutableComponent getAdditionalFlagInfo() {
-        return new TextComponent("Deceleration while rotating: ")
-                .append(new TextComponent(String.format("x * 10^-%d", (int) Math.log10(1/(this.diff)))).withStyle(ChatFormatting.RED));
+        return Component.literal("Deceleration while rotating: ")
+                .append(Component.literal(String.format("x * 10^-%d", (int) Math.log10(1/(this.diff)))).withStyle(ChatFormatting.RED));
     }
 }

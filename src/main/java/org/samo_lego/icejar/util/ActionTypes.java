@@ -1,8 +1,8 @@
 package org.samo_lego.icejar.util;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.IpBanList;
 import net.minecraft.server.players.IpBanListEntry;
@@ -20,7 +20,7 @@ public enum ActionTypes {
     KICK,
     NONE;
 
-    private static final MutableComponent icejarPrefix = new TextComponent("[IceJar]\n").withStyle(ChatFormatting.AQUA);
+    private static final MutableComponent icejarPrefix = Component.literal("[IceJar]\n").withStyle(ChatFormatting.AQUA);
 
     public void execute(ServerPlayer pl, Check failedCheck) {
         switch (this) {
@@ -78,11 +78,11 @@ public enum ActionTypes {
     private void disconnectInStyle(ServerPlayer player) {
         final List<String> kickMessages = IceJar.getInstance().getConfig().kickMessages;
         final String msg = kickMessages.get(player.getRandom().nextInt(kickMessages.size()));
-        player.connection.disconnect(icejarPrefix.copy().append(new TextComponent(msg).withStyle(ChatFormatting.GREEN)));
+        player.connection.disconnect(icejarPrefix.copy().append(Component.literal(msg).withStyle(ChatFormatting.GREEN)));
     }
 
 
     private void disconnectInStyle(ServerPlayer player, String msg) {
-        player.connection.disconnect(icejarPrefix.copy().append(new TextComponent(msg).withStyle(ChatFormatting.GREEN)));
+        player.connection.disconnect(icejarPrefix.copy().append(Component.literal(msg).withStyle(ChatFormatting.GREEN)));
     }
 }

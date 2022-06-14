@@ -2,8 +2,8 @@ package org.samo_lego.icejar.check.world.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.Level;
@@ -26,13 +26,13 @@ public class ImpossibleBlockAction extends BlockCheck {
 
     @Override
     public MutableComponent getAdditionalFlagInfo() {
-        return new TextComponent("GUI open: ")
+        return Component.literal("GUI open: ")
                 .append(styleBoolean(((IceJarPlayer) player).ij$hasOpenGui()))
                 .append("\n")
-                .append(new TextComponent("Using item: ")
+                .append(Component.literal("Using item: ")
                         .append(styleBoolean(player.isUsingItem())))
                 .append("\n")
-                .append(new TextComponent("Blocking: ")
+                .append(Component.literal("Blocking: ")
                         .append(styleBoolean(player.isBlocking())));
     }
 

@@ -1,7 +1,7 @@
 package org.samo_lego.icejar.check.combat;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.game.ClientboundAnimatePacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -72,10 +72,10 @@ public class Critical extends CombatCheck {
 
     @Override
     public MutableComponent getAdditionalFlagInfo() {
-        return new TextComponent("Standing in: ")
+        return Component.literal("Standing in: ")
                 .append(player.getFeetBlockState().getBlock().getName())
                 .append("\n")
-                .append(new TextComponent("y mod 1: ")
+                .append(Component.literal("y mod 1: ")
                 .append(String.format("%.2f", player.getY() % 1.0d)));
 
     }

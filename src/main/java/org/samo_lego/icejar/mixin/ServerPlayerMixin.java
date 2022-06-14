@@ -128,7 +128,6 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
 
     @Override
     public void ij$updateGroundStatus() {
-        this.ij$onGround = this.player.isOnGround();
         this.wasLastOnGround = this.wasOnGround;
         this.wasOnGround = this.ij$onGround;
     }

@@ -51,7 +51,6 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
     private void onPlayerMove(ServerboundMovePlayerPacket packet, CallbackInfo ci) {
         ((IceJarPlayer) player).ij$setMovement(packet);
         ((IceJarPlayer) player).ij$setRotation(packet);
-        ((IceJarPlayer) player).ij$updateGroundStatus();
         // Movement check only returns false if Jesus hack is active, while CMovementCheck returns false if any check fails.
         boolean valid = MovementCheck.performCheck(player, packet) && CancellableMovementCheck.performCheck(player, packet);
 
@@ -72,7 +71,7 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
             ci.cancel();
         } else {
             if (++this.ij$validTickCount >= 50) {
-                this.lastValidSpot = this.player.getPacketCoordinates();
+                this.lastValidSpot = this.player.position();
             }
         }
     }

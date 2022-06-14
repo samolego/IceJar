@@ -1,9 +1,8 @@
 package org.samo_lego.icejar.check.movement.cancellable;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
@@ -56,10 +55,10 @@ public class FastLadder extends CancellableMovementCheck {
 
     @Override
     public MutableComponent getAdditionalFlagInfo() {
-        return new TextComponent("Direction: ")
-                .append(new TranslatableComponent("gui." + (this.deltaY < 0 ? "down" : "up"))
+        return Component.literal("Direction: ")
+                .append(Component.translatable("gui." + (this.deltaY < 0 ? "down" : "up"))
                         .withStyle(ChatFormatting.GREEN))
                 .append("\nMovement delta: ")
-                .append(new TextComponent(String.format("%.2f", deltaY)).withStyle(ChatFormatting.RED));
+                .append(Component.literal(String.format("%.2f", deltaY)).withStyle(ChatFormatting.RED));
     }
 }

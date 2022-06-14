@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.11-SNAPSHOT'
+	id 'fabric-loom' version '0.12-SNAPSHOT'
 	id 'io.github.juuxel.loom-quiltflower' version '1.7.1'
 	id 'maven-publish'
 }
@@ -26,17 +26,20 @@ repositories {
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings loom.layered() {
+
+	mappings loom.layered {
+		//mappings("net.fabricmc:yarn:$project.yarn_mappings:v2")
 		officialMojangMappings()
-		parchment("org.parchmentmc.data:parchment-1.18.2:2022.03.13@zip")
 	}
+
+
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation(include("me.lucko:fabric-permissions-api:0.1-SNAPSHOT"))
-	modImplementation include('com.github.samolego.Config2Brigadier:config2brigadier-fabric:bd3564bccb')
+	modImplementation include("com.github.samolego.Config2Brigadier:config2brigadier-fabric:${project.c2b_version}")
 }
 
 processResources {

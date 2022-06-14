@@ -30,12 +30,12 @@ public class NoFall extends MovementCheck {
         boolean pass = true;
         final boolean onGround = checkOnGround(this.player, packet.getY(this.player.getY()) - player.getY(), true);
         if (packet.isOnGround()) {
-            IceJarPlayer ij = (IceJarPlayer) this.player;
-            ij.ij$setOnGround(onGround);
+            ijp.ij$updateGroundStatus();
+            ijp.ij$setOnGround(onGround);
 
             // Player isn't on ground but client packet says it is
-            if (!ij.ij$nearGround()) {
-                this.setJesus(ij.ij$aboveLiquid() && !Permissions.check(player, SPECIAL_JESUS.getBypassPermission(), false));
+            if (!ijp.ij$nearGround()) {
+                this.setJesus(ijp.ij$aboveLiquid() && !Permissions.check(player, SPECIAL_JESUS.getBypassPermission(), false));
                 pass = false;
             } else {
                 this.decreaseCheatAttempts();

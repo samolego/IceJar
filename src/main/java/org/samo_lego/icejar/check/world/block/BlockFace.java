@@ -10,39 +10,52 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.Level;
 import org.samo_lego.icejar.check.CheckType;
 
-public class BlockDirection extends BlockCheck {
+public class BlockFace extends BlockCheck {
     private Direction blockDirection;
     private Direction lookingDirection;
 
-    public BlockDirection(ServerPlayer player) {
-        super(CheckType.WORLD_BLOCK_DIRECTION, player);
+    public BlockFace(ServerPlayer player) {
+        super(CheckType.WORLD_BLOCK_FACE, player);
     }
 
     @Override
     public boolean checkBlockAction(Level level, InteractionHand hand, BlockPos blockPos, Direction direction) {
+        if (player.getDirection().equals(direction)) {
+            this.lookingDirection = player.getDirection();
+            this.blockDirection = direction;
+            return false;
+        }
+
         // East and West
         final double deltaX = blockPos.getX() - player.getX();
         this.blockDirection = direction;
 
+        // Facing W / NW / SW *AND* interacting with W
+        if (deltaX < -0.7D && direction.equals(Direction.WEST)) {
+            this.lookingDirection = Direction.WEST;
+            return false;
+        }
+        // Facing E / NE / SE *AND* interacting with E
+        if (deltaX > 0.7D && direction.equals(Direction.EAST)) {
+            this.lookingDirection = Direction.EAST;
+            return false;
+        }
+
         // North and South
         final double deltaZ = blockPos.getZ() - player.getZ();
+
+        // Facing N / NE / NW *AND* interacting with N
+        if (deltaZ < -0.7D && direction.equals(Direction.NORTH)) {
+            this.lookingDirection = Direction.NORTH;
+            return false;
+        }
 
         if (deltaZ > 0.7D && direction.equals(Direction.SOUTH)) {
             this.lookingDirection = Direction.SOUTH;
             return false;
         }
 
-        // Y deltas
-        final double deltaY = blockPos.getY() - player.getEyeY();
-
-        // Facing down but interacting with up
-        if (player.getXRot() > 0.0F && (deltaY > 0.8D || direction.equals(Direction.DOWN))) {
-            this.lookingDirection = Direction.DOWN;
-            return false;
-        }
-
-        this.lookingDirection = Direction.UP;
-        return !(player.getXRot() < 0.0F) || (!(deltaY < -0.8D) && !direction.equals(Direction.UP));
+        return true;
     }
 
     @Override

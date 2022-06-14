@@ -1,8 +1,8 @@
 package org.samo_lego.icejar.check.movement.cancellable;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -42,7 +42,7 @@ public class WrongRotation extends CancellableMovementCheck {
 
     @Override
     public MutableComponent getAdditionalFlagInfo() {
-        return new TextComponent("Rotation difference: ")
-                .append(new TextComponent(String.format("%.2f", this.diff)).withStyle(ChatFormatting.RED));
+        return Component.literal("Rotation difference: ")
+                .append(Component.literal(String.format("%.2f", this.diff)).withStyle(ChatFormatting.RED));
     }
 }
