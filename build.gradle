@@ -11,10 +11,6 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-	// Parchment maven
-	maven {
-		url = "https://maven.parchmentmc.org"
-	}
 	maven { url 'https://jitpack.io' }
 	maven {
 		name = "LuckPerms Maven"
@@ -27,7 +23,7 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 
 	mappings loom.layered {
-		//addLayer "net.fabricmc:yarn:$project.yarn_mappings:v2"
+		//mappings("net.fabricmc:yarn:$project.yarn_mappings:v2")
 		officialMojangMappings()
 	}
 

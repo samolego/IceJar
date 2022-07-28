@@ -49,7 +49,7 @@ public abstract class ServerGamePacketListenerImplMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/SignBlockEntity;isEditable()Z"),
             locals = LocalCapture.CAPTURE_FAILHARD,
             cancellable = true)
-    private void onSignUpdate(ServerboundSignUpdatePacket packet, List<FilteredText<String>> signText, CallbackInfo ci,
+    private void onSignUpdate(ServerboundSignUpdatePacket packet, List<FilteredText> signText, CallbackInfo ci,
                               ServerLevel level, BlockPos pos, BlockState state, BlockEntity blockEntity) {
         if (WORLD_BLOCK_AUTOSIGN.isEnabled()) {
             if (!((IceJarPlayer) this.player).getCheck(AutoSign.class).allowPlace(packet)) {

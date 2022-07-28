@@ -41,7 +41,7 @@ public enum ActionTypes {
         valuesMap.put("ip", player.getIpAddress());
         StrSubstitutor sub = new StrSubstitutor(valuesMap);
 
-        player.getServer().getCommands().performCommand(player.getServer().createCommandSourceStack(),
+        player.getServer().getCommands().performPrefixedCommand(player.getServer().createCommandSourceStack(),
                 sub.replace(command));
 
     }
@@ -54,7 +54,7 @@ public enum ActionTypes {
         valuesMap.put("check", failedCheck.getType().toString().toLowerCase(Locale.ROOT));
         StrSubstitutor sub = new StrSubstitutor(valuesMap);
 
-        player.getServer().getCommands().performCommand(player.getServer().createCommandSourceStack(),
+        player.getServer().getCommands().performPrefixedCommand(player.getServer().createCommandSourceStack(),
                 sub.replace(failedCheck.getOptions().command));
 
     }
