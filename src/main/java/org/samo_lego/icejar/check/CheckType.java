@@ -21,6 +21,7 @@ import org.samo_lego.icejar.check.world.block.AirPlace;
 import org.samo_lego.icejar.check.world.block.AutoSign;
 import org.samo_lego.icejar.check.world.block.BlockDirection;
 import org.samo_lego.icejar.check.world.block.BlockFace;
+import org.samo_lego.icejar.check.world.block.FakeBlockPos;
 import org.samo_lego.icejar.check.world.block.ImpossibleBlockAction;
 import org.samo_lego.icejar.check.world.block.ReachBlock;
 import org.samo_lego.icejar.config.IceConfig;
@@ -64,7 +65,8 @@ public enum CheckType {
     CMOVEMENT_ROTATION(WrongRotation.class, MOVEMENT),
     VEHICLE_MOVE_ENTITY_CONTROL(EntityControl.class, VEHICLE_MOVEMENT),
     CMOVEMENT_BASIC_FLIGHT(BasicFlight.class, MOVEMENT),
-    WORLD_BLOCK_FACE(BlockFace.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT));
+    WORLD_BLOCK_FACE(BlockFace.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT)),
+    WORLD_BLOCK_FAKEPOS(FakeBlockPos.class, WORLD_BLOCK_INTERACT);
 
     private final Class<?> checkClass;
 
