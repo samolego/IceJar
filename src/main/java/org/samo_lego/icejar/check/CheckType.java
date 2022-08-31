@@ -24,7 +24,6 @@ import org.samo_lego.icejar.check.world.block.BlockFace;
 import org.samo_lego.icejar.check.world.block.FakeBlockPos;
 import org.samo_lego.icejar.check.world.block.ImpossibleBlockAction;
 import org.samo_lego.icejar.check.world.block.ReachBlock;
-import org.samo_lego.icejar.config.IceConfig;
 
 import java.util.HashSet;
 import java.util.Locale;
@@ -112,8 +111,12 @@ public enum CheckType {
         return MOD_ID + ".checks.get_report." + this.toString().toLowerCase(Locale.ROOT);
     }
 
+    public String getTrainPermission() {
+        return MOD_ID + ".checks.train." + this.toString().toLowerCase(Locale.ROOT);
+    }
+
     public boolean isEnabled() {
-        IceConfig.CheckConfig cfg = IceJar.getInstance().getConfig().checkConfigs.get(this);
+        var cfg = IceJar.getInstance().getConfig().checkConfigs.get(this);
 
         return cfg != null ? cfg.enabled : IceJar.getInstance().getConfig().DEFAULT.enabled;
     }
