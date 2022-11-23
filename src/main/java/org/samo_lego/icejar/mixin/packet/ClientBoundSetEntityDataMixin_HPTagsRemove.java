@@ -20,15 +20,19 @@ import static org.samo_lego.icejar.mixin.accessor.APlayer.DATA_PLAYER_ABSORPTION
 
 /**
  * A simplified version of GolfIV's data remover.
+ *
  * @see <a href="https://github.com/samolego/GolfIV/blob/golfive/src/main/java/org/samo_lego/golfiv/mixin/packets/EntityTrackerUpdateS2CPacketMixin_DataPatch.java">GolfIV's Mixin</a>
  */
 @Mixin(ClientboundSetEntityDataPacket.class)
 public class ClientBoundSetEntityDataMixin_HPTagsRemove {
 
-    @Shadow @Final @Nullable private List<SynchedEntityData.DataItem<?>> packedItems;
+    @Shadow
+    @Final
+    @Nullable
+    private List<SynchedEntityData.DataItem<?>> packedItems;
 
-    @Inject(method = "<init>(ILnet/minecraft/network/syncher/SynchedEntityData;Z)V", at = @At("TAIL"))
-    private void removePlayerHP(int i, SynchedEntityData data, boolean bl, CallbackInfo ci) {
+    @Inject(method = "<init>(ILjava/util/List;)V", at = @At("TAIL"))
+    private void removePlayerHP(int i, List<SynchedEntityData.DataValue<?>> data, CallbackInfo ci) {
         if (this.packedItems != null) {
             final Entity entity = ((ASynchedEntityData) data).getEntity();
             if (entity instanceof ServerPlayer) {
