@@ -2,8 +2,8 @@ package org.samo_lego.icejar.mixin.fake_data.no_fall;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import org.samo_lego.icejar.casts.IceJarPlayer;
 import org.samo_lego.icejar.check.movement.NoFall;
-import org.samo_lego.icejar.util.IceJarPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

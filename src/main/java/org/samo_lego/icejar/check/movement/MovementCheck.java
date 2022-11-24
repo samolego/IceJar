@@ -3,9 +3,9 @@ package org.samo_lego.icejar.check.movement;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.server.level.ServerPlayer;
+import org.samo_lego.icejar.casts.IceJarPlayer;
 import org.samo_lego.icejar.check.Check;
 import org.samo_lego.icejar.check.CheckType;
-import org.samo_lego.icejar.util.IceJarPlayer;
 
 import java.util.Set;
 

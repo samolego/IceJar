@@ -19,11 +19,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.Nullable;
 import org.samo_lego.icejar.IceJar;
+import org.samo_lego.icejar.casts.IceJarPlayer;
 import org.samo_lego.icejar.check.Check;
 import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.mixin.accessor.ALivingEntity;
 import org.samo_lego.icejar.util.DataFaker;
-import org.samo_lego.icejar.util.IceJarPlayer;
 
 import java.util.Set;
 

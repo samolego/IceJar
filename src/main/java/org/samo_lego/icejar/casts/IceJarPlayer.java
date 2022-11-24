@@ -1,4 +1,4 @@
-package org.samo_lego.icejar.util;
+package org.samo_lego.icejar.casts;
 
 
 import me.lucko.fabric.api.permissions.v0.Permissions;

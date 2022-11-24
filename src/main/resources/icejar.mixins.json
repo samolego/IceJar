@@ -17,6 +17,10 @@
     "fake_data.no_fall.ServerPlayerMixin_NoFallHP",
     "inventory.ServerPlayerMixin_InventoryObserver",
     "inventory.SlotMixin_InventoryObserver",
+    "newchunks.MChunkAccess_IJChunkAccess",
+    "newchunks.MChunkStatus",
+    "newchunks.MLevelChunk",
+    "newchunks.MLiquidBlock",
     "packet.ClientBoundSetEntityDataMixin_HPTagsRemove",
     "packet.ServerGamePacketListenerImplMixin"
   ],

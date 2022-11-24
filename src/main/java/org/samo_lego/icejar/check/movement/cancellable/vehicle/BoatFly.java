@@ -7,9 +7,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.samo_lego.icejar.IceJar;
+import org.samo_lego.icejar.casts.IceJarPlayer;
 import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.check.movement.NoFall;
-import org.samo_lego.icejar.util.IceJarPlayer;
 
 /**
  * Can still be improved, as this triggers false positive using e.g. slime block launcher.

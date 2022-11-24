@@ -8,11 +8,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.samo_lego.icejar.IceJar;
+import org.samo_lego.icejar.casts.IceJarPlayer;
 import org.samo_lego.icejar.check.Check;
 import org.samo_lego.icejar.check.CheckCategory;
 import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.check.movement.cancellable.Timer;
-import org.samo_lego.icejar.util.IceJarPlayer;
 
 import java.util.Set;
 

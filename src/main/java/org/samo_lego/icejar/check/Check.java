@@ -4,8 +4,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import org.samo_lego.icejar.IceJar;
+import org.samo_lego.icejar.casts.IceJarPlayer;
 import org.samo_lego.icejar.config.IceConfig;
-import org.samo_lego.icejar.util.IceJarPlayer;
 
 public abstract class Check {
 

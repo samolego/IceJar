@@ -65,7 +65,7 @@ public enum CheckType {
     VEHICLE_MOVE_ENTITY_CONTROL(EntityControl.class, VEHICLE_MOVEMENT),
     CMOVEMENT_BASIC_FLIGHT(BasicFlight.class, MOVEMENT),
     WORLD_BLOCK_FACE(BlockFace.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT)),
-    WORLD_BLOCK_FAKEPOS(FakeBlockPos.class, WORLD_BLOCK_INTERACT);
+    WORLD_BLOCK_FAKEPOS(FakeBlockPos.class, WORLD_BLOCK_BREAK);
 
     private final Class<?> checkClass;
 

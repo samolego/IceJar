@@ -6,9 +6,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.samo_lego.icejar.casts.IceJarPlayer;
 import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.mixin.accessor.AServerboundMovePlayerPacket;
-import org.samo_lego.icejar.util.IceJarPlayer;
 
 import java.util.List;
 

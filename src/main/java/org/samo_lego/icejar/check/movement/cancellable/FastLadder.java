@@ -7,9 +7,9 @@ import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
 import org.samo_lego.icejar.IceJar;
+import org.samo_lego.icejar.casts.IceJarPlayer;
 import org.samo_lego.icejar.check.CheckType;
 import org.samo_lego.icejar.config.IceConfig;
-import org.samo_lego.icejar.util.IceJarPlayer;
 
 public class FastLadder extends CancellableMovementCheck {
     private boolean wasClimbing;

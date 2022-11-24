@@ -4,8 +4,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.samo_lego.icejar.casts.IceJarPlayer;
 import org.samo_lego.icejar.check.CheckType;
-import org.samo_lego.icejar.util.IceJarPlayer;
 
 public class ImpossibleUse extends ItemUseCheck {
     public ImpossibleUse(ServerPlayer player) {

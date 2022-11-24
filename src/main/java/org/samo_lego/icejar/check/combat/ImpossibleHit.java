@@ -9,8 +9,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import org.samo_lego.icejar.casts.IceJarPlayer;
 import org.samo_lego.icejar.check.CheckType;
-import org.samo_lego.icejar.util.IceJarPlayer;
 
 import static org.samo_lego.icejar.check.combat.Reach.getMaxDist;
 import static org.samo_lego.icejar.util.ChatColor.styleBoolean;
