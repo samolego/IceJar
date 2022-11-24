@@ -9,15 +9,15 @@ import java.util.Set;
 public enum CheckCategory {
     COMBAT,
     ENTITY_INTERACT,
-    FIXED_MOVEMENT, // cannot be cancelled (tp-ed back)
+    MOVEMENT_IMMUTABLE, // cannot be cancelled (tp-ed back)
     INVENTORY,
-    MOVEMENT, // allow canceling (tp-ing back)
+    MOVEMENT_MUTABLE, // allow canceling (tp-ing back)
     PACKETS,
     VEHICLE_MOVEMENT,
     WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT;
 
-    public static final HashMap<CheckCategory, Set<CheckType>> ALL_CHECKS = new HashMap<>();
-    public static HashMap<CheckCategory, Set<CheckType>> category2checks = new HashMap<>();
+    public static final HashMap<CheckCategory, Set<CheckType>> ALL_CHECKS = new HashMap<>(CheckType.values().length);
+    public static HashMap<CheckCategory, Set<CheckType>> category2checks = new HashMap<>(CheckCategory.values().length);
 
     public static void reloadEnabledChecks() {
         final HashMap<CheckType, IceConfig.CheckConfig> checkConfigs = IceJar.getInstance().getConfig().checkConfigs;

@@ -204,8 +204,15 @@ public class IceConfig implements IBrigadierConfigurator {
                 throw new RuntimeException(MOD_ID + " Problem occurred when trying to load config: ", e);
             }
         }
-        if(config == null)
+        if (config == null) {
             config = new IceConfig();
+        }
+
+        for (CheckType checkType : CheckType.values()) {
+            if (!config.checkConfigs.containsKey(checkType)) {
+                config.checkConfigs.put(checkType, new CheckConfig());
+            }
+        }
 
         config.saveConfigFile(file);
 

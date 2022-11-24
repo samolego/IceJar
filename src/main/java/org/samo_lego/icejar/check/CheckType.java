@@ -33,18 +33,18 @@ import static org.samo_lego.icejar.IceJar.MOD_ID;
 import static org.samo_lego.icejar.check.CheckCategory.ALL_CHECKS;
 import static org.samo_lego.icejar.check.CheckCategory.COMBAT;
 import static org.samo_lego.icejar.check.CheckCategory.ENTITY_INTERACT;
-import static org.samo_lego.icejar.check.CheckCategory.FIXED_MOVEMENT;
 import static org.samo_lego.icejar.check.CheckCategory.INVENTORY;
-import static org.samo_lego.icejar.check.CheckCategory.MOVEMENT;
+import static org.samo_lego.icejar.check.CheckCategory.MOVEMENT_IMMUTABLE;
+import static org.samo_lego.icejar.check.CheckCategory.MOVEMENT_MUTABLE;
 import static org.samo_lego.icejar.check.CheckCategory.VEHICLE_MOVEMENT;
 import static org.samo_lego.icejar.check.CheckCategory.WORLD_BLOCK_BREAK;
 import static org.samo_lego.icejar.check.CheckCategory.WORLD_BLOCK_INTERACT;
 import static org.samo_lego.icejar.check.CheckCategory.category2checks;
 
 public enum CheckType {
-    CMOVEMENT_FAST_LADDER(FastLadder.class, MOVEMENT),
-    CMOVEMENT_NO_DECELERATION(NoDeceleration.class, MOVEMENT),
-    CMOVEMENT_TIMER(Timer.class, MOVEMENT),
+    CMOVEMENT_FAST_LADDER(FastLadder.class, MOVEMENT_MUTABLE),
+    CMOVEMENT_NO_DECELERATION(NoDeceleration.class, MOVEMENT_MUTABLE),
+    CMOVEMENT_TIMER(Timer.class, MOVEMENT_MUTABLE),
     COMBAT_ANGLE(Angle.class, COMBAT),
 
     COMBAT_CRITICAL(Critical.class, COMBAT),
@@ -53,17 +53,17 @@ public enum CheckType {
     COMBAT_NOSWING(NoSwing.class, COMBAT),
     COMBAT_REACH(Reach.class, Set.of(COMBAT, ENTITY_INTERACT)),
     INVENTORY_IMPOSSIBLE_ITEM_USE(ImpossibleUse.class, INVENTORY),
-    MOVEMENT_DERP(Derp.class, FIXED_MOVEMENT),
-    MOVEMENT_NOFALL(NoFall.class, FIXED_MOVEMENT),
+    MOVEMENT_DERP(Derp.class, MOVEMENT_IMMUTABLE),
+    MOVEMENT_NOFALL(NoFall.class, MOVEMENT_IMMUTABLE),
     SPECIAL_JESUS,
     VEHICLE_MOVE_BOATFLY(BoatFly.class, VEHICLE_MOVEMENT),
     WORLD_BLOCK_AUTOSIGN(AutoSign.class, WORLD_BLOCK_INTERACT),
     WORLD_BLOCK_DIRECTION(BlockDirection.class, Set.of(WORLD_BLOCK_INTERACT, WORLD_BLOCK_BREAK)),
     WORLD_BLOCK_IMPOSSIBLE_ACTION(ImpossibleBlockAction.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT)), WORLD_BLOCK_PLACE_AIR(AirPlace.class, WORLD_BLOCK_INTERACT),
     WORLD_BLOCK_REACH(ReachBlock.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT)),
-    CMOVEMENT_ROTATION(WrongRotation.class, MOVEMENT),
+    CMOVEMENT_ROTATION(WrongRotation.class, MOVEMENT_MUTABLE),
     VEHICLE_MOVE_ENTITY_CONTROL(EntityControl.class, VEHICLE_MOVEMENT),
-    CMOVEMENT_BASIC_FLIGHT(BasicFlight.class, MOVEMENT),
+    CMOVEMENT_BASIC_FLIGHT(BasicFlight.class, MOVEMENT_MUTABLE),
     WORLD_BLOCK_FACE(BlockFace.class, Set.of(WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT)),
     WORLD_BLOCK_FAKEPOS(FakeBlockPos.class, WORLD_BLOCK_BREAK);
 

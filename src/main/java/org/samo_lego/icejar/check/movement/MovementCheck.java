@@ -9,7 +9,7 @@ import org.samo_lego.icejar.check.CheckType;
 
 import java.util.Set;
 
-import static org.samo_lego.icejar.check.CheckCategory.FIXED_MOVEMENT;
+import static org.samo_lego.icejar.check.CheckCategory.MOVEMENT_IMMUTABLE;
 import static org.samo_lego.icejar.check.CheckCategory.category2checks;
 
 public abstract class MovementCheck extends Check {
@@ -29,7 +29,7 @@ public abstract class MovementCheck extends Check {
 
     public static boolean performCheck(ServerPlayer player, ServerboundMovePlayerPacket packet) {
         // Loop through all movement checks
-        final Set<CheckType> checks = category2checks.get(FIXED_MOVEMENT);
+        final Set<CheckType> checks = category2checks.get(MOVEMENT_IMMUTABLE);
         if (checks != null) {
             for (CheckType type : checks) {
                 if (Permissions.check(player, type.getBypassPermission(), false)) continue;
