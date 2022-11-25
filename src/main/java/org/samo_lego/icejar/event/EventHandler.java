@@ -11,13 +11,13 @@ import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.samo_lego.icejar.IceJar;
-import org.samo_lego.icejar.casts.IJChunkAccess;
 import org.samo_lego.icejar.casts.IceJarPlayer;
 import org.samo_lego.icejar.check.combat.CombatCheck;
 import org.samo_lego.icejar.check.inventory.ItemUseCheck;
 import org.samo_lego.icejar.check.world.block.BlockBreakCheck;
 import org.samo_lego.icejar.check.world.block.BlockInteractCheck;
 import org.samo_lego.icejar.command.IceJarCommand;
+import org.samo_lego.icejar.module.NewChunks;
 
 public class EventHandler {
     public EventHandler() {
@@ -37,7 +37,10 @@ public class EventHandler {
     }
 
     private void onChunkLoad(ServerLevel serverLevel, LevelChunk levelChunk) {
-        System.out.println("Chunk loaded! needs saving: " + levelChunk.isUnsaved() + " is new: " + ((IJChunkAccess) levelChunk).ij_isNewChunk());
+        //System.out.println("Chunk loaded! needs saving: " + levelChunk.isUnsaved() + " is new: " + ((IJChunkAccess) levelChunk).ij_isNewChunk());
         //levelChunk.unpackTicks();
+        if (NewChunks.NEW_CHUNKS.contains(levelChunk.getPos())) {
+            System.out.println("Chunk @ " + levelChunk.getPos() + " is new!");
+        }
     }
 }

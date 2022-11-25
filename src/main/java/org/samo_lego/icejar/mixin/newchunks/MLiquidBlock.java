@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
-import org.samo_lego.icejar.casts.IJChunkAccess;
+import org.samo_lego.icejar.module.NewChunks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,8 +20,8 @@ public class MLiquidBlock {
             cancellable = true)
     private void ij_onPlace(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl, CallbackInfo ci) {
         LevelChunk chunk = level.getChunkAt(blockPos);
-        if (chunk != null && ((IJChunkAccess) chunk).ij_isNewChunk()) {
-            // If chunk is new, don't set normal fluid delay but instead set it to 0
+        if (chunk != null && NewChunks.NEW_CHUNKS.contains(chunk.getPos())) {
+            // If chunk is new, don't set normal fluid delay but instead set it to 1
             level.scheduleTick(blockPos, blockState.getFluidState().getType(), 0);
             ci.cancel();
         }
@@ -33,7 +33,7 @@ public class MLiquidBlock {
             cancellable = true)
     private void ij_neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block block, BlockPos blockPos2, boolean bl, CallbackInfo ci) {
         LevelChunk chunk = level.getChunkAt(blockPos);
-        if (chunk != null && ((IJChunkAccess) chunk).ij_isNewChunk()) {
+        if (chunk != null && NewChunks.NEW_CHUNKS.contains(chunk.getPos())) {
             // If chunk is new, don't set normal fluid delay
             level.scheduleTick(blockPos, blockState.getFluidState().getType(), 0);
             ci.cancel();

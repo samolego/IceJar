@@ -1,8 +1,6 @@
 package org.samo_lego.icejar.mixin;
 
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -50,7 +48,7 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     @Unique
     private Vec2 rotation, lastRotation, last2Rotation;
     @Unique
-    private final Map<ChunkPos, Pair<Packet<?>, Integer>> delayedChunkPackets = new ConcurrentHashMap<>();
+    private final Map<ChunkPos, Integer> delayedChunkPackets = new ConcurrentHashMap<>();
 
     @Override
     public <T extends Check> T getCheck(CheckType checkType) {
@@ -229,7 +227,7 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     }
 
     @Override
-    public Map<ChunkPos, Pair<Packet<?>, Integer>> ij_getDelayedPackets() {
+    public Map<ChunkPos, Integer> ij_getDelayedPackets() {
         return this.delayedChunkPackets;
     }
 

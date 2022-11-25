@@ -1,17 +1,19 @@
 package org.samo_lego.icejar.mixin.newchunks;
 
-import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
-import net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData;
 import net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket;
+import net.minecraft.network.protocol.game.ClientboundSectionBlocksUpdatePacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.LevelChunk;
-import org.samo_lego.icejar.casts.IJChunkAccess;
+import net.minecraft.world.level.material.FluidState;
 import org.samo_lego.icejar.casts.IceJarPlayer;
-import org.samo_lego.icejar.mixin.accessor.AClientboundLevelChunkWithLightPacket;
+import org.samo_lego.icejar.mixin.accessor.AClientboundSectionBlocksUpdatePacket;
+import org.samo_lego.icejar.module.NewChunks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,22 +30,38 @@ public abstract class MServerGamePacketListener_ChunkDelayer {
 
     @Inject(method = "send(Lnet/minecraft/network/protocol/Packet;)V", at = @At("HEAD"), cancellable = true)
     private void ij_sendPacket(Packet<?> packet, CallbackInfo ci) {
+        LevelChunk chunk = null;
         if (packet instanceof ClientboundBlockUpdatePacket blockPacket) {
-            final LevelChunk chunk = this.getPlayer().getLevel().getChunkAt(blockPacket.getPos());
+            BlockPos pos = blockPacket.getPos();
+            chunk = this.getPlayer().getLevel().getChunkAt(pos);
 
-            if (((IceJarPlayer) this.getPlayer()).ij_getDelayedPackets().containsKey(chunk.getPos()) && !chunk.getFluidState(blockPacket.getPos()).isEmpty()) {
-                // Set delay to back to 8 ticks
-                ((IceJarPlayer) this.getPlayer()).ij_getDelayedPackets().put(chunk.getPos(), Pair.of(packet, 8));
-                ci.cancel();
+            // Check possible fluid spreading
+            if (chunk != null) {
+                FluidState fluidState = chunk.getFluidState(pos);
+
+                if (NewChunks.NEW_CHUNKS.contains(chunk.getPos()) && !fluidState.isEmpty()) {
+                    Direction[] DIRECTIONS = {Direction.EAST, Direction.WEST, Direction.NORTH, Direction.SOUTH};
+                    // Reset neighbour update delay
+                    for (Direction dir : DIRECTIONS) {
+                        BlockPos neighbourPos = pos.relative(dir, fluidState.getAmount());
+                        var chunkNeighbour = this.getPlayer().getLevel().getChunkAt(neighbourPos);
+                        if (chunkNeighbour != chunk) {
+                            ((IceJarPlayer) this.getPlayer()).ij_getDelayedPackets().put(chunkNeighbour.getPos(), 2);
+                        }
+                    }
+                }
             }
         } else if (packet instanceof ClientboundLevelChunkWithLightPacket lightPacket) {
-            final LevelChunk chunk = this.getPlayer().getLevel().getChunk(lightPacket.getX(), lightPacket.getZ());
-            if (((IJChunkAccess) chunk).ij_isNewChunk()) {
-                // Delay the packet due to possible fluid spreading
-                ((IceJarPlayer) this).ij_getDelayedPackets().put(chunk.getPos(), Pair.of(packet, 8));
-                ci.cancel();
-            }
+            chunk = this.getPlayer().getLevel().getChunk(lightPacket.getX(), lightPacket.getZ());
+        } else if (packet instanceof ClientboundSectionBlocksUpdatePacket blocksUpdatePacket) {
+            final var pos = ((AClientboundSectionBlocksUpdatePacket) blocksUpdatePacket).sectionPos();
+            chunk = this.getPlayer().getLevel().getChunk(pos.z(), pos.z());
+        }
 
+        if (chunk != null && NewChunks.NEW_CHUNKS.contains(chunk.getPos())) {
+            // Reset delay
+            ((IceJarPlayer) this.getPlayer()).ij_getDelayedPackets().put(chunk.getPos(), 2);
+            ci.cancel();
         }
     }
 
@@ -52,23 +70,20 @@ public abstract class MServerGamePacketListener_ChunkDelayer {
         // Send the needed packets
         for (var entry : ((IceJarPlayer) this.getPlayer()).ij_getDelayedPackets().entrySet()) {
             ChunkPos chunkPos = entry.getKey();
-            var pair = entry.getValue();
+            var delay = entry.getValue();
 
-            if (pair.getSecond() <= 0) {
+            if (delay <= 0) {
                 // Send the packet
                 var chunk = this.getPlayer().getLevel().getChunk(chunkPos.x, chunkPos.z);
-                ((IJChunkAccess) chunk).ij_setNewChunk(false);
+                var packet = new ClientboundLevelChunkWithLightPacket(chunk, chunk.getLevel().getLightEngine(), null, null, true);
+
+                NewChunks.NEW_CHUNKS.remove(chunkPos);
                 ((IceJarPlayer) this.getPlayer()).ij_getDelayedPackets().remove(chunkPos);
 
-                Packet<?> packet = pair.getFirst();
-
-                if (packet instanceof ClientboundLevelChunkWithLightPacket lightPacket) {
-                    ((AClientboundLevelChunkWithLightPacket) lightPacket).setChunkData(new ClientboundLevelChunkPacketData(chunk));
-                    this.send(lightPacket);
-                }
+                this.send(packet);
             } else {
                 // Decrease delay
-                entry.setValue(entry.getValue().mapSecond(i -> i - 1));
+                entry.setValue(delay - 1);
             }
         }
     }

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import org.samo_lego.config2brigadier.IBrigadierConfigurator;
+import org.samo_lego.config2brigadier.annotation.BrigadierDescription;
 import org.samo_lego.icejar.IceJar;
 import org.samo_lego.icejar.check.Check;
 import org.samo_lego.icejar.check.CheckType;
@@ -49,6 +50,9 @@ public class IceConfig implements IBrigadierConfigurator {
     public Fixes fixes = new Fixes();
 
     public static class Fixes {
+        @SerializedName("// Whether to make some changes to world generation and fluid spreading to patch 'newChunks' exploit.")
+        public final String _comment_newChunks = "";
+        @BrigadierDescription(defaultOption = "true")
         public boolean newChunks = true;
     }
 
