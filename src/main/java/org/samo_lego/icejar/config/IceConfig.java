@@ -36,14 +36,21 @@ public class IceConfig implements IBrigadierConfigurator {
 
 
     private static final Gson GSON = new GsonBuilder()
-                                        .setPrettyPrinting()
-                                        .setLenient()
-                                        .serializeNulls()
-                                        .disableHtmlEscaping()
-                                        .create();
+            .setPrettyPrinting()
+            .setLenient()
+            .serializeNulls()
+            .disableHtmlEscaping()
+            .create();
 
     @SerializedName("default_check_configuration")
     public final CheckConfig DEFAULT = new CheckConfig();
+
+
+    public Fixes fixes = new Fixes();
+
+    public static class Fixes {
+        public boolean newChunks = true;
+    }
 
     public Combat combat = new Combat();
 
@@ -99,6 +106,7 @@ public class IceConfig implements IBrigadierConfigurator {
         }
 
         public double maxRotationDiff = 110D;
+
         public Ladder ladder = new Ladder();
 
 

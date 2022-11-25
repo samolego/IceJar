@@ -14,6 +14,6 @@ public class MLevelChunk {
     @Inject(method = "<init>(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/ProtoChunk;Lnet/minecraft/world/level/chunk/LevelChunk$PostLoadProcessor;)V",
             at = @At("TAIL"))
     private void ij_constructor(ServerLevel serverLevel, ProtoChunk protoChunk, LevelChunk.PostLoadProcessor postLoadProcessor, CallbackInfo ci) {
-        ((IJChunkAccess) this).ij_setNewChunk(true);
+        ((IJChunkAccess) this).ij_setNewChunk(((IJChunkAccess) protoChunk).ij_isNewChunk());
     }
 }

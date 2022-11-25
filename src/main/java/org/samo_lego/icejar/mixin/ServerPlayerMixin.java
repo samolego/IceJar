@@ -1,10 +1,13 @@
 package org.samo_lego.icejar.mixin;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.network.protocol.game.ServerboundMoveVehiclePacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import org.samo_lego.icejar.IceJar;
@@ -21,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.samo_lego.icejar.check.CheckCategory.category2checks;
 
@@ -45,7 +49,8 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     private double violationLevel;
     @Unique
     private Vec2 rotation, lastRotation, last2Rotation;
-
+    @Unique
+    private final Map<ChunkPos, Pair<Packet<?>, Integer>> delayedChunkPackets = new ConcurrentHashMap<>();
 
     @Override
     public <T extends Check> T getCheck(CheckType checkType) {
@@ -221,6 +226,11 @@ public abstract class ServerPlayerMixin implements IceJarPlayer {
     @Override
     public double ij$getViolationLevel() {
         return this.violationLevel;
+    }
+
+    @Override
+    public Map<ChunkPos, Pair<Packet<?>, Integer>> ij_getDelayedPackets() {
+        return this.delayedChunkPackets;
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))

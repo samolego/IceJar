@@ -29,9 +29,7 @@ public class IceJar {
 		}
 		this.config = IceConfig.loadConfigFile(this.configFile);
 
-
 		new EventHandler();
-
 	}
 
 	public static void onServerStarted(MinecraftServer server) {

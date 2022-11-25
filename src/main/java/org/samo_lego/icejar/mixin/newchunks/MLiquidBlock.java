@@ -21,8 +21,7 @@ public class MLiquidBlock {
     private void ij_onPlace(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl, CallbackInfo ci) {
         LevelChunk chunk = level.getChunkAt(blockPos);
         if (chunk != null && ((IJChunkAccess) chunk).ij_isNewChunk()) {
-            // If chunk is new, don't set normal fluid delay
-            System.out.println("New chunk @ " + blockPos);
+            // If chunk is new, don't set normal fluid delay but instead set it to 0
             level.scheduleTick(blockPos, blockState.getFluidState().getType(), 0);
             ci.cancel();
         }
@@ -36,7 +35,6 @@ public class MLiquidBlock {
         LevelChunk chunk = level.getChunkAt(blockPos);
         if (chunk != null && ((IJChunkAccess) chunk).ij_isNewChunk()) {
             // If chunk is new, don't set normal fluid delay
-            System.out.println("New chunk [neighbour changed] @ " + blockPos);
             level.scheduleTick(blockPos, blockState.getFluidState().getType(), 0);
             ci.cancel();
         }

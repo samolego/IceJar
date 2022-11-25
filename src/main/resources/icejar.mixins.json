@@ -6,6 +6,7 @@
   "mixins": [
     "ServerGamePacketListenerImplMixin_Movement",
     "ServerPlayerMixin",
+    "accessor.AClientboundLevelChunkWithLightPacket",
     "accessor.ALivingEntity",
     "accessor.AMob",
     "accessor.APlayer",
@@ -18,9 +19,11 @@
     "inventory.ServerPlayerMixin_InventoryObserver",
     "inventory.SlotMixin_InventoryObserver",
     "newchunks.MChunkAccess_IJChunkAccess",
-    "newchunks.MChunkStatus",
+    "newchunks.MChunkSerializer",
     "newchunks.MLevelChunk",
     "newchunks.MLiquidBlock",
+    "newchunks.MServerGamePacketListener_ChunkDelayer",
+    "newchunks.MServerPlayer_ChunkDelayer",
     "packet.ClientBoundSetEntityDataMixin_HPTagsRemove",
     "packet.ServerGamePacketListenerImplMixin"
   ],

@@ -16,8 +16,8 @@ public enum CheckCategory {
     VEHICLE_MOVEMENT,
     WORLD_BLOCK_BREAK, WORLD_BLOCK_INTERACT;
 
-    public static final HashMap<CheckCategory, Set<CheckType>> ALL_CHECKS = new HashMap<>(CheckType.values().length);
-    public static HashMap<CheckCategory, Set<CheckType>> category2checks = new HashMap<>(CheckCategory.values().length);
+    public static final HashMap<CheckCategory, Set<CheckType>> ALL_CHECKS = new HashMap<>();
+    public static HashMap<CheckCategory, Set<CheckType>> category2checks = new HashMap<>();
 
     public static void reloadEnabledChecks() {
         final HashMap<CheckType, IceConfig.CheckConfig> checkConfigs = IceJar.getInstance().getConfig().checkConfigs;
