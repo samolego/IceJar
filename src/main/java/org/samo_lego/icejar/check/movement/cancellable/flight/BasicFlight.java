@@ -27,10 +27,10 @@ public class BasicFlight extends CancellableMovementCheck {
     @Override
     public boolean checkMovement(ServerboundMovePlayerPacket packet) {
         if (!player.isFallFlying() &&
-            !this.lastTickOnGround && !this.lLastTickOnGround && !player.isOnGround() &&  // Checking ground status
-            !player.isPassenger() &&
-            !player.getAbilities().flying &&
-            player.getEffect(MobEffects.LEVITATION) == null) {
+                !this.lastTickOnGround && !this.lLastTickOnGround && !player.isOnGround() &&  // Checking ground status
+                !player.isPassenger() &&
+                !player.getAbilities().flying &&
+                player.hasEffect(MobEffects.LEVITATION)) {
 
             this.lLastTickOnGround = this.lastTickOnGround;
             this.lastTickOnGround = player.isOnGround();
@@ -42,7 +42,6 @@ public class BasicFlight extends CancellableMovementCheck {
 
             if (diffY < 0.0) {
                 // Player is falling
-
                 // Check if difference is greater than before
                 if (diffY < lastDiff && lastDiff != 0.0) {
                     return false;

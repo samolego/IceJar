@@ -39,7 +39,7 @@ public class EventHandler {
     private void onChunkLoad(ServerLevel serverLevel, LevelChunk levelChunk) {
         //System.out.println("Chunk loaded! needs saving: " + levelChunk.isUnsaved() + " is new: " + ((IJChunkAccess) levelChunk).ij_isNewChunk());
         //levelChunk.unpackTicks();
-        if (NewChunks.NEW_CHUNKS.contains(levelChunk.getPos())) {
+        if (NewChunks.isNewChunk(serverLevel, levelChunk.getPos())) {
             System.out.println("Chunk @ " + levelChunk.getPos() + " is new!");
         }
     }

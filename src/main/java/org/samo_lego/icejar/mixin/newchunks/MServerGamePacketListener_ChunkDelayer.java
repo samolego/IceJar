@@ -16,12 +16,16 @@ import org.samo_lego.icejar.mixin.accessor.AClientboundSectionBlocksUpdatePacket
 import org.samo_lego.icejar.module.NewChunks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerGamePacketListenerImpl.class)
 public abstract class MServerGamePacketListener_ChunkDelayer {
+    @Unique
+    private static final Direction[] DIRECTIONS = {Direction.EAST, Direction.WEST, Direction.NORTH, Direction.SOUTH};
+
     @Shadow
     public abstract ServerPlayer getPlayer();
 
@@ -31,23 +35,24 @@ public abstract class MServerGamePacketListener_ChunkDelayer {
     @Inject(method = "send(Lnet/minecraft/network/protocol/Packet;)V", at = @At("HEAD"), cancellable = true)
     private void ij_sendPacket(Packet<?> packet, CallbackInfo ci) {
         LevelChunk chunk = null;
+        final var level = getPlayer().getLevel();
         if (packet instanceof ClientboundBlockUpdatePacket blockPacket) {
             BlockPos pos = blockPacket.getPos();
             chunk = this.getPlayer().getLevel().getChunkAt(pos);
 
             // Check possible fluid spreading
-            if (chunk != null) {
-                FluidState fluidState = chunk.getFluidState(pos);
+            FluidState fluidState = chunk.getFluidState(pos);
 
-                if (NewChunks.NEW_CHUNKS.contains(chunk.getPos()) && !fluidState.isEmpty()) {
-                    Direction[] DIRECTIONS = {Direction.EAST, Direction.WEST, Direction.NORTH, Direction.SOUTH};
-                    // Reset neighbour update delay
-                    for (Direction dir : DIRECTIONS) {
-                        BlockPos neighbourPos = pos.relative(dir, fluidState.getAmount());
-                        var chunkNeighbour = this.getPlayer().getLevel().getChunkAt(neighbourPos);
-                        if (chunkNeighbour != chunk) {
-                            ((IceJarPlayer) this.getPlayer()).ij_getDelayedPackets().put(chunkNeighbour.getPos(), 2);
-                        }
+            if (NewChunks.isNewChunk(level, chunk.getPos()) && !fluidState.isEmpty()) {
+                // Reset neighbour update delay
+                for (Direction dir : DIRECTIONS) {
+                    BlockPos neighbourPos = pos.relative(dir, fluidState.getAmount());
+                    System.out.println("Neighbour pos: " + neighbourPos + " fluid amount: " + fluidState.getAmount());
+
+                    var chunkNeighbour = this.getPlayer().getLevel().getChunkAt(neighbourPos);
+                    if (chunkNeighbour != chunk) {
+                        //((IceJarPlayer) this.getPlayer()).ij_getDelayedPackets().put(chunkNeighbour.getPos(), fluidState.getAmount());
+                        NewChunks.addChunk(level, chunkNeighbour.getPos());
                     }
                 }
             }
@@ -58,7 +63,7 @@ public abstract class MServerGamePacketListener_ChunkDelayer {
             chunk = this.getPlayer().getLevel().getChunk(pos.z(), pos.z());
         }
 
-        if (chunk != null && NewChunks.NEW_CHUNKS.contains(chunk.getPos())) {
+        if (chunk != null && NewChunks.isNewChunk(level, chunk.getPos())) {
             // Reset delay
             ((IceJarPlayer) this.getPlayer()).ij_getDelayedPackets().put(chunk.getPos(), 2);
             ci.cancel();
@@ -77,7 +82,7 @@ public abstract class MServerGamePacketListener_ChunkDelayer {
                 var chunk = this.getPlayer().getLevel().getChunk(chunkPos.x, chunkPos.z);
                 var packet = new ClientboundLevelChunkWithLightPacket(chunk, chunk.getLevel().getLightEngine(), null, null, true);
 
-                NewChunks.NEW_CHUNKS.remove(chunkPos);
+                NewChunks.removeChunk(this.getPlayer().getLevel(), chunkPos);
                 ((IceJarPlayer) this.getPlayer()).ij_getDelayedPackets().remove(chunkPos);
 
                 this.send(packet);

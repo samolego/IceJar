@@ -6,13 +6,12 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import org.samo_lego.icejar.IceJar;
+import org.samo_lego.icejar.module.NewChunks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-import static org.samo_lego.icejar.module.NewChunks.NEW_CHUNKS;
 
 @Mixin(ChunkGenerator.class)
 public class MChunkGenerator_NewChunkMarker {
@@ -22,7 +21,7 @@ public class MChunkGenerator_NewChunkMarker {
 			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void ij_generate(WorldGenLevel worldGenLevel, ChunkAccess chunkAccess, StructureManager structureManager, CallbackInfo ci, ChunkPos chunkPos) {
 		if (IceJar.getInstance().getConfig().fixes.newChunks) {
-			NEW_CHUNKS.add(chunkPos);
+			NewChunks.addChunk(worldGenLevel.getLevel(), chunkPos);
 		}
 	}
 }
