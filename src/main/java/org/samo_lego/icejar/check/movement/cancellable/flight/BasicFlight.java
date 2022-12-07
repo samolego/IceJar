@@ -30,7 +30,9 @@ public class BasicFlight extends CancellableMovementCheck {
                 !this.lastTickOnGround && !this.lLastTickOnGround && !player.isOnGround() &&  // Checking ground status
                 !player.isPassenger() &&
                 !player.getAbilities().flying &&
-                player.hasEffect(MobEffects.LEVITATION)) {
+                !player.hasEffect(MobEffects.LEVITATION) &&
+                !player.isInWater() && !player.isInLava() &&  // modded fluids ? how to
+                !player.onClimbable()) {
 
             this.lLastTickOnGround = this.lastTickOnGround;
             this.lastTickOnGround = player.isOnGround();
@@ -43,12 +45,12 @@ public class BasicFlight extends CancellableMovementCheck {
             if (diffY < 0.0) {
                 // Player is falling
                 // Check if difference is greater than before
-                if (diffY < lastDiff && lastDiff != 0.0) {
-                    return false;
+                if (diffY > lastDiff) {
+                    return false;  //todo honey fp
                 }
             } else if (diffY > 0.0) {
                 // Check if diffY is smaller than the last tick diffY
-                if (diffY > lastDiff && lastDiff != 0.0) {
+                if (diffY >= lastDiff && lastDiff > 0.0) {
                     return false;
                 }
             } else {
@@ -65,10 +67,12 @@ public class BasicFlight extends CancellableMovementCheck {
                 }
             }
 
+            return true;
         }
         if (this.airTicks > 0) {
             --this.airTicks;
         }
+
         this.lastDiffY = 0.0;
 
         this.lLastTickOnGround = this.lastTickOnGround;

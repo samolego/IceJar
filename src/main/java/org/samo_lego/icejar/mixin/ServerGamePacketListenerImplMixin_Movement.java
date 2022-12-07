@@ -67,7 +67,7 @@ public abstract class ServerGamePacketListenerImplMixin_Movement {
                 lastRot = this.lastValidRot;
             }
 
-            this.teleport(last.x(), packet.getY(player.getY()), last.z(), lastRot.x, lastRot.y);
+            this.teleport(last.x(), Math.min(packet.getY(player.getY()), last.y()), last.z(), lastRot.x, lastRot.y);
             ci.cancel();
         } else {
             if (++this.ij$validTickCount >= 50) {
